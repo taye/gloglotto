@@ -1,0 +1,87 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_EXCEPTION_H
+#define _GLOGLOTTO_EXCEPTION_H
+
+#include <stdexcept>
+
+namespace gloglotto
+{
+	class exception : public std::runtime_error
+	{
+		public:
+			explicit exception (const std::string& what_arg) : std::runtime_error(what_arg) { }
+			explicit exception (const char* what_arg) : std::runtime_error(what_arg) { }
+	};
+
+	class invalid_enum : public exception
+	{
+		public:
+			explicit invalid_enum (const std::string& what_arg) : exception(what_arg) { }
+			explicit invalid_enum (const char* what_arg) : exception(what_arg) { }
+	};
+
+	class invalid_value : public exception
+	{
+		public:
+			explicit invalid_value (const std::string& what_arg) : exception(what_arg) { }
+			explicit invalid_value (const char* what_arg) : exception(what_arg) { }
+	};
+
+	class invalid_operation : public exception
+	{
+		public:
+			explicit invalid_operation (const std::string& what_arg) : exception(what_arg) { }
+			explicit invalid_operation (const char* what_arg) : exception(what_arg) { }
+	};
+
+	class stack_overflow : public exception
+	{
+		public:
+			explicit stack_overflow (const std::string& what_arg) : exception(what_arg) { }
+			explicit stack_overflow (const char* what_arg) : exception(what_arg) { }
+	};
+
+	class stack_underflow : public exception
+	{
+		public:
+			explicit stack_underflow (const std::string& what_arg) : exception(what_arg) { }
+			explicit stack_underflow (const char* what_arg) : exception(what_arg) { }
+	};
+
+	class out_of_memory : public exception
+	{
+		public:
+			explicit out_of_memory (const std::string& what_arg) : exception(what_arg) { }
+			explicit out_of_memory (const char* what_arg) : exception(what_arg) { }
+	};
+
+	class table_too_large : public exception
+	{
+		public:
+			explicit table_too_large (const std::string& what_arg) : exception(what_arg) { }
+			explicit table_too_large (const char* what_arg) : exception(what_arg) { }
+	};
+
+	/* Raise an exception if there's an OpenGL error.
+	 */
+	void raise (void);
+}
+
+#endif

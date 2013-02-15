@@ -1,0 +1,131 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_LIGHT_H
+#define _GLOGLOTTO_LIGHT_H
+
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glut.h>
+
+#include <string>
+#include <map>
+#include <vector>
+#include <stdexcept>
+#include <functional>
+
+#include <gloglotto/math>
+
+namespace gloglotto
+{
+	namespace thin
+	{
+		namespace window
+		{
+			void create (int* argc, char* argv[],
+			             std::map<std::string, std::vector<int>> attributes,
+			             std::string name) throw (std::invalid_argument);
+
+			void loop (std::function<void(void)> setup);
+
+			namespace callbacks
+			{
+				void resize (int width, int height);
+				void render (void);
+			}
+
+			template <typename Function>
+			void callback (std::string name, Function lambda);
+		}
+
+		namespace extensions
+		{
+			void setup (void) throw (std::runtime_error);
+		}
+
+		void viewport (int width, int height);
+		void viewport (int x, int y, int width, int height);
+
+		namespace clear
+		{
+			void color (float red, float green, float blue);
+			void color (float red, float green, float blue, float alpha);
+		}
+
+		namespace buffers
+		{
+			void swap (void);
+
+			void clear (unsigned int mask);
+		}
+
+		namespace program
+		{
+			namespace shader
+			{
+				unsigned int create (unsigned int value);
+				void         destroy (unsigned int id);
+				unsigned int load (unsigned int id, std::string source);
+				unsigned int compile (unsigned int id);
+				unsigned int make (unsigned int value, std::string source);
+			}
+
+			namespace uniform
+			{
+				int location (unsigned int program, std::string name);
+
+				void set (int location, math::vector<1, float> data);
+				void set (int location, math::vector<2, float> data);
+				void set (int location, math::vector<3, float> data);
+				void set (int location, math::vector<4, float> data);
+
+				void set (int location, math::vector<1, int> data);
+				void set (int location, math::vector<2, int> data);
+				void set (int location, math::vector<3, int> data);
+				void set (int location, math::vector<4, int> data);
+
+				void set (int location, math::matrix<2, 2, float> data);
+				void set (int location, math::matrix<3, 3, float> data);
+				void set (int location, math::matrix<4, 4, float> data);
+
+				void set (int location, math::matrix<2, 3, float> data);
+				void set (int location, math::matrix<3, 2, float> data);
+				void set (int location, math::matrix<2, 4, float> data);
+				void set (int location, math::matrix<4, 2, float> data);
+				void set (int location, math::matrix<3, 4, float> data);
+				void set (int location, math::matrix<4, 3, float> data);
+			}
+
+			unsigned int make (std::map<std::string, std::string> source);
+			unsigned int make (std::map<std::string, unsigned int> id);
+			void         destroy (unsigned int program);
+
+			void bind (unsigned int program, unsigned int index, std::string name);
+		}
+
+		namespace error
+		{
+			unsigned int code (void);
+			std::string  string (unsigned int code);
+		}
+	}
+}
+
+#include <gloglotto/thin.tpp>
+
+#endif
