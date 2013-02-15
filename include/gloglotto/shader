@@ -1,0 +1,78 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_SHADER_H
+#define _GLOGLOTTO_SHADER_H
+
+#include <string>
+#include <map>
+#include <vector>
+#include <typeinfo>
+
+#include <gloglotto/math>
+
+namespace gloglotto
+{
+	class shader final
+	{
+		public:
+			template <class Function>
+			shader (std::vector<std::string> attrs,
+			        std::map<std::string, std::string> source,
+			        Function lambda);
+
+			~shader (void);
+
+			template <typename ...Args>
+			void call (Args... args);
+
+			void uniform (std::string name, math::vector<1, float> data);
+			void uniform (std::string name, math::vector<2, float> data);
+			void uniform (std::string name, math::vector<3, float> data);
+			void uniform (std::string name, math::vector<4, float> data);
+
+			void uniform (std::string name, math::vector<1, int> data);
+			void uniform (std::string name, math::vector<2, int> data);
+			void uniform (std::string name, math::vector<3, int> data);
+			void uniform (std::string name, math::vector<4, int> data);
+
+			void uniform (std::string name, math::matrix<2, 2, float> data);
+			void uniform (std::string name, math::matrix<3, 3, float> data);
+			void uniform (std::string name, math::matrix<4, 4, float> data);
+
+			void uniform (std::string name, math::matrix<2, 3, float> data);
+			void uniform (std::string name, math::matrix<3, 2, float> data);
+			void uniform (std::string name, math::matrix<2, 4, float> data);
+			void uniform (std::string name, math::matrix<4, 2, float> data);
+			void uniform (std::string name, math::matrix<3, 4, float> data);
+			void uniform (std::string name, math::matrix<4, 3, float> data);
+
+		private:
+			unsigned int                _id;
+			std::map<std::string, int>  _attributes;
+
+			const std::type_info* _signature;
+			void*                 _function;
+
+			std::map<std::string, std::string> _source;
+	};
+}
+
+#include <gloglotto/shader.tpp>
+
+#endif

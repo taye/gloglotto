@@ -1,0 +1,148 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_MATH_VECTOR_H
+#define _GLOGLOTTO_MATH_VECTOR_H
+
+#include <stdexcept>
+#include <type_traits>
+
+namespace gloglotto
+{
+	namespace math
+	{
+		template<int Columns, int Rows, typename Type>
+		class matrix;
+
+		/* Class to handle vectors.
+		 */
+		template <int Size = 3, typename Type = float>
+		class vector
+		{
+			static_assert(Size >= 1 && Size <= 4, "only 1, 2, 3, or 4 elements vectors");
+
+			static_assert(std::is_same<float, Type>::value ||
+			              std::is_same<double, Type>::value ||
+			              std::is_same<int, Type>::value, "only float, double and int");
+
+			public:
+				/* Create a vector with every element set to 0.
+				 */
+				vector (void);
+
+				/* Create a vector from the copy of the contents of the passed vector.
+				 */
+				vector (vector<Size, Type> const& from);
+
+				/* Create a vector from an initializer list.
+				 */
+				vector (std::initializer_list<Type> list) throw (std::invalid_argument);
+
+				/* Create a wrapping vector around a pointer.
+				 */
+				vector (Type* data);
+
+				/* Destroy the data if it's not a wrapping vector.
+				 */
+				~vector (void);
+
+				/* Copy the contents of the passed vector.
+				 */
+				vector<Size, Type>& operator = (vector<Size, Type> const& from);
+
+				/* Copy the data present in the passed pointer.
+				 */
+				vector<Size, Type>& operator = (const Type* data);
+
+				/* Copy the data passed from the initializer list.
+				 */
+				vector<Size, Type>& operator = (std::initializer_list<Type> list) throw (std::invalid_argument);
+
+				/* Access an element of the vector.
+				 */
+				Type& operator [] (int index) const;
+
+				/* Return the addition of the two vectors.
+				 */
+				vector<Size, Type>  operator + (vector<Size, Type> const& other) const;
+
+				/* Add the other vector in place.
+				 */
+				vector<Size, Type>& operator += (vector<Size, Type> const& other);
+
+				/* Return the substraction of the two vectors.
+				 */
+				vector<Size, Type>  operator - (vector<Size, Type> const& other) const;
+
+				/* Substract the other vector in place.
+				 */
+				vector<Size, Type>& operator -= (vector<Size, Type> const& other);
+
+				/* Return the cross product of the two vectors.
+				 */
+				vector<3, Type> operator * (vector<3, Type> const& other) const;
+
+				/* Cross product the other vector in place.
+				 */
+				vector<3, Type>& operator *= (vector<3, Type> const& other);
+
+				/* Multiply the vector to a compatible matrix and return another vector.
+				 */
+				template <int Columns>
+				vector<Columns, Type> operator * (matrix<Columns, Size, Type> const& other) const;
+
+				/* Multiply the vector to a compatible matrix in place.
+				 */
+				vector<Size, Type>& operator *= (matrix<Size, Size, Type> const& other);
+
+				/* Return the dot product of the two vectors.
+				 */
+				Type operator ^ (vector<Size, Type> const& oher) const;
+
+				/* Return a scaled vector.
+				 */
+				vector<Size, Type> operator % (Type scale) const;
+
+				/* Scale the vector in place.
+				 */
+				vector<Size, Type>& operator %= (Type scale);
+
+				/* Return a normalized vector.
+				 */
+				vector<Size, Type> operator ! (void) const;
+
+				/* Return the magnitude of the vector.
+				 */
+				Type magnitude (void) const;
+
+				/* Return the wrapped raw pointer.
+				 */
+				Type* operator & (void) const;
+
+			private:
+				Type* _data;
+				bool  _allocated;
+		};
+	}
+}
+
+#ifndef NO_IMPLEMENTATION
+#include <gloglotto/maths/vector.tpp>
+#endif
+
+#endif

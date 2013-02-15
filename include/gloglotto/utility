@@ -1,0 +1,53 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_UTILITY_H
+#define _GLOGLOTTO_UTILITY_H
+
+#include <functional>
+
+namespace gloglotto
+{
+	template <typename Function>
+	struct function_traits
+		: public function_traits<decltype(&Function::operator())>
+	{};
+
+	template <typename ClassType, typename ReturnType, typename... Args>
+	struct function_traits<ReturnType(ClassType::*)(Args...) const>
+	{
+		typedef ReturnType (*pointer)(Args...);
+		typedef std::function<ReturnType(Args...)> function;
+	};
+
+	template <typename Function>
+	typename function_traits<Function>::pointer
+	to_function_pointer (Function& lambda)
+	{
+		return static_cast<typename function_traits<Function>::pointer>(lambda);
+	}
+
+	template <typename Function>
+	typename function_traits<Function>::function
+	to_function (Function& lambda)
+	{
+		return static_cast<typename function_traits<Function>::function>(lambda);
+	}
+}
+
+#endif

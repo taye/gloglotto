@@ -1,0 +1,7 @@
+doc
+*.o
+libgloglotto.so
+libgloglotto.a
+
+examples/*
+!examples/*.cpp
