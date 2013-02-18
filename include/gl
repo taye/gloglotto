@@ -19,4 +19,6 @@
 #include <gloglotto/shader_manager>
 #include <gloglotto/math>
 
+#ifndef NO_ALIAS
 namespace gl = gloglotto;
+#endif
