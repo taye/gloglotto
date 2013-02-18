@@ -62,6 +62,7 @@ namespace gloglotto
 			             std::map<std::string, std::vector<int>> attributes,
 			             std::string name) throw (std::invalid_argument);
 
+			void loop (void);
 			void loop (std::function<void(void)> setup);
 
 			namespace callbacks
