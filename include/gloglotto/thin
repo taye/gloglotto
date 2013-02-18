@@ -34,6 +34,8 @@
 
 namespace gloglotto
 {
+	/* Exception thrown when a shader compilation fails.
+	 */
 	class failed_compilation : public exception
 	{
 		public:
@@ -41,6 +43,8 @@ namespace gloglotto
 			explicit failed_compilation (const char* what_arg) : exception(what_arg) { }
 	};
 
+	/* Exception thrown when shader program linking fails.
+	 */
 	class failed_linking : public exception
 	{
 		public:
@@ -48,6 +52,8 @@ namespace gloglotto
 			explicit failed_linking (const char* what_arg) : exception(what_arg) { }
 	};
 
+	/* Thin wrapper around the OpenGL API.
+	 */
 	namespace thin
 	{
 		namespace window
