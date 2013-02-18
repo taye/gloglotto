@@ -130,6 +130,14 @@ namespace gloglotto
 				 */
 				Type magnitude (void) const;
 
+				/* Return the beginning of the wrapped pointer.
+				 */
+				Type* begin (void) const;
+
+				/* Return the end of the wrapped pointer.
+				 */
+				Type* end (void) const;
+
 				/* Return the wrapped raw pointer.
 				 */
 				Type* operator & (void) const;
