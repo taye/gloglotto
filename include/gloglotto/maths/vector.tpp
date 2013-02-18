@@ -46,10 +46,17 @@ namespace gloglotto
 		template <int Size, typename Type>
 		vector<Size, Type>::vector (std::initializer_list<Type> list) throw (std::invalid_argument)
 		{
+			if (list.size() != Size) {
+				throw std::invalid_argument("number of arguments doesn't match vector size");
+			}
+
 			_data      = new Type[Size];
 			_allocated = true;
 
-			*this = list;
+			int i = 0;
+			for (auto value : list) {
+				_data[i++] = value;
+			}
 		}
 
 		template <int Size, typename Type>
