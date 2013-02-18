@@ -23,39 +23,39 @@ namespace gloglotto
 	namespace math
 	{
 		matrix<4, 4>
-		perspective (angle fov, float aspect, std::pair<float, float> z)
+		perspective (angle fov, float aspect, std::array<float, 2> z)
 		{
 			matrix<4, 4> result;
 
-			float max_y = z.first * tan(angle_cast<angle::radians>(fov) * 0.5);
+			float max_y = z[0] * tan(angle_cast<angle::radians>(fov) * 0.5);
 			float min_y = -max_y;
 
 			float min_x = min_y * aspect;
 			float max_x = -min_x;
 
-			(&result)[0]  = (2.0 * z.first) / (max_x - min_x);
-			(&result)[5]  = (2.0 * z.second) / (max_y - min_y);
+			(&result)[0]  = (2.0 * z[0]) / (max_x - min_x);
+			(&result)[5]  = (2.0 * z[1]) / (max_y - min_y);
 			(&result)[2]  = (max_x + min_x) / (max_x - min_x);
 			(&result)[6]  = (max_y + min_y) / (max_y - min_y);
-			(&result)[10] = -((z.second + z.first) / (z.second - z.first));
+			(&result)[10] = -((z[1] + z[0]) / (z[1] - z[0]));
 			(&result)[14] = -1.0;
-			(&result)[11] = -((2.0 * (z.second * z.first)) / (z.second - z.first));
+			(&result)[11] = -((2.0 * (z[1] * z[0])) / (z[1] - z[0]));
 			(&result)[15] = 0.0;
 
 			return result;
 		}
 
 		matrix<4, 4>
-		orthographic (std::pair<float, float> x, std::pair<float, float> y, std::pair<float, float> z)
+		orthographic (std::array<float, 2> x, std::array<float, 2> y, std::array<float, 2> z)
 		{
 			matrix<4, 4> result;
 
-			(&result)[0]  = 2.0 / (x.second - x.first);
-			(&result)[5]  = 2.0 / (y.second - y.first);
-			(&result)[10] = -2.0 / (z.second - z.first);
-			(&result)[3]  = -((x.second + x.first) / (x.second - x.first));
-			(&result)[7]  = -((y.second + y.first) / (y.second - y.first));
-			(&result)[11] = -((z.second + z.first) / (z.second - z.first));
+			(&result)[0]  = 2.0 / (x[1] - x[0]);
+			(&result)[5]  = 2.0 / (y[1] - y[0]);
+			(&result)[10] = -2.0 / (z[1] - z[0]);
+			(&result)[3]  = -((x[1] + x[0]) / (x[1] - x[0]));
+			(&result)[7]  = -((y[1] + y[0]) / (y[1] - y[0]));
+			(&result)[11] = -((z[1] + z[0]) / (z[1] - z[0]));
 			(&result)[15] = 1.0;
 
 			return result;

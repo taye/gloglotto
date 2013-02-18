@@ -23,13 +23,14 @@
 #include <gloglotto/maths/angle>
 
 #include <utility>
+#include <array>
 
 namespace gloglotto
 {
 	namespace math
 	{
-		matrix<4, 4> perspective (angle fov, float aspect, std::pair<float, float> z);
-		matrix<4, 4> orthographic (std::pair<float, float> x, std::pair<float, float> y, std::pair<float, float> z);
+		matrix<4, 4> perspective (angle fov, float aspect, std::array<float, 2> z);
+		matrix<4, 4> orthographic (std::array<float, 2> x, std::array<float, 2> y, std::array<float, 2> z);
 
 		template <int Size = 3, typename Type = float>
 		matrix<Size, Size, Type> rotation (angle a, float x, float y, float z);
