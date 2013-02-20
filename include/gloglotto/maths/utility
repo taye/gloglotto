@@ -29,11 +29,32 @@ namespace gloglotto
 {
 	namespace math
 	{
-		matrix<4, 4> perspective (angle fov, float aspect, std::array<float, 2> z);
-		matrix<4, 4> orthographic (std::array<float, 2> x, std::array<float, 2> y, std::array<float, 2> z);
+		namespace make
+		{
+			template <typename Type = float>
+			matrix<4, 4, Type> perspective (angle fov, Type aspect, std::array<Type, 2> z);
 
-		template <int Size = 3, typename Type = float>
-		matrix<Size, Size, Type> rotation (angle a, float x, float y, float z);
+			template <typename Type = float>
+			matrix<4, 4, Type> orthographic (std::array<Type, 2> x, std::array<Type, 2> y, std::array<Type, 2> z);
+
+			template <typename Type = float>
+			matrix<4, 4, Type> translation (Type x, Type y, Type z);
+
+			template <typename Type = float>
+			matrix<4, 4, Type> translation (vector<3, Type> with);
+
+			template <int Size = 3, typename Type = float>
+			matrix<Size, Size, Type> rotation (angle a, Type x, Type y, Type z);
+
+			template <int Size = 3, typename Type = float>
+			matrix<Size, Size, Type> rotation (angle a, vector<3, Type> with);
+
+			template <int Size = 3, typename Type = float>
+			matrix<Size, Size, Type> scale (Type x, Type y, Type z);
+
+			template <int Size = 3, typename Type = float>
+			matrix<Size, Size, Type> scale (vector<3, Type> with);
+		}
 	}
 }
 

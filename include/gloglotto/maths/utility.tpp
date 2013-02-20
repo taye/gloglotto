@@ -22,53 +22,144 @@ namespace gloglotto
 {
 	namespace math
 	{
-		template <int Size, typename Type>
-		matrix<Size, Size, Type>
-		rotation (angle a, float x, float y, float z)
+		namespace make
 		{
-			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
+			template <typename Type>
+			matrix<4, 4, Type>
+			perspective (angle fov, Type aspect, std::array<Type, 2> z)
+			{
+				matrix<4, 4> result;
 
-			matrix<Size, Size, Type> result;
+				Type max_y = z[0] * tan(angle_cast<angle::radians>(fov) * 0.5);
+				Type min_y = -max_y;
 
-			float s   = sin(angle_cast<angle::radians>(a));
-			float c   = cos(angle_cast<angle::radians>(a));
-			float mag = sqrt(x * x + y * y + z * z);
+				Type min_x = min_y * aspect;
+				Type max_x = -min_x;
 
-			// return identity matrix if magnitude is 0
-			if (mag == 0) {
+				(&result)[0]  = (2.0 * z[0]) / (max_x - min_x);
+				(&result)[5]  = (2.0 * z[1]) / (max_y - min_y);
+				(&result)[2]  = (max_x + min_x) / (max_x - min_x);
+				(&result)[6]  = (max_y + min_y) / (max_y - min_y);
+				(&result)[10] = -((z[1] + z[0]) / (z[1] - z[0]));
+				(&result)[14] = -1.0;
+				(&result)[11] = -((2.0 * (z[1] * z[0])) / (z[1] - z[0]));
+				(&result)[15] = 0.0;
+
 				return result;
 			}
 
-			// normalize the matrix
-			x /= mag;
-			y /= mag;
-			z /= mag;
+			template <typename Type>
+			matrix<4, 4, Type>
+			orthographic (std::array<Type, 2> x, std::array<Type, 2> y, std::array<Type, 2> z)
+			{
+				matrix<4, 4> result;
 
-			float xx = x * x;
-			float yy = y * y;
-			float zz = z * z;
-			float xy = x * y;
-			float yz = y * z;
-			float zx = z * x;
-			float xs = x * s;
-			float ys = y * s;
-			float zs = z * s;
+				(&result)[0]  = 2.0 / (x[1] - x[0]);
+				(&result)[5]  = 2.0 / (y[1] - y[0]);
+				(&result)[10] = -2.0 / (z[1] - z[0]);
+				(&result)[3]  = -((x[1] + x[0]) / (x[1] - x[0]));
+				(&result)[7]  = -((y[1] + y[0]) / (y[1] - y[0]));
+				(&result)[11] = -((z[1] + z[0]) / (z[1] - z[0]));
+				(&result)[15] = 1.0;
 
-			float one = 1.0 - c;
+				return result;
+			}
 
-			result[0][0] = one * xx + c;
-			result[0][1] = one * xy - zs;
-			result[0][2] = one * zx + ys;
+			template <typename Type>
+			matrix<4, 4, Type> translation (Type x, Type y, Type z)
+			{
+				matrix<4, 4, Type> result;
 
-			result[1][0] = one * xy + zs;
-			result[1][1] = one * yy + c;
-			result[1][2] = one * yz - xs;
+				result[0][3] = x;
+				result[1][3] = y;
+				result[2][3] = z;
 
-			result[2][0] = one * zx - ys;
-			result[2][1] = one * yz + xs;
-			result[2][2] = one * zz + c;
+				return result;
+			}
 
-			return result;
+			template <typename Type>
+			matrix<4, 4, Type> translation (vector<3, Type> with)
+			{
+				return translation<Type>(with[0], with[1], with[2]);
+			}
+
+			template <int Size, typename Type>
+			matrix<Size, Size, Type>
+			rotation (angle a, Type x, Type y, Type z)
+			{
+				static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
+
+				matrix<Size, Size, Type> result;
+
+				Type s   = sin(angle_cast<angle::radians>(a));
+				Type c   = cos(angle_cast<angle::radians>(a));
+				Type mag = sqrt(x * x + y * y + z * z);
+
+				// return identity matrix if magnitude is 0
+				if (mag == 0) {
+					return result;
+				}
+
+				// normalize the matrix
+				x /= mag;
+				y /= mag;
+				z /= mag;
+
+				Type xx = x * x;
+				Type yy = y * y;
+				Type zz = z * z;
+				Type xy = x * y;
+				Type yz = y * z;
+				Type zx = z * x;
+				Type xs = x * s;
+				Type ys = y * s;
+				Type zs = z * s;
+
+				Type one = 1.0 - c;
+
+				result[0][0] = one * xx + c;
+				result[0][1] = one * xy - zs;
+				result[0][2] = one * zx + ys;
+
+				result[1][0] = one * xy + zs;
+				result[1][1] = one * yy + c;
+				result[1][2] = one * yz - xs;
+
+				result[2][0] = one * zx - ys;
+				result[2][1] = one * yz + xs;
+				result[2][2] = one * zz + c;
+
+				return result;
+			}
+
+			template <int Size, typename Type>
+			matrix<Size, Size, Type>
+			rotation (angle a, vector<3, Type> with)
+			{
+				return rotation<Size, Type>(a, with[0], with[1], with[2]);
+			}
+
+			template <int Size, typename Type>
+			matrix<Size, Size, Type>
+			scale (Type x, Type y, Type z)
+			{
+				static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
+
+				matrix<Size, Size, Type> result;
+
+				result[0][0] = x;
+				result[1][0] = y;
+				result[2][0] = z;
+
+				return result;
+			}
+
+			template <int Size, typename Type>
+			matrix<Size, Size, Type>
+			scale (vector<3, Type> with)
+			{
+				return scale<Size, Type>(with[0], with[1], with[2]);
+			}
 		}
 	}
 }
