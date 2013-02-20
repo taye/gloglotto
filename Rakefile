@@ -2,7 +2,7 @@ require 'rake'
 require 'rake/clean'
 require 'fileutils'
 
-CXX    = 'clang++'
+CXX    = ENV['CXX'] || 'clang++'
 CFLAGS = "-Wall -Werror-implicit-function-declaration -funroll-loops -std=c++11 -Iinclude #{ENV['CFLAGS']}"
 LDFLAGS = "-lGL -lGLEW -lglut #{ENV['LDFLAGS']}"
 
