@@ -149,7 +149,7 @@ namespace gloglotto
 
 		template <int Columns, int Rows, typename Type>
 		vector<Columns, Type>&
-		matrix<Columns, Rows, Type>::operator [] (int index) const
+		matrix<Columns, Rows, Type>::operator [] (int index)
 		{
 			if (index < 0 || index >= Rows) {
 				throw std::out_of_range("index out of range");
