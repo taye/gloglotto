@@ -75,7 +75,7 @@ namespace gloglotto
 
 				/* Access an element of the vector.
 				 */
-				Type& operator [] (int index) const;
+				Type& operator [] (int index);
 
 				/* Return the addition of the two vectors.
 				 */

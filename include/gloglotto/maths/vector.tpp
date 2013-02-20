@@ -110,7 +110,7 @@ namespace gloglotto
 
 		template <int Size, typename Type>
 		Type&
-		vector<Size, Type>::operator [] (int index) const
+		vector<Size, Type>::operator [] (int index)
 		{
 			return _data[index];
 		}
