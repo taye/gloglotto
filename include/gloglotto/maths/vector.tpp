@@ -178,7 +178,7 @@ namespace gloglotto
 		template <int Size, typename Type>
 		template <int Columns>
 		vector<Columns, Type>
-		vector<Size, Type>::operator * (matrix<Columns, Size, Type> const& other) const
+		vector<Size, Type>::operator * (matrix<Size, Columns, Type> const& other) const
 		{
 			vector<Columns, Type> result;
 

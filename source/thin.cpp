@@ -398,7 +398,7 @@ namespace gloglotto
 				set (int location, math::matrix<2, 3, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
-						glUniformMatrix2x3fv(location, 1, GL_TRUE, &data);
+						glUniformMatrix3x2fv(location, 1, GL_TRUE, &data);
 					}
 				}
 
@@ -406,7 +406,7 @@ namespace gloglotto
 				set (int location, math::matrix<3, 2, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
-						glUniformMatrix3x2fv(location, 1, GL_TRUE, &data);
+						glUniformMatrix2x3fv(location, 1, GL_TRUE, &data);
 					}
 				}
 
@@ -414,7 +414,7 @@ namespace gloglotto
 				set (int location, math::matrix<2, 4, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
-						glUniformMatrix2x4fv(location, 1, GL_TRUE, &data);
+						glUniformMatrix4x2fv(location, 1, GL_TRUE, &data);
 					}
 				}
 
@@ -422,7 +422,7 @@ namespace gloglotto
 				set (int location, math::matrix<4, 2, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
-						glUniformMatrix4x2fv(location, 1, GL_TRUE, &data);
+						glUniformMatrix2x4fv(location, 1, GL_TRUE, &data);
 					}
 				}
 
@@ -430,7 +430,7 @@ namespace gloglotto
 				set (int location, math::matrix<3, 4, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
-						glUniformMatrix3x4fv(location, 1, GL_TRUE, &data);
+						glUniformMatrix4x3fv(location, 1, GL_TRUE, &data);
 					}
 				}
 
@@ -438,7 +438,7 @@ namespace gloglotto
 				set (int location, math::matrix<4, 3, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
-						glUniformMatrix4x3fv(location, 1, GL_TRUE, &data);
+						glUniformMatrix3x4fv(location, 1, GL_TRUE, &data);
 					}
 				}
 			}

@@ -26,7 +26,7 @@ namespace gloglotto
 {
 	namespace math
 	{
-		template<int Columns, int Rows, typename Type>
+		template<int Rows, int Columns, typename Type>
 		class matrix;
 
 		/* Class to handle vectors.
@@ -104,7 +104,7 @@ namespace gloglotto
 				/* Multiply the vector to a compatible matrix and return another vector.
 				 */
 				template <int Columns>
-				vector<Columns, Type> operator * (matrix<Columns, Size, Type> const& other) const;
+				vector<Columns, Type> operator * (matrix<Size, Columns, Type> const& other) const;
 
 				/* Multiply the vector to a compatible matrix in place.
 				 */

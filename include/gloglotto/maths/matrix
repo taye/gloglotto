@@ -30,12 +30,12 @@ namespace gloglotto
 
 		/* Class to handle matrices.
 		 */
-		template <int Columns = 4, int Rows = 4, typename Type = float>
+		template <int Rows = 4, int Columns = 4, typename Type = float>
 		class matrix
 		{
-			static_assert(Columns >= 2 && Columns <= 4, "columns can only be 2, 3 and 4");
-
 			static_assert(Rows >= 2 && Rows <= 4, "rows can only be 2, 3 and 4");
+
+			static_assert(Columns >= 2 && Columns <= 4, "columns can only be 2, 3 and 4");
 
 			static_assert(std::is_same<float, Type>::value ||
 			              std::is_same<double, Type>::value ||
@@ -52,7 +52,7 @@ namespace gloglotto
 
 				/* Create a matrix from another matrix, copying the data.
 				 */
-				matrix (matrix<Columns, Rows, Type> const& from);
+				matrix (matrix<Rows, Columns, Type> const& from);
 
 				/* Create a wrapping matrix around a pointer.
 				 */
@@ -68,15 +68,15 @@ namespace gloglotto
 
 				/* Copy the contents of the passed matrix.
 				 */
-				matrix<Columns, Rows, Type>& operator = (matrix<Columns, Rows, Type> const& from);
+				matrix<Rows, Columns, Type>& operator = (matrix<Rows, Columns, Type> const& from);
 
 				/* Copy the data present in the passed pointer.
 				 */
-				matrix<Columns, Rows, Type>& operator = (const Type* data);
+				matrix<Rows, Columns, Type>& operator = (const Type* data);
 
 				/* Copy the data passed from the initializer list.
 				 */
-				matrix<Columns, Rows, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
+				matrix<Rows, Columns, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
 
 				/* Access a row of the matrix.
 				 */
@@ -84,36 +84,36 @@ namespace gloglotto
 
 				/* Return the addition of the two matrices.
 				 */
-				matrix<Columns, Rows, Type> operator + (matrix<Columns, Rows, Type> const& other) const;
+				matrix<Rows, Columns, Type> operator + (matrix<Rows, Columns, Type> const& other) const;
 
 				/* Add the other matrix in place.
 				 */
-				matrix<Columns, Rows, Type>& operator += (matrix<Columns, Rows, Type> const& other);
+				matrix<Rows, Columns, Type>& operator += (matrix<Rows, Columns, Type> const& other);
 
 				/* Return the substraction of the two matrices.
 				 */
-				matrix<Columns, Rows, Type> operator - (matrix<Columns, Rows, Type> const& other) const;
+				matrix<Rows, Columns, Type> operator - (matrix<Rows, Columns, Type> const& other) const;
 
 				/* Subtract the other matrix in place.
 				 */
-				matrix<Columns, Rows, Type>& operator -= (matrix<Columns, Rows, Type> const& other);
+				matrix<Rows, Columns, Type>& operator -= (matrix<Rows, Columns, Type> const& other);
 
 				/* Return the scalar multiplication.
 				 */
-				matrix<Columns, Rows, Type> operator * (Type other) const;
+				matrix<Rows, Columns, Type> operator * (Type other) const;
 
 				/* Scalar multiplicate in place.
 				 */
-				matrix<Columns, Rows, Type>& operator *= (Type other);
+				matrix<Rows, Columns, Type>& operator *= (Type other);
 
 				/* Return the multiplication of the two matrices.
 				 */
-				template <int OtherColumns, int OtherRows>
-				matrix<OtherColumns, Rows, Type> operator * (matrix<OtherColumns, OtherRows, Type> const& other) const;
+				template <int OtherRows, int OtherColumns>
+				matrix<Rows, OtherColumns, Type> operator * (matrix<OtherRows, OtherColumns, Type> const& other) const;
 
 				/* Multiplicate the other matrix in place, when possible.
 				 */
-				matrix<Columns, Rows, Type>& operator *= (matrix<Columns, Rows, Type> const& other);
+				matrix<Rows, Columns, Type>& operator *= (matrix<Rows, Columns, Type> const& other);
 
 				/* Return the multiplication with a vector.
 				 */
@@ -121,7 +121,7 @@ namespace gloglotto
 
 				/* Return the inverted matrix when possible.
 				 */
-				matrix<Columns, Rows, Type> operator ~ (void) const throw (std::logic_error);
+				matrix<Rows, Columns, Type> operator ~ (void) const throw (std::logic_error);
 
 				/* Return the wrapped raw pointer (row major).
 				 */
