@@ -89,7 +89,14 @@ namespace gloglotto
 
 			std::fill(_vectors, _vectors + Rows, nullptr);
 
-			*this = list;
+			try {
+				*this = list;
+			}
+			catch (std::invalid_argument& e) {
+				delete[] _data;
+
+				throw e;
+			}
 		}
 
 		template <int Columns, int Rows, typename Type>
