@@ -262,17 +262,17 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
-	Type*
-	vector<Size, Type>::begin (void) const
+	typename vector<Size, Type>::iterator
+	vector<Size, Type>::begin (void)
 	{
-		return _data;
+		return iterator(this);
 	}
 
 	template <int Size, typename Type>
-	Type*
-	vector<Size, Type>::end (void) const
+	typename vector<Size, Type>::iterator
+	vector<Size, Type>::end (void)
 	{
-		return _data + Size;
+		return iterator(this, -1);
 	}
 
 	template <int Size, typename Type>
