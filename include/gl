@@ -16,9 +16,12 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/shader_manager>
-#include <gloglotto/math>
+#ifndef _GLOGLOTTO_H
+#define _GLOGLOTTO_H
 
-#ifndef NO_ALIAS
+#include <gloglotto/shader>
+#include <gloglotto/shader_manager>
+
 namespace gl = gloglotto;
+
 #endif

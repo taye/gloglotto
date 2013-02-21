@@ -19,16 +19,14 @@
 #ifndef _GLOGLOTTO_MATH_H
 #define _GLOGLOTTO_MATH_H
 
-#include <gloglotto/maths/angle>
+#include <gloglotto/angle>
 
 #define NO_IMPLEMENTATION
-#include <gloglotto/maths/vector>
-#include <gloglotto/maths/matrix>
+#include <gloglotto/vector>
+#include <gloglotto/matrix>
 #undef NO_IMPLEMENTATION
 
-#include <gloglotto/maths/vector.tpp>
-#include <gloglotto/maths/matrix.tpp>
-
-#include <gloglotto/maths/utility>
+#include <gloglotto/vector.tpp>
+#include <gloglotto/matrix.tpp>
 
 #endif

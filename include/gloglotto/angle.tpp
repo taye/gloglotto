@@ -16,35 +16,33 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/maths/angle>
+#include <gloglotto/angle>
+
 #include <cmath>
 
 namespace gloglotto
 {
-	namespace math
+	template <>
+	inline
+	double
+	angle_cast<angle::degrees> (angle value)
 	{
-		template <>
-		inline
-		double
-		angle_cast<angle::degrees> (angle value)
-		{
-			return value._degrees;
-		}
+		return value._degrees;
+	}
 
-		template <>
-		inline
-		double
-		angle_cast<angle::radians> (angle value)
-		{
-			return value._degrees * (M_PI / 180);
-		}
+	template <>
+	inline
+	double
+	angle_cast<angle::radians> (angle value)
+	{
+		return value._degrees * (M_PI / 180);
+	}
 
-		template <>
-		inline
-		double
-		angle_cast<angle::hours> (angle value)
-		{
-			return value._degrees * 15.0;
-		}
+	template <>
+	inline
+	double
+	angle_cast<angle::hours> (angle value)
+	{
+		return value._degrees * 15.0;
 	}
 }

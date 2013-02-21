@@ -1,0 +1,170 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_MATRIX_H
+#define _GLOGLOTTO_MATRIX_H
+
+#include <gloglotto/angle>
+
+#include <stdexcept>
+#include <array>
+
+namespace gloglotto
+{
+	template <int Size, typename Type>
+	class vector;
+
+	/* Class to handle matrices.
+	 */
+	template <int Rows = 4, int Columns = 4, typename Type = float>
+	class matrix
+	{
+		static_assert(Rows >= 2 && Rows <= 4, "rows can only be 2, 3 and 4");
+
+		static_assert(Columns >= 2 && Columns <= 4, "columns can only be 2, 3 and 4");
+
+		static_assert(std::is_same<float, Type>::value ||
+									std::is_same<double, Type>::value ||
+									std::is_same<int, Type>::value, "only float, double and int");
+
+		public:
+			/* Create an identity matrix if it's square, or an empty matrix.
+			 */
+			matrix (void);
+
+			/* Create a matrix initialized with the passed value.
+			 */
+			matrix (Type init);
+
+			/* Create a matrix from another matrix, copying the data.
+			 */
+			matrix (matrix<Rows, Columns, Type> const& from);
+
+			/* Create a wrapping matrix around a pointer.
+			 */
+			matrix (Type* data);
+
+			/* Create a matrix from an initializer list.
+			 */
+			matrix (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
+
+			/* Destroy the data if it's not a wrapper matrix.
+			 */
+			~matrix (void);
+
+			/* Copy the contents of the passed matrix.
+			 */
+			matrix<Rows, Columns, Type>& operator = (matrix<Rows, Columns, Type> const& from);
+
+			/* Copy the data present in the passed pointer.
+			 */
+			matrix<Rows, Columns, Type>& operator = (const Type* data);
+
+			/* Copy the data passed from the initializer list.
+			 */
+			matrix<Rows, Columns, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
+
+			/* Access a row of the matrix.
+			 */
+			vector<Columns, Type>& operator [] (int index);
+
+			/* Return the addition of the two matrices.
+			 */
+			matrix<Rows, Columns, Type> operator + (matrix<Rows, Columns, Type> const& other) const;
+
+			/* Add the other matrix in place.
+			 */
+			matrix<Rows, Columns, Type>& operator += (matrix<Rows, Columns, Type> const& other);
+
+			/* Return the substraction of the two matrices.
+			 */
+			matrix<Rows, Columns, Type> operator - (matrix<Rows, Columns, Type> const& other) const;
+
+			/* Subtract the other matrix in place.
+			 */
+			matrix<Rows, Columns, Type>& operator -= (matrix<Rows, Columns, Type> const& other);
+
+			/* Return the scalar multiplication.
+			 */
+			matrix<Rows, Columns, Type> operator * (Type other) const;
+
+			/* Scalar multiplicate in place.
+			 */
+			matrix<Rows, Columns, Type>& operator *= (Type other);
+
+			/* Return the multiplication of the two matrices.
+			 */
+			template <int OtherRows, int OtherColumns>
+			matrix<Rows, OtherColumns, Type> operator * (matrix<OtherRows, OtherColumns, Type> const& other) const;
+
+			/* Multiplicate the other matrix in place, when possible.
+			 */
+			matrix<Rows, Columns, Type>& operator *= (matrix<Rows, Columns, Type> const& other);
+
+			/* Return the multiplication with a vector.
+			 */
+			vector<Rows, Type> operator * (vector<Columns, Type> const& other) const;
+
+			/* Return the inverted matrix when possible.
+			 */
+			matrix<Rows, Columns, Type> operator ~ (void) const throw (std::logic_error);
+
+			/* Return the wrapped raw pointer (row major).
+			 */
+			Type* operator & (void) const;
+
+		private:
+			Type* _data;
+			bool  _allocated;
+
+			vector<Columns, Type>* _vectors[Rows];
+	};
+
+	namespace make
+	{
+		template <typename Type = float>
+		matrix<4, 4, Type> perspective (angle fov, Type aspect, std::array<Type, 2> z);
+
+		template <typename Type = float>
+		matrix<4, 4, Type> orthographic (std::array<Type, 2> x, std::array<Type, 2> y, std::array<Type, 2> z);
+
+		template <typename Type = float>
+		matrix<4, 4, Type> translation (Type x, Type y, Type z);
+
+		template <typename Type = float>
+		matrix<4, 4, Type> translation (vector<3, Type> with);
+
+		template <int Size = 3, typename Type = float>
+		matrix<Size, Size, Type> rotation (angle a, Type x, Type y, Type z);
+
+		template <int Size = 3, typename Type = float>
+		matrix<Size, Size, Type> rotation (angle a, vector<3, Type> with);
+
+		template <int Size = 3, typename Type = float>
+		matrix<Size, Size, Type> scale (Type x, Type y, Type z);
+
+		template <int Size = 3, typename Type = float>
+		matrix<Size, Size, Type> scale (vector<3, Type> with);
+	}
+}
+
+#ifndef NO_IMPLEMENTATION
+#include <gloglotto/matrix.tpp>
+#endif
+
+#endif

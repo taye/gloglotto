@@ -1,8 +1,8 @@
 #include <gloglotto/math>
 #include <iostream>
 
-using namespace gloglotto::math;
-using namespace gloglotto::math::angle_operators;
+using namespace gloglotto;
+using namespace gloglotto::angle_operators;
 
 int
 main (int argc, char* argv[])

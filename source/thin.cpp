@@ -307,7 +307,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<1, float> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<1, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform1fv(location, 1, &data);
@@ -315,7 +315,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<2, float> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<2, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform2fv(location, 1, &data);
@@ -323,7 +323,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<3, float> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<3, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform3fv(location, 1, &data);
@@ -331,7 +331,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<4, float> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<4, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform4fv(location, 1, &data);
@@ -339,7 +339,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<1, int> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<1, int> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform1iv(location, 1, &data);
@@ -347,7 +347,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<2, int> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<2, int> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform2iv(location, 1, &data);
@@ -355,7 +355,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<3, int> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<3, int> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform3iv(location, 1, &data);
@@ -363,7 +363,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::vector<4, int> data) throw (invalid_operation, invalid_value)
+				set (int location, vector<4, int> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform4iv(location, 1, &data);
@@ -371,7 +371,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<2, 2, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<2, 2, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix2fv(location, 1, GL_TRUE, &data);
@@ -379,7 +379,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<3, 3, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<3, 3, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix3fv(location, 1, GL_TRUE, &data);
@@ -387,7 +387,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<4, 4, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<4, 4, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix4fv(location, 1, GL_TRUE, &data);
@@ -395,7 +395,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<2, 3, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<2, 3, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix3x2fv(location, 1, GL_TRUE, &data);
@@ -403,7 +403,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<3, 2, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<3, 2, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix2x3fv(location, 1, GL_TRUE, &data);
@@ -411,7 +411,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<2, 4, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<2, 4, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix4x2fv(location, 1, GL_TRUE, &data);
@@ -419,7 +419,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<4, 2, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<4, 2, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix2x4fv(location, 1, GL_TRUE, &data);
@@ -427,7 +427,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<3, 4, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<3, 4, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix4x3fv(location, 1, GL_TRUE, &data);
@@ -435,7 +435,7 @@ namespace gloglotto
 				}
 
 				void
-				set (int location, math::matrix<4, 3, float> data) throw (invalid_operation, invalid_value)
+				set (int location, matrix<4, 3, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix3x4fv(location, 1, GL_TRUE, &data);

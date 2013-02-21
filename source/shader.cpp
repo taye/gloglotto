@@ -32,103 +32,103 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<1, float> data)
+	shader::uniform (std::string name, vector<1, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<2, float> data)
+	shader::uniform (std::string name, vector<2, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<3, float> data)
+	shader::uniform (std::string name, vector<3, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<4, float> data)
+	shader::uniform (std::string name, vector<4, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<1, int> data)
+	shader::uniform (std::string name, vector<1, int> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<2, int> data)
+	shader::uniform (std::string name, vector<2, int> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<3, int> data)
+	shader::uniform (std::string name, vector<3, int> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::vector<4, int> data)
+	shader::uniform (std::string name, vector<4, int> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<2, 2, float> data)
+	shader::uniform (std::string name, matrix<2, 2, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<3, 3, float> data)
+	shader::uniform (std::string name, matrix<3, 3, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<4, 4, float> data)
+	shader::uniform (std::string name, matrix<4, 4, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<2, 3, float> data)
+	shader::uniform (std::string name, matrix<2, 3, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<3, 2, float> data)
+	shader::uniform (std::string name, matrix<3, 2, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<2, 4, float> data)
+	shader::uniform (std::string name, matrix<2, 4, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<4, 2, float> data)
+	shader::uniform (std::string name, matrix<4, 2, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<3, 4, float> data)
+	shader::uniform (std::string name, matrix<3, 4, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, math::matrix<4, 3, float> data)
+	shader::uniform (std::string name, matrix<4, 3, float> data)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}

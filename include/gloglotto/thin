@@ -127,26 +127,26 @@ namespace gloglotto
 			{
 				int location (unsigned int program, std::string name);
 
-				void set (int location, math::vector<1, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::vector<2, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::vector<3, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::vector<4, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<1, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<2, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<3, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<4, float> data) throw (invalid_operation, invalid_value);
 
-				void set (int location, math::vector<1, int> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::vector<2, int> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::vector<3, int> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::vector<4, int> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<1, int> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<2, int> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<3, int> data) throw (invalid_operation, invalid_value);
+				void set (int location, vector<4, int> data) throw (invalid_operation, invalid_value);
 
-				void set (int location, math::matrix<2, 2, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<3, 3, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<4, 4, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<2, 2, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<3, 3, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<4, 4, float> data) throw (invalid_operation, invalid_value);
 
-				void set (int location, math::matrix<2, 3, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<3, 2, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<2, 4, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<4, 2, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<3, 4, float> data) throw (invalid_operation, invalid_value);
-				void set (int location, math::matrix<4, 3, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<2, 3, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<3, 2, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<2, 4, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<4, 2, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<3, 4, float> data) throw (invalid_operation, invalid_value);
+				void set (int location, matrix<4, 3, float> data) throw (invalid_operation, invalid_value);
 			}
 
 			unsigned int make (std::map<std::string, std::string> source) throw (invalid_operation, failed_linking);
