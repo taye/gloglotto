@@ -371,6 +371,20 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
+	typename matrix<Rows, Columns, Type>::iterator
+	matrix<Rows, Columns, Type>::begin (void)
+	{
+		return iterator(this);
+	}
+
+	template <int Rows, int Columns, typename Type>
+	typename matrix<Rows, Columns, Type>::iterator
+	matrix<Rows, Columns, Type>::end (void)
+	{
+		return iterator(this, -1);
+	}
+
+	template <int Rows, int Columns, typename Type>
 	Type*
 	matrix<Rows, Columns, Type>::operator & (void) const
 	{

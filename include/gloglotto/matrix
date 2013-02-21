@@ -20,6 +20,7 @@
 #define _GLOGLOTTO_MATRIX_H
 
 #include <gloglotto/angle>
+#include <gloglotto/iterator>
 
 #include <stdexcept>
 #include <array>
@@ -41,6 +42,14 @@ namespace gloglotto
 		static_assert(std::is_same<float, Type>::value ||
 									std::is_same<double, Type>::value ||
 									std::is_same<int, Type>::value, "only float, double and int");
+
+		public:
+			typedef Type                                              type;
+			typedef iterator::accessible<matrix<Rows, Columns, Type>> iterator;
+
+			static const int size    = Rows;
+			static const int rows    = Rows;
+			static const int columns = Columns;
 
 		public:
 			/* Create an identity matrix if it's square, or an empty matrix.
@@ -123,6 +132,14 @@ namespace gloglotto
 			/* Return the inverted matrix when possible.
 			 */
 			matrix<Rows, Columns, Type> operator ~ (void) const throw (std::logic_error);
+
+			/* Return an iterator to the beginning of the matrix.
+			 */
+			iterator begin (void);
+
+			/* Return an iterator to the end of the matrix.
+			 */
+			iterator end (void);
 
 			/* Return the wrapped raw pointer (row major).
 			 */
