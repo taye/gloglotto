@@ -266,7 +266,111 @@ namespace gloglotto
 		matrix<Rows, Columns, Type>
 		matrix<Rows, Columns, Type>::operator ~ (void) const throw (std::logic_error)
 		{
-			static_assert(Columns == Rows, "only square matrices are invertible");
+			static_assert(Rows == Columns, "only square matrices are invertible");
+
+			if (Rows == 2) {
+				// |a b|
+				// |c d|
+				Type a = this[0][0],
+				     b = this[0][1],
+				     c = this[1][0],
+				     d = this[1][1];
+
+				Type det = (a * d) - (b * c);
+
+				if (det == 0) {
+					throw std::logic_error("determinant must be non zero");
+				}
+
+				return matrix<2, 2, Type> {
+					{  d, -b },
+					{ -c,  a }
+				} * (static_cast<Type>(1) / det);
+			}
+			else if (Rows == 3) {
+				// |a b c|
+				// |d e f|
+				// |g h k|
+				Type a = this[0][0],
+				     b = this[0][1],
+				     c = this[0][2],
+				     d = this[1][0],
+				     e = this[1][1],
+				     f = this[1][2],
+				     g = this[2][0],
+				     h = this[2][1],
+				     k = this[2][2];
+
+				Type det =
+					(a * e * k) - (a * f * h) -
+					(b * k * d) + (b * f * g) +
+					(c * d * h) - (c * e * g);
+
+				if (det == 0) {
+					throw std::logic_error("determinant must be non zero");
+				}
+
+				return matrix<3, 3, Type> {
+					{ (e * k) - (f * h), (c * h) - (b * k), (b * f) - (c * e) },
+					{ (f * g) - (d * k), (a * k) - (c * g), (c * d) - (a * f) },
+					{ (d * h) - (e * g), (g * b) - (a * h), (a * e) - (b * d) }
+				} * (static_cast<Type>(1) / det);
+			}
+			else if (Rows == 4) {
+				// |a b c d|
+				// |e f g h|
+				// |k l m n|
+				// |o p q r|
+				Type a = this[0][0],
+				     b = this[0][1],
+				     c = this[0][2],
+				     d = this[0][3],
+				     e = this[1][0],
+				     f = this[1][1],
+				     g = this[1][2],
+				     h = this[1][3],
+				     k = this[2][0],
+				     l = this[2][1],
+				     m = this[2][2],
+				     n = this[2][3],
+				     o = this[3][0],
+				     p = this[3][1],
+				     q = this[3][2],
+				     r = this[3][3];
+
+				Type det =
+					(a * f * m * r) + (a * g * n * p) + (a * h * l * q) +
+					(b * e * n * q) + (b * g * k * r) + (b * h * m * o) +
+					(c * e * l * r) + (c * f * n * o) + (c * h * k * p) +
+					(d * e * m * p) + (d * f * k * q) + (d * g * l * o) -
+					(a * f * n * q) - (a * g * l * r) - (a * h * m * p) -
+					(b * e * m * r) - (b * g * n * o) - (b * h * k * q) -
+					(c * e * n * p) - (c * f * k * r) - (c * h * l * o) -
+					(d * e * l * q) - (d * f * m * o) - (d * g * k * p);
+
+				if (det == 0) {
+					throw std::logic_error("determinant must be non zero");
+				}
+
+				return matrix<4, 4, Type> {
+					{ (f * m * r) + (g * n * p) + (h * l * q) - (f * n * q) - (g * l * r) - (h * m * p),
+					  (b * n * q) + (c * l * r) + (d * m * p) - (b * m * r) - (c * n * p) - (d * l * q),
+					  (b * g * r) + (c * h * p) + (d * f * q) - (b * h * q) - (c * f * r) - (d * g * p),
+					  (b * h * m) + (c * f * n) + (d * g * l) - (b * g * n) - (c * h * l) - (d * f * m) },
+					{ (e * n * q) + (g * k * r) + (h * m * o) - (e * m * r) - (g * n * o) - (h * k * q),
+					  (a * m * r) + (c * n * o) + (d * k * q) - (a * n * q) - (c * k * r) - (d * m * o),
+					  (a * h * q) + (c * e * r) + (d * g * o) - (a * g * r) - (c * h * o) - (d * e * q),
+					  (a * g * n) + (c * h * k) + (d * e * m) - (a * h * m) - (c * e * n) - (d * g * k) },
+					{ (e * l * r) + (f * n * o) + (h * k * p) - (e * n * p) - (f * k * r) - (h * l * o),
+					  (a * n * p) + (b * k * r) + (d * l * o) - (a * l * r) - (b * n * o) - (d * k * p),
+					  (a * f * r) + (b * h * o) + (d * e * p) - (a * h * p) - (b * e * r) - (d * f * o),
+					  (a * h * l) + (b * e * n) + (d * f * k) - (a * f * n) - (b * h * k) - (d * e * l) },
+					{ (e * m * p) + (f * k * q) + (g * l * o) - (e * l * q) - (f * m * o) - (g * k * p),
+					  (a * l * q) + (b * m * o) + (c * k * p) - (a * m * p) - (b * k * q) - (c * l * o),
+					  (a * g * p) + (b * e * q) + (c * f * o) - (a * f * q) - (b * g * o) - (c * e * p),
+					  (a * f * m) + (b * g * k) + (c * e * l) - (a * g * l) - (b * e * m) - (c * f * k) }
+				} * (static_cast<Type>(1) / det);
+			}
 		}
 
 		template <int Rows, int Columns, typename Type>
