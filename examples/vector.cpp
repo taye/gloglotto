@@ -11,7 +11,21 @@ main (int argc, char* argv[])
 
 	a *= b;
 
-	std::cout << "a: " << a[0] << " " << a[1] << " " << a[2] << std::endl;
+	std::cout << "a:";
+	for (auto value : a) {
+		std::cout << " " << value;
+	}
+	std::cout << std::endl;
+
+	std::cout << "b:";
+	for (auto vec : b) {
+		std::cout << " {";
+		for (auto value : vec) {
+			std::cout << " " << value;
+		}
+		std::cout << " }";
+	}
+	std::cout << std::endl;
 
 	return 0;
 }
