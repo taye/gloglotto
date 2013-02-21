@@ -1,0 +1,91 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_ITERATOR_H
+#define _GLOGLOTTO_ITERATOR_H
+
+#include <iterator>
+
+namespace gloglotto
+{
+	namespace iterator
+	{
+		template <class Type>
+		struct accessible_traits
+			: public accessible_traits<decltype(&Type::operator[])>
+		{
+		};
+
+		template <typename ClassType, typename ReturnType>
+		struct accessible_traits<ReturnType(ClassType::*)(int)>
+		{
+			typedef typename std::remove_reference<ReturnType>::type type;
+		};
+
+		template <typename Class>
+		class accessible : public std::iterator<std::random_access_iterator_tag,
+		                                        typename accessible_traits<Class>::type>
+		{
+			public:
+				typedef int difference_type;
+
+				typedef typename accessible_traits<Class>::type& reference;
+				typedef typename accessible_traits<Class>::type* pointer;
+
+				static const int size = Class::size;
+
+			public:
+				accessible (Class* object, difference_type const& current = 0);
+
+				accessible (accessible<Class> const& from);
+
+				reference operator *  (void) const;
+				reference operator [] (difference_type const& n) const;
+				pointer   operator -> (void) const;
+
+				accessible<Class>& operator ++ (void);
+				accessible<Class>  operator ++ (int);
+
+				accessible<Class>& operator -- (void);
+				accessible<Class>  operator -- (int);
+
+				accessible<Class>  operator +  (difference_type const& n) const;
+				accessible<Class>& operator += (difference_type const& n);
+
+				accessible<Class>  operator -  (difference_type const& n) const;
+				accessible<Class>& operator -= (difference_type const& n);
+
+				bool operator == (accessible<Class> const& other) const;
+				bool operator != (accessible<Class> const& other) const;
+
+				bool operator >  (accessible<Class> const& other) const;
+				bool operator >= (accessible<Class> const& other) const;
+
+				bool operator <  (accessible<Class> const& other) const;
+				bool operator <= (accessible<Class> const& other) const;
+
+			private:
+				Class*          _object;
+				difference_type _current;
+		};
+	}
+}
+
+#include <gloglotto/iterator.tpp>
+
+#endif
