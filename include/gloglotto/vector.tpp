@@ -184,7 +184,7 @@ namespace gloglotto
 			Type element = 0;
 
 			for (int j = 0; j < Size; j++) {
-				element += (&other)[i * Columns + j] * _data[j];
+				element += _data[j] * (&other)[i * Columns + j];
 			}
 
 			result[i] = element;
@@ -201,7 +201,7 @@ namespace gloglotto
 			Type element = 0;
 
 			for (int j = 0; j < Size; j++) {
-				element += (&other)[i * Size + j] * _data[j];
+				element += _data[j] * (&other)[i * Size + j];
 			}
 
 			_data[i] = element;
