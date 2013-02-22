@@ -115,6 +115,8 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>::operator = (matrix<Rows, Columns, Type> const& from)
 	{
 		std::move(&from, &from + Columns * Rows, _data);
+
+		return *this;
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -122,6 +124,8 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>::operator = (const Type* data)
 	{
 		std::move(data, data + Columns * Rows, _data);
+
+		return *this;
 	}
 
 	template <int Rows, int Columns, typename Type>
