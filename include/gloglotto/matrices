@@ -1,0 +1,99 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_MATRICES_H
+#define _GLOGLOTTO_MATRICES_H
+
+#include <gloglotto/matrix>
+
+#include <stdexcept>
+
+namespace gloglotto
+{
+	template <int Size, class Matrix>
+	class matrices
+	{
+		public:
+			typedef typename Matrix::type                        type;
+			typedef iterator::accessible<matrices<Size, Matrix>> iterator;
+
+			static const int size = Size;
+
+			static const int rows    = Matrix::rows;
+			static const int columns = Matrix::columns;
+
+		public:
+			/* Create a matrix array with everything set to 0.
+			 */
+			matrices (void);
+
+			/* Wrap a pointer containing an array of matrices.
+			 */
+			matrices (type* pointer);
+
+			/* Create a matrix array from another one.
+			 */
+			matrices (matrices<Size, Matrix> const& from);
+
+			/* Create a matrix array from an initializer list.
+			 */
+			matrices (std::initializer_list<Matrix> list);
+
+			/* Destroy the data if it's not a wrapper.
+			 */
+			~matrices (void);
+
+			/* Copy the contents of the passed matrix array.
+			 */
+			matrices<Size, Matrix>& operator = (matrices<Size, Matrix> const& from);
+
+			/* Copy the data present in the passed pointer.
+			 */
+			matrices<Size, Matrix>& operator = (const type* data);
+
+			/* Copy the data passed from the initializer list.
+			 */
+			matrices<Size, Matrix>& operator = (std::initializer_list<Matrix> list) throw (std::invalid_argument);
+
+			/* Access a matrix in the array.
+			 */
+			Matrix& operator [] (int index) throw (std::out_of_range);
+
+			/* Return an iterator to the beginning of the matrix array.
+			 */
+			iterator begin (void);
+
+			/* Return an iterator to the end of the matrix array.
+			 */
+			iterator end (void);
+
+			/* Return the wrapped raw pointer (row major).
+			 */
+			type* operator & (void) const;
+
+		private:
+			type* _data;
+			bool  _allocated;
+
+			Matrix* _matrices[Size];
+	};
+}
+
+#include <gloglotto/matrices.tpp>
+
+#endif

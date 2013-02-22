@@ -1,0 +1,98 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_VECTORS_H
+#define _GLOGLOTTO_VECTORS_H
+
+#include <gloglotto/vector>
+
+#include <stdexcept>
+
+namespace gloglotto
+{
+	template <int Size, class Vector>
+	class vectors
+	{
+		public:
+			typedef typename Vector::type                       type;
+			typedef iterator::accessible<vectors<Size, Vector>> iterator;
+
+			static const int size = Size;
+
+			static const int elements = Vector::elements;
+
+		public:
+			/* Create a vector array with everything set to 0.
+			 */
+			vectors (void);
+
+			/* Wrap a pointer containing an array of vectors.
+			 */
+			vectors (type* pointer);
+
+			/* Create a vector array from another one.
+			 */
+			vectors (vectors<Size, Vector> const& from);
+
+			/* Create a vector array from an initializer list.
+			 */
+			vectors (std::initializer_list<Vector> list);
+
+			/* Destroy the data if it's not a wrapper.
+			 */
+			~vectors (void);
+
+			/* Copy the contents of the passed vector array.
+			 */
+			vectors<Size, Vector>& operator = (vectors<Size, Vector> const& from);
+
+			/* Copy the data present in the passed pointer.
+			 */
+			vectors<Size, Vector>& operator = (const type* data);
+
+			/* Copy the data passed from the initializer list.
+			 */
+			vectors<Size, Vector>& operator = (std::initializer_list<Vector> list) throw (std::invalid_argument);
+
+			/* Access a matrix in the array.
+			 */
+			Vector& operator [] (int index) throw (std::out_of_range);
+
+			/* Return an iterator to the beginning of the vector array.
+			 */
+			iterator begin (void);
+
+			/* Return an iterator to the end of the vector array.
+			 */
+			iterator end (void);
+
+			/* Return the wrapped raw pointer (row major).
+			 */
+			type* operator & (void) const;
+
+		private:
+			type* _data;
+			bool  _allocated;
+
+			Vector* _vectors[Size];
+	};
+}
+
+#include <gloglotto/vectors.tpp>
+
+#endif

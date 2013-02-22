@@ -29,4 +29,7 @@
 #include <gloglotto/vector.tpp>
 #include <gloglotto/matrix.tpp>
 
+#include <gloglotto/vectors>
+#include <gloglotto/matrices>
+
 #endif
