@@ -108,8 +108,12 @@ namespace gloglotto
 
 	template <int Size, typename Type>
 	Type&
-	vector<Size, Type>::operator [] (int index)
+	vector<Size, Type>::operator [] (int index) throw (std::out_of_range)
 	{
+		if (index < 0 || index >= Size) {
+			throw std::out_of_range("index out of range");
+		}
+
 		return _data[index];
 	}
 

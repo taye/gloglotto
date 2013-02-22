@@ -83,7 +83,7 @@ namespace gloglotto
 
 			/* Access an element of the vector.
 			 */
-			Type& operator [] (int index);
+			Type& operator [] (int index) throw (std::out_of_range);
 
 			/* Return the addition of the two vectors.
 			 */
