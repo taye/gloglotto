@@ -90,7 +90,7 @@ namespace gloglotto
 
 			/* Access a row of the matrix.
 			 */
-			vector<Columns, Type>& operator [] (int index);
+			vector<Columns, Type>& operator [] (int index) throw (std::out_of_range);
 
 			/* Return the addition of the two matrices.
 			 */
