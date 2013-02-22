@@ -19,6 +19,8 @@
 #include <gloglotto/thin>
 #include <gloglotto/private>
 
+#include <cctype>
+
 namespace gloglotto
 {
 	namespace thin
@@ -64,6 +66,87 @@ namespace gloglotto
 				loop();
 			}
 
+			key::key (unsigned char key, int modifiers, bool released)
+			{
+				_key       = key;
+				_modifiers = modifiers;
+				_released  = released;
+			}
+
+			key::key (int key, int modifiers, bool released)
+			{
+				_key       = key << 16;
+				_modifiers = modifiers;
+				_released  = released;
+			}
+
+			key::key (key const& from)
+			{
+				_key       = from._key;
+				_modifiers = from._modifiers;
+				_released  = from._released;
+			}
+
+			bool
+			key::operator == (unsigned char other)
+			{
+				return _key == other;
+			}
+
+			bool
+			key::operator == (int other)
+			{
+				return _key == (other << 16);
+			}
+
+			bool
+			key::operator == (key const& other)
+			{
+				return _key == other._key && _modifiers == other._modifiers && _released == other._released;
+			}
+
+			bool
+			key::operator != (unsigned char other)
+			{
+				return _key != std::tolower(other);
+			}
+
+			bool
+			key::operator != (int other)
+			{
+				return _key != (other << 16);
+			}
+
+			bool
+			key::operator != (key const& other)
+			{
+				return _key != other._key || _modifiers != other._modifiers || _released != other._released;
+			}
+
+			bool
+			key::alt (void)
+			{
+				return _modifiers & GLUT_ACTIVE_ALT;
+			}
+
+			bool
+			key::shift (void)
+			{
+				return _modifiers & GLUT_ACTIVE_SHIFT;
+			}
+
+			bool
+			key::ctrl (void)
+			{
+				return _modifiers & GLUT_ACTIVE_CTRL;
+			}
+
+			bool
+			key::released (void)
+			{
+				return _released;
+			}
+
 			namespace callbacks
 			{
 				std::map<std::string, void*> closures;
@@ -90,6 +173,30 @@ namespace gloglotto
 				render (void)
 				{
 					closure<void(void)>("render");
+				}
+
+				void
+				keyboard (unsigned char ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers()), x, y);
+				}
+
+				void
+				keyboard_up (unsigned char ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers(), true), x, y);
+				}
+
+				void
+				special (int ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers()), x, y);
+				}
+
+				void
+				special_up (int ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers(), true), x, y);
 				}
 			}
 		}

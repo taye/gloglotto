@@ -65,10 +65,72 @@ namespace gloglotto
 			void loop (void);
 			void loop (std::function<void(void)> setup);
 
+			class key final
+			{
+				static const int F1  = GLUT_KEY_F1;
+				static const int F2  = GLUT_KEY_F2;
+				static const int F3  = GLUT_KEY_F3;
+				static const int F4  = GLUT_KEY_F4;
+				static const int F5  = GLUT_KEY_F5;
+				static const int F6  = GLUT_KEY_F6;
+				static const int F7  = GLUT_KEY_F7;
+				static const int F8  = GLUT_KEY_F8;
+				static const int F9  = GLUT_KEY_F9;
+				static const int F10 = GLUT_KEY_F10;
+				static const int F11 = GLUT_KEY_F11;
+				static const int F12 = GLUT_KEY_F12;
+
+				static const int left  = GLUT_KEY_LEFT;
+				static const int right = GLUT_KEY_RIGHT;
+				static const int up    = GLUT_KEY_UP;
+				static const int down  = GLUT_KEY_DOWN;
+
+				static const int page_up   = GLUT_KEY_PAGE_UP;
+				static const int page_down = GLUT_KEY_PAGE_DOWN;
+				static const int home      = GLUT_KEY_HOME;
+				static const int end       = GLUT_KEY_END;
+				static const int insert    = GLUT_KEY_INSERT;
+
+				static const unsigned char space     = '\x20';
+				static const unsigned char tab       = '\x09';
+				static const unsigned char enter     = '\x0D';
+				static const unsigned char backspace = '\x08';
+				static const unsigned char cancel    = '\x7F';
+
+				public:
+					key (unsigned char key, int modifiers, bool released = false);
+					key (int key, int modifiers, bool released = false);
+					key (key const& from);
+
+					bool operator == (unsigned char other);
+					bool operator == (int other);
+					bool operator == (key const& other);
+
+					bool operator != (unsigned char other);
+					bool operator != (int other);
+					bool operator != (key const& other);
+
+					bool alt (void);
+					bool shift (void);
+					bool ctrl (void);
+
+					bool released (void);
+
+				private:
+					int  _key;
+					int  _modifiers;
+					bool _released;
+			};
+
 			namespace callbacks
 			{
 				void resize (int width, int height);
 				void render (void);
+
+				void keyboard (unsigned char ch, int x, int y);
+				void keyboard_up (unsigned char ch, int x, int y);
+				void special (int ch, int x, int y);
+				void special_up (int ch, int x, int y);
 			}
 
 			template <typename Function>

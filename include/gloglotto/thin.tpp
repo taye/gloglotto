@@ -46,6 +46,13 @@ namespace gloglotto
 				else if (name == "render") {
 					glutDisplayFunc(callbacks::render);
 				}
+				else if (name == "keyboard") {
+					glutKeyboardFunc(callbacks::keyboard);
+					glutKeyboardUpFunc(callbacks::keyboard_up);
+
+					glutSpecialFunc(callbacks::special);
+					glutSpecialUpFunc(callbacks::special_up);
+				}
 				else {
 					throw std::invalid_argument("unknown callback");
 				}
