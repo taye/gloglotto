@@ -46,6 +46,8 @@ namespace gloglotto
 
 			static const int size = Size;
 
+			static const int elements = Size;
+
 		public:
 			/* Create a vector with every element set to 0.
 			 */
