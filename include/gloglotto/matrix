@@ -47,9 +47,11 @@ namespace gloglotto
 			typedef Type                                              type;
 			typedef iterator::accessible<matrix<Rows, Columns, Type>> iterator;
 
-			static const int size    = Rows;
-			static const int rows    = Rows;
-			static const int columns = Columns;
+			static const int size = Rows;
+
+			static const int rows     = Rows;
+			static const int columns  = Columns;
+			static const int elements = Rows * Columns;
 
 		public:
 			/* Create an identity matrix if it's square, or an empty matrix.
