@@ -72,7 +72,7 @@ namespace gloglotto
 			}
 
 			template <typename Function>
-			void callback (std::string name, Function lambda);
+			void callback (std::string name, Function lambda) throw (std::invalid_argument);
 		}
 
 		namespace extensions

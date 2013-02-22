@@ -36,7 +36,7 @@ namespace gloglotto
 
 			template<typename Function>
 			void
-			callback (std::string name, Function lambda)
+			callback (std::string name, Function lambda) throw (std::invalid_argument)
 			{
 				using namespace callbacks;
 
