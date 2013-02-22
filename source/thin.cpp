@@ -26,7 +26,7 @@ namespace gloglotto
 		namespace window
 		{
 			void create (int* argc, char* argv[],
-			             std::map<std::string, std::vector<int>> attributes,
+			             std::map<std::string, std::array<int, 2>> attributes,
 			             std::string name) throw (std::invalid_argument)
 			{
 				glutInit(argc, argv);
