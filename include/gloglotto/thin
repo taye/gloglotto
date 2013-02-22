@@ -147,6 +147,57 @@ namespace gloglotto
 				void set (int location, matrix<4, 2, float> data) throw (invalid_operation, invalid_value);
 				void set (int location, matrix<3, 4, float> data) throw (invalid_operation, invalid_value);
 				void set (int location, matrix<4, 3, float> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<2, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<3, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<4, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<1, int>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<2, int>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<3, int>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<4, int>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<3, 3, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value);
+
+				template <int Size>
+				void set (int location, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value);
 			}
 
 			unsigned int make (std::map<std::string, std::string> source) throw (invalid_operation, failed_linking);
