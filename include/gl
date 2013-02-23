@@ -22,6 +22,8 @@
 #include <gloglotto/shader>
 #include <gloglotto/shader_manager>
 
+#include <gloglotto/window>
+
 namespace gl = gloglotto;
 
 #endif

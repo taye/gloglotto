@@ -1,0 +1,184 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_WINDOW_H
+#define _GLOGLOTTO_WINDOW_H
+
+#include <gloglotto/thin>
+
+#include <iostream>
+
+namespace gloglotto
+{
+	namespace window
+	{
+		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, std::string name) throw (std::invalid_argument);
+		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument);
+
+		void loop (void);
+		void loop (std::function<void(void)> setup);
+
+		namespace callbacks
+		{
+			void resize (int width, int height);
+			void render (void);
+			void idle (void);
+			void visible (int state);
+
+			void keyboard (unsigned char ch, int x, int y);
+			void keyboard_up (unsigned char ch, int x, int y);
+			void special (int ch, int x, int y);
+			void special_up (int ch, int x, int y);
+
+			void mouse_click (int button, int state, int x, int y);
+			void mouse_motion (int x, int y);
+			void mouse_motion_passive (int x, int y);
+		}
+
+		namespace event
+		{
+			static const int resize  = 1;
+			static const int render  = 2;
+			static const int idle    = 3;
+			static const int visible = 4;
+
+			static const int keyboard = 5;
+
+			namespace mouse
+			{
+				static const int click  = 6;
+				static const int motion = 7;
+			}
+		}
+
+		class key final
+		{
+			public:
+				static const int F1  = GLUT_KEY_F1;
+				static const int F2  = GLUT_KEY_F2;
+				static const int F3  = GLUT_KEY_F3;
+				static const int F4  = GLUT_KEY_F4;
+				static const int F5  = GLUT_KEY_F5;
+				static const int F6  = GLUT_KEY_F6;
+				static const int F7  = GLUT_KEY_F7;
+				static const int F8  = GLUT_KEY_F8;
+				static const int F9  = GLUT_KEY_F9;
+				static const int F10 = GLUT_KEY_F10;
+				static const int F11 = GLUT_KEY_F11;
+				static const int F12 = GLUT_KEY_F12;
+
+				static const int left  = GLUT_KEY_LEFT;
+				static const int right = GLUT_KEY_RIGHT;
+				static const int up    = GLUT_KEY_UP;
+				static const int down  = GLUT_KEY_DOWN;
+
+				static const int page_up   = GLUT_KEY_PAGE_UP;
+				static const int page_down = GLUT_KEY_PAGE_DOWN;
+				static const int home      = GLUT_KEY_HOME;
+				static const int end       = GLUT_KEY_END;
+				static const int insert    = GLUT_KEY_INSERT;
+
+				static const int none = 0xff;
+
+				static const unsigned char esc       = '\x1B';
+				static const unsigned char space     = '\x20';
+				static const unsigned char tab       = '\x09';
+				static const unsigned char enter     = '\x0D';
+				static const unsigned char backspace = '\x08';
+				static const unsigned char cancel    = '\x7F';
+
+			public:
+				static bool known (int special);
+
+			public:
+				key (int modifiers = 0, bool released = false);
+				key (unsigned char key, int modifiers = 0, bool released = false);
+				key (int key, int modifiers = 0, bool released = false);
+				key (key const& from);
+
+				bool operator == (unsigned char other);
+				bool operator == (int other);
+				bool operator == (key const& other);
+
+				bool operator != (unsigned char other);
+				bool operator != (int other);
+				bool operator != (key const& other);
+
+				bool          special (void);
+				unsigned char ch (void) throw (std::logic_error);
+				std::string   name (void);
+
+				bool alt (void);
+				bool shift (void);
+				bool ctrl (void);
+
+				bool released (void);
+
+				friend void callbacks::keyboard (unsigned char ch, int x, int y);
+				friend void callbacks::keyboard_up (unsigned char ch, int x, int y);
+				friend void callbacks::special (int ch, int x, int y);
+				friend void callbacks::special_up (int ch, int x, int y);
+
+			private:
+				int  _key;
+				int  _modifiers;
+				bool _released;
+		};
+
+		class mouse final
+		{
+			public:
+				enum class button
+				{
+					none, left, middle, right
+				};
+
+			public:
+				static button cast (int value);
+
+			public:
+				mouse (int modifiers = 0, bool released = false);
+				mouse (int button, int modifiers = 0, bool released = false);
+				mouse (mouse const& from);
+
+				button click (void);
+
+				bool alt (void);
+				bool shift (void);
+				bool ctrl (void);
+
+				bool released (void);
+
+				friend void callbacks::mouse_click (int button, int state, int x, int y);
+				friend void callbacks::mouse_motion (int x, int y);
+				friend void callbacks::mouse_motion_passive (int x, int y);
+
+			private:
+				button _button;
+				int    _modifiers;
+				bool   _released;
+		};
+
+		template <int Callback, typename Function>
+		void on (Function function) throw (std::invalid_argument, std::bad_typeid);
+	}
+}
+
+#include <gloglotto/window.tpp>
+
+#endif
