@@ -34,24 +34,51 @@ namespace gloglotto
 				extern std::map<std::string, void*> closures;
 			}
 
-			template<typename Function>
+			template<typename Function, typename... Args>
 			void
-			callback (std::string name, Function lambda) throw (std::invalid_argument)
+			callback (std::string name, Function lambda, Args... args) throw (std::invalid_argument)
 			{
 				using namespace callbacks;
 
 				if (name == "resize") {
+					signature_assert<void(int, int)>(lambda);
+
 					glutReshapeFunc(callbacks::resize);
 				}
 				else if (name == "render") {
+					signature_assert<void(void)>(lambda);
+
 					glutDisplayFunc(callbacks::render);
 				}
+				else if (name == "idle") {
+					signature_assert<void(void)>(lambda);
+
+					glutIdleFunc(callbacks::idle);
+				}
+				else if (name == "visible") {
+					signature_assert<void(bool)>(lambda);
+
+					glutVisibilityFunc(callbacks::visible);
+				}
 				else if (name == "keyboard") {
+					signature_assert<void(key, int, int)>(lambda);
+
 					glutKeyboardFunc(callbacks::keyboard);
 					glutKeyboardUpFunc(callbacks::keyboard_up);
 
 					glutSpecialFunc(callbacks::special);
 					glutSpecialUpFunc(callbacks::special_up);
+				}
+				else if (name == "mouse.click") {
+					signature_assert<void(mouse, int, int)>(lambda);
+
+					glutMouseFunc(callbacks::mouse_click);
+				}
+				else if (name == "mouse.motion") {
+					signature_assert<void(mouse, int, int)>(lambda);
+
+					glutMotionFunc(callbacks::mouse_motion);
+					glutPassiveMotionFunc(callbacks::mouse_motion_passive);
 				}
 				else {
 					throw std::invalid_argument("unknown callback");

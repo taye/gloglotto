@@ -48,6 +48,13 @@ namespace gloglotto
 	{
 		return static_cast<typename function_traits<Function>::function>(lambda);
 	}
+
+	template <typename Signature, typename Function>
+	void
+	signature_assert (Function lambda)
+	{
+		(void) static_cast<Signature>(lambda);
+	}
 }
 
 #endif

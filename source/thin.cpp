@@ -35,18 +35,10 @@ namespace gloglotto
 				glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
 
 				if (attributes.find("size") != attributes.end()) {
-					if (attributes["size"].size() != 2) {
-						throw std::invalid_argument("size must have two elements");
-					}
-
 					glutInitWindowSize(attributes["size"].at(0), attributes["size"].at(1));
 				}
 
 				if (attributes.find("position") != attributes.end()) {
-					if (attributes["size"].size() != 2) {
-						throw std::invalid_argument("size must have two elements");
-					}
-
 					glutInitWindowPosition(attributes["position"].at(0), attributes["position"].at(1));
 				}
 
@@ -64,6 +56,105 @@ namespace gloglotto
 			{
 				setup();
 				loop();
+			}
+
+			namespace callbacks
+			{
+				std::map<std::string, void*> closures;
+
+				template <typename Signature, typename ...Args>
+				static inline
+				void
+				closure (std::string name, Args... args) throw (std::invalid_argument)
+				{
+					if (closures.find(name) == closures.end()) {
+						throw std::invalid_argument("unknown callback");
+					}
+
+					(*static_cast<std::function<Signature>*>(closures[name]))(args...);
+				}
+
+				void
+				resize (int width, int height)
+				{
+					closure<void(int, int)>("resize", width, height);
+				}
+
+				void
+				render (void)
+				{
+					closure<void(void)>("render");
+				}
+
+				void
+				idle (void)
+				{
+					closure<void(void)>("idle");
+				}
+
+				void
+				visible (int state)
+				{
+					closure<void(bool)>("visible", state == GLUT_VISIBLE);
+				}
+
+				void
+				keyboard (unsigned char ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers()), x, y);
+				}
+
+				void
+				keyboard_up (unsigned char ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers(), true), x, y);
+				}
+
+				void
+				special (int ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers()), x, y);
+				}
+
+				void
+				special_up (int ch, int x, int y)
+				{
+					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers(), true), x, y);
+				}
+
+				static mouse mouse_current;
+
+				void
+				mouse_click (int button, int state, int x, int y)
+				{
+					if (state == GLUT_DOWN) {
+						mouse_current._button    = mouse::cast(button);
+						mouse_current._modifiers = glutGetModifiers();
+						mouse_current._released  = false;
+
+						closure<void(mouse, int, int)>("mouse.click", mouse_current, x, y);
+					}
+					else {
+						mouse_current._released = true;
+
+						closure<void(mouse, int, int)>("mouse.click", mouse_current, x, y);
+
+						mouse_current._button    = mouse::cast(0);
+						mouse_current._modifiers = 0;
+					}
+				}
+
+				void
+				mouse_motion (int x, int y)
+				{
+					closure<void(mouse, int, int)>("mouse.motion", mouse_current, x, y);
+				}
+
+				void
+				mouse_motion_passive (int x, int y)
+				{
+					closure<void(mouse, int, int)>("mouse.motion", mouse(), x, y);
+				}
 			}
 
 			key::key (unsigned char key, int modifiers, bool released)
@@ -147,57 +238,64 @@ namespace gloglotto
 				return _released;
 			}
 
-			namespace callbacks
+			mouse::button
+			mouse::cast (int value)
 			{
-				std::map<std::string, void*> closures;
+				switch (value) {
+					case GLUT_LEFT_BUTTON:
+						return button::left;
 
-				template <typename Signature, typename ...Args>
-				static inline
-				void
-				closure (std::string name, Args... args) throw (std::invalid_argument)
-				{
-					if (closures.find(name) == closures.end()) {
-						throw std::invalid_argument("unknown callback");
-					}
+					case GLUT_MIDDLE_BUTTON:
+						return button::middle;
 
-					(*static_cast<std::function<Signature>*>(closures[name]))(args...);
+					case GLUT_RIGHT_BUTTON:
+						return button::right;
 				}
 
-				void
-				resize (int width, int height)
-				{
-					closure<void(int, int)>("resize", width, height);
-				}
+				return button::none;
+			}
 
-				void
-				render (void)
-				{
-					closure<void(void)>("render");
-				}
+			mouse::mouse (int modifiers, bool released)
+			{
+				_button    = button::none;
+				_modifiers = modifiers;
+				_released  = released;
+			}
 
-				void
-				keyboard (unsigned char ch, int x, int y)
-				{
-					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers()), x, y);
-				}
+			mouse::mouse (int button, int modifiers, bool released)
+			{
+				_button    = cast(button);
+				_modifiers = modifiers;
+				_released  = released;
+			}
 
-				void
-				keyboard_up (unsigned char ch, int x, int y)
-				{
-					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers(), true), x, y);
-				}
+			mouse::mouse (mouse const& from)
+			{
+				*this = from;
+			}
 
-				void
-				special (int ch, int x, int y)
-				{
-					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers()), x, y);
-				}
+			bool
+			mouse::alt (void)
+			{
+				return _modifiers & GLUT_ACTIVE_ALT;
+			}
 
-				void
-				special_up (int ch, int x, int y)
-				{
-					closure<void(key, int, int)>("keyboard", key(ch, glutGetModifiers(), true), x, y);
-				}
+			bool
+			mouse::shift (void)
+			{
+				return _modifiers & GLUT_ACTIVE_SHIFT;
+			}
+
+			bool
+			mouse::ctrl (void)
+			{
+				return _modifiers & GLUT_ACTIVE_CTRL;
+			}
+
+			bool
+			mouse::released (void)
+			{
+				return _released;
 			}
 		}
 
