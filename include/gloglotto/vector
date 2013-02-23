@@ -87,7 +87,7 @@ namespace gloglotto
 
 			/* Return the addition of the two vectors.
 			 */
-			vector<Size, Type>  operator + (vector<Size, Type> const& other) const;
+			vector<Size, Type> operator + (vector<Size, Type> const& other) const;
 
 			/* Add the other vector in place.
 			 */
@@ -95,7 +95,7 @@ namespace gloglotto
 
 			/* Return the substraction of the two vectors.
 			 */
-			vector<Size, Type>  operator - (vector<Size, Type> const& other) const;
+			vector<Size, Type> operator - (vector<Size, Type> const& other) const;
 
 			/* Substract the other vector in place.
 			 */
