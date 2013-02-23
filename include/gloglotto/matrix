@@ -40,8 +40,7 @@ namespace gloglotto
 		static_assert(Columns >= 2 && Columns <= 4, "columns can only be 2, 3 and 4");
 
 		static_assert(std::is_same<float, Type>::value ||
-									std::is_same<double, Type>::value ||
-									std::is_same<int, Type>::value, "only float, double and int");
+		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
 			typedef Type                                              type;
