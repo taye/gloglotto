@@ -625,5 +625,43 @@ namespace gloglotto
 		{
 			return scale<Size, Type>(with[0], with[1], with[2]);
 		}
+
+		template <typename Type>
+		matrix<4, 4, Type>
+		planar_shadow (vector<4, Type> plane, vector<3, Type> light)
+		{
+			Type a = plane[0];
+			Type b = plane[1];
+			Type c = plane[2];
+			Type d = plane[3];
+
+			Type dx = -light[0];
+			Type dy = -light[1];
+			Type dz = -light[2];
+
+			matrix<4, 4, Type> result;
+
+			(&result)[0]  = (b * dy) + (c * dz);
+			(&result)[4]  = -a * dy;
+			(&result)[8]  = -a * dz;
+			(&result)[12] = 0.0;
+
+			(&result)[1]  = -b * dx;
+			(&result)[5]  = (a * dx) + (c * dz);
+			(&result)[9]  = -b * dz;
+			(&result)[13] = 0.0;
+
+			(&result)[2]  = -c * dx;
+			(&result)[6]  = -c * dy;
+			(&result)[10] = (a * dx) + (b * dy);
+			(&result)[14] = 0.0;
+
+			(&result)[3]  = -d * dx;
+			(&result)[7]  = -d * dy;
+			(&result)[11] = -d * dz;
+			(&result)[15] = (a * dx) + (b * dy) + (c * dz);
+
+			return result;
+		}
 	}
 }

@@ -199,6 +199,9 @@ namespace gloglotto
 
 		template <int Size = 3, typename Type = float>
 		matrix<Size, Size, Type> scale (vector<3, Type> with);
+
+		template <typename Type = float>
+		matrix<4, 4, Type> planar_shadow (vector<4, Type> plane, vector<3, Type> light);
 	}
 }
 
