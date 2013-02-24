@@ -31,10 +31,8 @@ namespace gloglotto
 	class shader final
 	{
 		public:
-			template <class Function>
-			shader (std::vector<std::string> attrs,
-			        std::map<std::string, std::string> source,
-			        Function lambda);
+			template <typename Function>
+			shader (std::map<std::string, std::string> source, Function lambda);
 
 			~shader (void);
 
@@ -63,8 +61,7 @@ namespace gloglotto
 			void uniform (std::string name, matrix<4, 3, float> data);
 
 		private:
-			unsigned int                _id;
-			std::map<std::string, int>  _attributes;
+			unsigned int _id;
 
 			const std::type_info* _signature;
 			void*                 _function;

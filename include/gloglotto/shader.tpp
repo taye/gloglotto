@@ -21,20 +21,11 @@
 
 namespace gloglotto
 {
-	template <class Function>
-	shader::shader (std::vector<std::string> attrs,
-	                                std::map<std::string, std::string> source,
-	                                Function lambda)
+	template <typename Function>
+	shader::shader (std::map<std::string, std::string> source, Function lambda)
 	{
 		_id     = thin::program::make(source);
 		_source = source;
-
-		for (size_t i = 0; i < attrs.size(); i++) {
-			auto& name = attrs[i];
-
-			_attributes[name] = i;
-			thin::program::bind(_id, i, name);
-		}
 
 		auto function = new decltype(to_function(lambda))(to_function(lambda));
 
