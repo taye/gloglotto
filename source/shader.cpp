@@ -32,103 +32,175 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, vector<1, float> data)
+	shader::uniform (std::string name, float data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<2, float> data)
+	shader::uniform (std::string name, int data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<3, float> data)
+	shader::uniform (std::string name, unsigned int data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<4, float> data)
+	shader::uniform (std::string name, bool data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<1, int> data)
+	shader::uniform (std::string name, vector<1, float> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<2, int> data)
+	shader::uniform (std::string name, vector<2, float> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<3, int> data)
+	shader::uniform (std::string name, vector<3, float> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, vector<4, int> data)
+	shader::uniform (std::string name, vector<4, float> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<2, 2, float> data)
+	shader::uniform (std::string name, vector<1, int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<3, 3, float> data)
+	shader::uniform (std::string name, vector<2, int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<4, 4, float> data)
+	shader::uniform (std::string name, vector<3, int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<2, 3, float> data)
+	shader::uniform (std::string name, vector<4, int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<3, 2, float> data)
+	shader::uniform (std::string name, vector<1, unsigned int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<2, 4, float> data)
+	shader::uniform (std::string name, vector<2, unsigned int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<4, 2, float> data)
+	shader::uniform (std::string name, vector<3, unsigned int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<3, 4, float> data)
+	shader::uniform (std::string name, vector<4, unsigned int> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
 
 	void
-	shader::uniform (std::string name, matrix<4, 3, float> data)
+	shader::uniform (std::string name, vector<1, bool> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, vector<2, bool> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, vector<3, bool> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, vector<4, bool> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<2, 2, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<3, 3, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<4, 4, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<2, 3, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<3, 2, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<2, 4, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<4, 2, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<3, 4, float> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	void
+	shader::uniform (std::string name, matrix<4, 3, float> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
 	}
