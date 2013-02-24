@@ -3,7 +3,7 @@ require 'rake/clean'
 require 'fileutils'
 
 CXX    = ENV['CXX'] || 'clang++'
-CFLAGS = "-Wall -Werror-implicit-function-declaration -funroll-loops -std=c++11 -Iinclude #{ENV['CFLAGS']}"
+CFLAGS = "-Wall -Wextra -pedantic -Werror-implicit-function-declaration -funroll-loops -std=c++11 -pipe -Iinclude #{ENV['CFLAGS']}"
 LDFLAGS = "-lGL -lGLEW -lglut #{ENV['LDFLAGS']}"
 
 SOURCES = FileList['source/**/*.cpp']
