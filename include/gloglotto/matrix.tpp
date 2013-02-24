@@ -70,6 +70,23 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type>&& from)
+	{
+		_data = from._data;
+
+		if (from._allocated) {
+			from._allocated = false;
+			_allocated      = true;
+		}
+		else {
+			_allocated = false;
+		}
+
+		std::move(from._vectors, from._vectors + Rows, _vectors);
+		std::fill(from._vectors, from._vectors + Rows, nullptr);
+	}
+
+	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>::matrix (Type* data)
 	{
 		_data      = data;
@@ -178,6 +195,15 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&&
+	matrix<Rows, Columns, Type>::operator + (matrix<Rows, Columns, Type>&& other) const
+	{
+		other += this;
+
+		return other;
+	}
+
+	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator += (matrix<Rows, Columns, Type> const& other)
 	{
@@ -195,6 +221,15 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>::operator - (matrix<Rows, Columns, Type> const& other) const
 	{
 		return matrix<Rows, Columns, Type>(this) -= other;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&&
+	matrix<Rows, Columns, Type>::operator - (matrix<Rows, Columns, Type>&& other) const
+	{
+		other -= this;
+
+		return other;
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -255,12 +290,69 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&&
+	matrix<Rows, Columns, Type>::operator * (matrix<Rows, Columns, Type>&& other) const
+	{
+		for (int i = 0; i < Columns; i++) {
+			for (int j = 0; j < Rows; j++) {
+				Type element = 0;
+
+				for (int h = 0; h < Columns; h++) {
+					element += _data[j * Columns + h] * (&other)[j * Columns + i];
+				}
+
+				(&other)[j * Columns + i] = element;
+			}
+		}
+
+		return other;
+	}
+
+	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator *= (matrix<Rows, Columns, Type> const& other)
 	{
 		*this = this * other;
 
 		return *this;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	vector<Rows, Type>
+	matrix<Rows, Columns, Type>::operator * (vector<Columns, Type> const& other) const
+	{
+		vector<Rows, Type> result;
+
+		for (int i = 0; i < Rows; i++) {
+			Type element = 0;
+
+			for (int j = 0; j < Columns; j++) {
+				element += _data[j * Columns + i] * other[j];
+			}
+
+			result[i] = element;
+		}
+
+		return result;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	vector<Rows, Type>&&
+	matrix<Rows, Columns, Type>::operator * (vector<Columns, Type>&& other) const
+	{
+		static_assert(Rows == Columns, "only square matrices allowed");
+
+		for (int i = 0; i < Rows; i++) {
+			Type element = 0;
+
+			for (int j = 0; j < Columns; j++) {
+				element += _data[j * Columns + i] * other[j];
+			}
+
+			other[i] = element;
+		}
+
+		return other;
 	}
 
 	template <int Rows, int Columns, typename Type>

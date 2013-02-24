@@ -65,6 +65,11 @@ namespace gloglotto
 			 */
 			matrix (matrix<Rows, Columns, Type> const& from);
 
+			/* Create a matrix from the pointer of the rvalue matrix and take
+			 * ownership of it if it was allocated by it.
+			 */
+			matrix (matrix<Rows, Columns, Type>&& from);
+
 			/* Create a wrapping matrix around a pointer.
 			 */
 			matrix (Type* data);
@@ -97,6 +102,10 @@ namespace gloglotto
 			 */
 			matrix<Rows, Columns, Type> operator + (matrix<Rows, Columns, Type> const& other) const;
 
+			/* Return the addition of the two matrices reusing the temporary matrix.
+			 */
+			matrix<Rows, Columns, Type>&& operator + (matrix<Rows, Columns, Type>&& other) const;
+
 			/* Add the other matrix in place.
 			 */
 			matrix<Rows, Columns, Type>& operator += (matrix<Rows, Columns, Type> const& other);
@@ -104,6 +113,10 @@ namespace gloglotto
 			/* Return the substraction of the two matrices.
 			 */
 			matrix<Rows, Columns, Type> operator - (matrix<Rows, Columns, Type> const& other) const;
+
+			/* Return the substraction of the two matrices reusing the temporary matrix.
+			 */
+			matrix<Rows, Columns, Type>&& operator - (matrix<Rows, Columns, Type>&& other) const;
 
 			/* Subtract the other matrix in place.
 			 */
@@ -122,6 +135,10 @@ namespace gloglotto
 			template <int OtherRows, int OtherColumns>
 			matrix<Rows, OtherColumns, Type> operator * (matrix<OtherRows, OtherColumns, Type> const& other) const;
 
+			/* Return the multiplication of the two matrices reusing the temporary matrix.
+			 */
+			matrix<Rows, Columns, Type>&& operator * (matrix<Rows, Columns, Type>&& other) const;
+
 			/* Multiplicate the other matrix in place, when possible.
 			 */
 			matrix<Rows, Columns, Type>& operator *= (matrix<Rows, Columns, Type> const& other);
@@ -129,6 +146,10 @@ namespace gloglotto
 			/* Return the multiplication with a vector.
 			 */
 			vector<Rows, Type> operator * (vector<Columns, Type> const& other) const;
+
+			/* Return the multiplication with a vector reusing the temporary vector.
+			 */
+			vector<Rows, Type>&& operator * (vector<Columns, Type>&& other) const;
 
 			/* Return the inverted matrix when possible.
 			 */
