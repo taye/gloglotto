@@ -173,6 +173,12 @@ namespace gloglotto
 			Type* _data;
 			bool  _allocated;
 	};
+
+	namespace make
+	{
+		template <typename Type>
+		vector<4, Type> plane_equation (vector<3, Type> const& a, vector<3, Type> const& b, vector<3, Type> const& c);
+	}
 }
 
 #ifndef NO_IMPLEMENTATION

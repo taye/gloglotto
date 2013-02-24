@@ -334,4 +334,28 @@ namespace gloglotto
 	{
 		return _data;
 	}
+
+	namespace make
+	{
+		template <typename Type>
+		vector<4, Type>
+		plane_equation (vector<3, Type> const& a, vector<3, Type> const& b, vector<3, Type> const& c)
+		{
+			vector<3, Type> v1;
+			vector<3, Type> v2;
+
+			v1[0] = c[0] - a[0];
+			v1[1] = c[1] - a[1];
+			v1[2] = c[2] - a[2];
+
+			v2[0] = b[0] - a[0];
+			v2[1] = b[1] - a[1];
+			v2[2] = b[2] - a[2];
+
+			auto tmp = !(v1 * v2);
+
+			return vector<4, Type> { tmp[0], tmp[1], tmp[2],
+				-((tmp[0] * c[0]) + (tmp[1] * c[1]) + (tmp[2] * c[2])) };
+		}
+	}
 }
