@@ -31,7 +31,11 @@ namespace gloglotto
 		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument);
 
 		void loop (void);
-		void loop (std::function<void(void)> setup);
+		void loop (std::function<void(void)> before);
+		void loop (std::function<void(void)> before, std::function<void(void)> after);
+
+		void render (void);
+		void update (void);
 
 		namespace callbacks
 		{

@@ -52,10 +52,29 @@ namespace gloglotto
 		}
 
 		void
-		loop (std::function<void(void)> setup)
+		loop (std::function<void(void)> before)
 		{
-			setup();
+			before();
 			loop();
+		}
+
+		void
+		loop (std::function<void(void)> before, std::function<void(void)> after)
+		{
+			loop(before);
+			after();
+		}
+
+		void
+		render (void)
+		{
+			glutSwapBuffers();
+		}
+
+		void
+		update (void)
+		{
+			glutPostRedisplay();
 		}
 
 		namespace callbacks
