@@ -71,18 +71,18 @@ namespace gloglotto
 					glutVisibilityFunc(callbacks::visible);
 					break;
 
-				case event::keyboard: signature_assert<void(key, int, int)>(function);
+				case event::keyboard: signature_assert<void(key&, int, int)>(function);
 					glutKeyboardFunc(callbacks::keyboard);
 					glutKeyboardUpFunc(callbacks::keyboard_up);
 					glutSpecialFunc(callbacks::special);
 					glutSpecialUpFunc(callbacks::special_up);
 					break;
 
-				case event::mouse::click:  signature_assert<void(mouse, int, int)>(function);
+				case event::mouse::click:  signature_assert<void(mouse&, int, int)>(function);
 					glutMouseFunc(callbacks::mouse_click);
 					break;
 
-				case event::mouse::motion: signature_assert<void(mouse, int, int)>(function);
+				case event::mouse::motion: signature_assert<void(mouse&, int, int)>(function);
 					glutMotionFunc(callbacks::mouse_motion);
 					glutPassiveMotionFunc(callbacks::mouse_motion_passive);
 					break;
