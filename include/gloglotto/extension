@@ -16,17 +16,20 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_H
-#define _GLOGLOTTO_H
+#ifndef _GLOGLOTTO_EXTENSION_H
+#define _GLOGLOTTO_EXTENSION_H
 
-#include <gloglotto/thin>
-#include <gloglotto/extension>
+#include <vector>
+#include <string>
 
-#include <gloglotto/shader>
-#include <gloglotto/shader_manager>
+namespace gloglotto
+{
+	namespace extension
+	{
+		std::vector<std::string> list (void);
 
-#include <gloglotto/window>
-
-namespace gl = gloglotto;
+		bool supported (std::string name);
+	}
+}
 
 #endif
