@@ -59,6 +59,11 @@ namespace gloglotto
 			 */
 			vector (vector<Size, Type> const& from);
 
+			/* Create a vector from the pointer of the rvalue vector and take ownership
+			 * of it if it was allocated by it.
+			 */
+			vector (vector<Size, Type>&& from);
+
 			/* Create a vector from an initializer list.
 			 */
 			vector (std::initializer_list<Type> list) throw (std::invalid_argument);
@@ -91,6 +96,10 @@ namespace gloglotto
 			 */
 			vector<Size, Type> operator + (vector<Size, Type> const& other) const;
 
+			/* Return the addition of the two vectors reusing the other temporary.
+			 */
+			vector<Size, Type>&& operator + (vector<Size, Type>&& other) const;
+
 			/* Add the other vector in place.
 			 */
 			vector<Size, Type>& operator += (vector<Size, Type> const& other);
@@ -99,6 +108,10 @@ namespace gloglotto
 			 */
 			vector<Size, Type> operator - (vector<Size, Type> const& other) const;
 
+			/* Return the substraction of the two vectors reusing the other temporary.
+			 */
+			vector<Size, Type>&& operator - (vector<Size, Type>&& other) const;
+
 			/* Substract the other vector in place.
 			 */
 			vector<Size, Type>& operator -= (vector<Size, Type> const& other);
@@ -106,6 +119,10 @@ namespace gloglotto
 			/* Return the cross product of the two vectors.
 			 */
 			vector<3, Type> operator * (vector<3, Type> const& other) const;
+
+			/* Return the cross product of the two vectors reusing the other temporary.
+			 */
+			vector<3, Type>&& operator * (vector<3, Type>&& other) const;
 
 			/* Cross product the other vector in place.
 			 */

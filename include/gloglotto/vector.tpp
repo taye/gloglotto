@@ -42,6 +42,20 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
+	vector<Size, Type>::vector (vector<Size, Type>&& from)
+	{
+		_data = from._data;
+
+		if (from._allocated) {
+			from._allocated = false;
+			_allocated      = true;
+		}
+		else {
+			_allocated = false;
+		}
+	}
+
+	template <int Size, typename Type>
 	vector<Size, Type>::vector (std::initializer_list<Type> list) throw (std::invalid_argument)
 	{
 		_data      = new Type[Size];
@@ -125,6 +139,15 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
+	vector<Size, Type>&&
+	vector<Size, Type>::operator + (vector<Size, Type>&& other) const
+	{
+		other += this;
+
+		return other;
+	}
+
+	template <int Size, typename Type>
 	vector<Size, Type>&
 	vector<Size, Type>::operator += (vector<Size, Type> const& other)
 	{
@@ -143,6 +166,15 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
+	vector<Size, Type>&&
+	vector<Size, Type>::operator - (vector<Size, Type>&& other) const
+	{
+		other -= this;
+
+		return other;
+	}
+
+	template <int Size, typename Type>
 	vector<Size, Type>&
 	vector<Size, Type>::operator -= (vector<Size, Type> const& other)
 	{
@@ -158,6 +190,23 @@ namespace gloglotto
 	vector<Size, Type>::operator * (vector<3, Type> const& other) const
 	{
 		return vector<3, Type>(this) *= other;
+	}
+
+	template <int Size, typename Type>
+	vector<3, Type>&&
+	vector<Size, Type>::operator * (vector<3, Type>&& other) const
+	{
+		static_assert(Size == 3, "cross product only available on 3 dimensional vectors");
+
+		Type v0 = _data[1] * other[2] - other[1] * _data[2];
+		Type v1 = -_data[0] * other[2] + other[0] * _data[2];
+		Type v2 = _data[0] * other[1] - other[0] * _data[1];
+
+		other[0] = v0;
+		other[1] = v1;
+		other[2] = v2;
+
+		return other;
 	}
 
 	template <int Size, typename Type>
