@@ -37,8 +37,10 @@ namespace gloglotto
 		static_assert(Size >= 1 && Size <= 4, "only 1, 2, 3, or 4 elements vectors");
 
 		static_assert(std::is_same<float, Type>::value ||
-									std::is_same<double, Type>::value ||
-									std::is_same<int, Type>::value, "only float, double and int");
+		              std::is_same<double, Type>::value ||
+		              std::is_same<int, Type>::value ||
+		              std::is_same<unsigned int, Type>::value ||
+		              std::is_same<bool, Type>::value, "only float, double, int, unsigned int and bool");
 
 		public:
 			typedef Type                                     type;
