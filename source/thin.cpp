@@ -238,6 +238,30 @@ namespace gloglotto
 				}
 
 				void
+				set (int location, float data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1f(location, data);
+					}
+				}
+
+				void
+				set (int location, int data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1i(location, data);
+					}
+				}
+
+				void
+				set (int location, unsigned int data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1ui(location, data);
+					}
+				}
+
+				void
 				set (int location, vector<1, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
@@ -298,6 +322,78 @@ namespace gloglotto
 				{
 					check_exception {
 						glUniform4iv(location, 1, &data);
+					}
+				}
+
+				void
+				set (int location, vector<1, unsigned int> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1uiv(location, 1, &data);
+					}
+				}
+
+				void
+				set (int location, vector<2, unsigned int> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform2uiv(location, 1, &data);
+					}
+				}
+
+				void
+				set (int location, vector<3, unsigned int> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform3uiv(location, 1, &data);
+					}
+				}
+
+				void
+				set (int location, vector<4, unsigned int> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform4uiv(location, 1, &data);
+					}
+				}
+
+				void
+				set (int location, vector<1, bool> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[] = { data[0] };
+
+					check_exception {
+						glUniform1iv(location, 1, buffer);
+					}
+				}
+
+				void
+				set (int location, vector<2, bool> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[] = { data[0], data[1] };
+
+					check_exception {
+						glUniform2iv(location, 1, buffer);
+					}
+				}
+
+				void
+				set (int location, vector<3, bool> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[] = { data[0], data[1], data[2] };
+
+					check_exception {
+						glUniform3iv(location, 1, buffer);
+					}
+				}
+
+				void
+				set (int location, vector<4, bool> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[] = { data[0], data[1], data[2], data[3] };
+
+					check_exception {
+						glUniform4iv(location, 1, buffer);
 					}
 				}
 

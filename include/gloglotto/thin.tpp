@@ -96,6 +96,90 @@ namespace gloglotto
 				}
 
 				template <int Size>
+				void set (int location, vectors<Size, vector<1, unsigned int>> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1uiv(location, Size, &data);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<2, unsigned int>> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform2uiv(location, Size, &data);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<3, unsigned int>> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform3uiv(location, Size, &data);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<4, unsigned int>> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform4uiv(location, Size, &data);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<1, bool>> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[Size];
+					for (int i = 0; i < Size; i++) {
+						buffer[i] = (&data)[i];
+					}
+
+					check_exception {
+						glUniform1iv(location, Size, buffer);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<2, bool>> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[Size * 2];
+					for (int i = 0; i < Size * 2; i++) {
+						buffer[i] = (&data)[i];
+					}
+
+					check_exception {
+						glUniform2iv(location, Size, buffer);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<3, bool>> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[Size * 3];
+					for (int i = 0; i < Size * 3; i++) {
+						buffer[i] = (&data)[i];
+					}
+
+					check_exception {
+						glUniform3iv(location, Size, buffer);
+					}
+				}
+
+				template <int Size>
+				void set (int location, vectors<Size, vector<4, bool>> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[Size * 4];
+					for (int i = 0; i < Size * 4; i++) {
+						buffer[i] = (&data)[i];
+					}
+
+					check_exception {
+						glUniform4iv(location, Size, buffer);
+					}
+				}
+
+				template <int Size>
 				void set (int location, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
