@@ -57,12 +57,6 @@ namespace gloglotto
 		namespace buffers
 		{
 			void
-			swap (void)
-			{
-				glutSwapBuffers();
-			}
-
-			void
 			clear (enum clear mask) throw (invalid_value, invalid_operation)
 			{
 				check_exception {

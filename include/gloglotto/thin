@@ -56,18 +56,11 @@ namespace gloglotto
 	 */
 	namespace thin
 	{
-		namespace extensions
-		{
-			void setup (void) throw (exception);
-		}
-
 		void viewport (int width, int height);
 		void viewport (int x, int y, int width, int height);
 
 		namespace buffers
 		{
-			void swap (void);
-
 			enum class clear : unsigned int
 			{
 				color        = GL_COLOR_BUFFER_BIT,
