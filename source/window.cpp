@@ -79,7 +79,8 @@ namespace gloglotto
 
 		namespace callbacks
 		{
-			std::map<int, void*> closures;
+			std::map<int, void*>        closures;
+			std::map<int, class timer*> timers;
 
 			template <typename Signature, typename ...Args>
 			static inline
@@ -173,6 +174,28 @@ namespace gloglotto
 			mouse_motion_passive (int x, int y)
 			{
 				closure<void(mouse, int, int)>(event::mouse::motion, mouse(), x, y);
+			}
+
+			void
+			timer (int id)
+			{
+				auto iterator = timers.find(id);
+				if (iterator == timers.end()) {
+					return;
+				}
+
+				auto timer = iterator->second;
+				if (!timer->stopped()) {
+					timer->call();
+				}
+
+				if (timer->repeat() && !timer->stopped()) {
+					glutTimerFunc(timer->after().count(), callbacks::timer, timer->id());
+				}
+				else {
+					timers.erase(iterator);
+					delete timer;
+				}
 			}
 		}
 
@@ -436,6 +459,42 @@ namespace gloglotto
 		mouse::released (void)
 		{
 			return _released;
+		}
+
+		int
+		timer::id (void)
+		{
+			return _id;
+		}
+
+		bool
+		timer::repeat (void)
+		{
+			return _repeat;
+		}
+
+		void
+		timer::stop (void)
+		{
+			_stopped = true;
+		}
+
+		bool
+		timer::stopped (void)
+		{
+			return _stopped;
+		}
+
+		std::chrono::milliseconds
+		timer::after (void)
+		{
+			return _after;
+		}
+
+		void
+		timer::call (void)
+		{
+			_function(*this);
 		}
 	}
 }

@@ -21,7 +21,7 @@
 
 #include <gloglotto/thin>
 
-#include <iostream>
+#include <chrono>
 
 namespace gloglotto
 {
@@ -52,6 +52,8 @@ namespace gloglotto
 			void mouse_click (int button, int state, int x, int y);
 			void mouse_motion (int x, int y);
 			void mouse_motion_passive (int x, int y);
+
+			void timer (int value);
 		}
 
 		namespace event
@@ -178,8 +180,42 @@ namespace gloglotto
 				bool   _released;
 		};
 
+		class timer final
+		{
+			public:
+				template <class Duration>
+				timer (Duration duration, std::function<void(timer&)> function, bool repeat = false);
+
+				int id (void);
+				bool repeat (void);
+
+				void stop (void);
+				bool stopped (void);
+
+				template <class Duration>
+				void after (Duration duration);
+
+				std::chrono::milliseconds after (void);
+
+				void call (void);
+
+			private:
+				int                         _id;
+				std::function<void(timer&)> _function;
+				std::chrono::milliseconds   _after;
+
+				bool _repeat;
+				bool _stopped;
+		};
+
 		template <int Callback, typename Function>
 		void on (Function function) throw (std::invalid_argument, std::bad_typeid);
+
+		template <class Duration>
+		void after (Duration duration, std::function<void(timer&)> function);
+
+		template <class Duration, typename Function>
+		void every (Duration duration, std::function<void(timer&)> function);
 	}
 }
 

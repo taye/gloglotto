@@ -25,7 +25,29 @@ namespace gloglotto
 	{
 		namespace callbacks
 		{
-			extern std::map<int, void*> closures;
+			extern std::map<int, void*>        closures;
+			extern std::map<int, class timer*> timers;
+		}
+
+		template <class Duration>
+		timer::timer (Duration duration, std::function<void(timer&)> function, bool repeat)
+		{
+			static int _last_id = 0;
+
+			_id       = _last_id++;
+			_function = function;
+
+			after(duration);
+			
+			_repeat  = repeat;
+			_stopped = false;
+		}
+
+		template <class Duration>
+		void
+		timer::after (Duration duration)
+		{
+			_after = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
 		}
 
 		template<int Callback, typename Function>
@@ -74,6 +96,28 @@ namespace gloglotto
 			}
 
 			callbacks::closures[Callback] = new decltype(to_function(function))(function);
+		}
+
+		template <class Duration>
+		void
+		after (Duration duration, std::function<void(timer&)> function)
+		{
+			timer* time = new timer(duration, function);
+
+			callbacks::timers[time->id()] = time;
+
+			glutTimerFunc(time->after().count(), callbacks::timer, time->id());
+		}
+
+		template <class Duration>
+		void
+		every (Duration duration, std::function<void(timer&)> function)
+		{
+			timer* time = new timer(duration, function, true);
+
+			callbacks::timers[time->id()] = time;
+
+			glutTimerFunc(time->after().count(), callbacks::timer, time->id());
 		}
 	}
 }
