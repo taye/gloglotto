@@ -32,7 +32,49 @@ namespace gloglotto
 			namespace uniform
 			{
 				template <int Size>
-				void set (int location, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, std::array<float, Size>data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1fv(location, Size, data.data());
+					}
+				}
+
+				template <int Size>
+				void
+				set (int location, std::array<int, Size> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1iv(location, Size, data.data());
+					}
+				}
+
+				template <int Size>
+				void
+				set (int location, std::array<unsigned int, Size> data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1uiv(location, Size, data.data());
+					}
+				}
+
+				template <int Size>
+				void
+				set (int location, std::array<bool, Size> data) throw (invalid_operation, invalid_value)
+				{
+					int buffer[Size];
+					for (int i = 0; i < Size; i++) {
+						buffer[i] = data[i];
+					}
+
+					check_exception {
+						glUniform1iv(location, Size, &buffer);
+					}
+				}
+
+				template <int Size>
+				void
+				set (int location, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform1fv(location, Size, &data);
