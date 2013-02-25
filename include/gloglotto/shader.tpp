@@ -49,6 +49,34 @@ namespace gloglotto
 
 	template <int Size>
 	void
+	shader::uniform (std::string name, std::array<float, Size>data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, std::array<int, Size> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, std::array<unsigned int, Size> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, std::array<bool, Size> data) throw (invalid_operation, invalid_value)
+	{
+		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+	}
+
+	template <int Size>
+	void
 	shader::uniform (std::string name, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);

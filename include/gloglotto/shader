@@ -77,6 +77,18 @@ namespace gloglotto
 			void uniform (std::string name, matrix<4, 3, float> data) throw (invalid_operation, invalid_value);
 
 			template <int Size>
+			void uniform (std::string name, std::array<float, Size>data) throw (invalid_operation, invalid_value);
+
+			template <int Size>
+			void uniform (std::string name, std::array<int, Size> data) throw (invalid_operation, invalid_value);
+
+			template <int Size>
+			void uniform (std::string name, std::array<unsigned int, Size> data) throw (invalid_operation, invalid_value);
+
+			template <int Size>
+			void uniform (std::string name, std::array<bool, Size> data) throw (invalid_operation, invalid_value);
+
+			template <int Size>
 			void uniform (std::string name, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value);
 
 			template <int Size>
