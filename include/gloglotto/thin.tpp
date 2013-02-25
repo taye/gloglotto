@@ -40,7 +40,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<2, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<2, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform2fv(location, Size, &data);
@@ -48,7 +49,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<3, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<3, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform3fv(location, Size, &data);
@@ -56,7 +58,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<4, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<4, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform4fv(location, Size, &data);
@@ -64,7 +67,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<1, int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<1, int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform1iv(location, Size, &data);
@@ -72,7 +76,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<2, int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<2, int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform2iv(location, Size, &data);
@@ -80,7 +85,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<3, int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<3, int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform3iv(location, Size, &data);
@@ -88,7 +94,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<4, int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<4, int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform4iv(location, Size, &data);
@@ -96,7 +103,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<1, unsigned int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<1, unsigned int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform1uiv(location, Size, &data);
@@ -104,7 +112,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<2, unsigned int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<2, unsigned int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform2uiv(location, Size, &data);
@@ -112,7 +121,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<3, unsigned int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<3, unsigned int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform3uiv(location, Size, &data);
@@ -120,7 +130,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<4, unsigned int>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<4, unsigned int>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniform4uiv(location, Size, &data);
@@ -128,7 +139,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<1, bool>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<1, bool>> data) throw (invalid_operation, invalid_value)
 				{
 					int buffer[Size];
 					for (int i = 0; i < Size; i++) {
@@ -141,7 +153,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<2, bool>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<2, bool>> data) throw (invalid_operation, invalid_value)
 				{
 					int buffer[Size * 2];
 					for (int i = 0; i < Size * 2; i++) {
@@ -154,7 +167,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<3, bool>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<3, bool>> data) throw (invalid_operation, invalid_value)
 				{
 					int buffer[Size * 3];
 					for (int i = 0; i < Size * 3; i++) {
@@ -167,7 +181,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, vectors<Size, vector<4, bool>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, vectors<Size, vector<4, bool>> data) throw (invalid_operation, invalid_value)
 				{
 					int buffer[Size * 4];
 					for (int i = 0; i < Size * 4; i++) {
@@ -180,7 +195,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix2fv(location, Size, GL_TRUE, &data);
@@ -188,7 +204,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<3, 3, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<3, 3, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix3fv(location, Size, GL_TRUE, &data);
@@ -196,7 +213,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix4fv(location, Size, GL_TRUE, &data);
@@ -204,7 +222,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix3x2fv(location, Size, GL_TRUE, &data);
@@ -212,7 +231,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix2x3fv(location, Size, GL_TRUE, &data);
@@ -220,7 +240,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix4x2fv(location, Size, GL_TRUE, &data);
@@ -228,7 +249,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix2x4fv(location, Size, GL_TRUE, &data);
@@ -236,7 +258,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix4x3fv(location, Size, GL_TRUE, &data);
@@ -244,7 +267,8 @@ namespace gloglotto
 				}
 
 				template <int Size>
-				void set (int location, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value)
+				void
+				set (int location, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
 						glUniformMatrix3x4fv(location, Size, GL_TRUE, &data);
