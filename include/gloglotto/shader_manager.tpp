@@ -50,7 +50,7 @@ namespace gloglotto
 	{
 		auto current = _shaders.at(name);
 
-		current->call(args...);
+		current->begin(args...);
 
 		return *current;
 	}
