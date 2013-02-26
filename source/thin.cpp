@@ -168,7 +168,13 @@ namespace gloglotto
 					int status;
 					glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 					if (status == GL_FALSE) {
-						throw failed_compilation("shader compilation failed");
+						int length;
+						glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+
+						std::string log(length, 0);
+						glGetShaderInfoLog(id, length, &length, const_cast<char*>(log.data()));
+
+						throw failed_compilation(log);
 					}
 
 					return id;
@@ -491,10 +497,16 @@ namespace gloglotto
 						shader::destroy(entry.second);
 					}
 
-					GLint status;
+					int status;
 					glGetProgramiv(program, GL_LINK_STATUS, &status);
 					if (status == GL_FALSE) {
-						throw failed_linking("shader linking failed");
+						int length;
+						glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+
+						std::string log(length, '\0');
+						glGetShaderInfoLog(program, length, &length, const_cast<char*>(log.data()));
+
+						throw failed_compilation(log);
 					}
 				}
 				catch (exception& e) {
