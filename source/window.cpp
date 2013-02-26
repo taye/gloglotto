@@ -68,7 +68,7 @@ namespace gloglotto
 		void
 		exit (void)
 		{
-			glutLeaveMainLoop();
+			std::exit(0);
 		}
 
 		void
