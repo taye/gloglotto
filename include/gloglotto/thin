@@ -101,9 +101,10 @@ namespace gloglotto
 			{
 				int location (unsigned int program, std::string name);
 
-				void set (int localtion, float data) throw (invalid_operation, invalid_value);
-				void set (int localtion, int data) throw (invalid_operation, invalid_value);
-				void set (int localtion, unsigned int data) throw (invalid_operation, invalid_value);
+				void set (int location, float data) throw (invalid_operation, invalid_value);
+				void set (int location, int data) throw (invalid_operation, invalid_value);
+				void set (int location, unsigned int data) throw (invalid_operation, invalid_value);
+				void set (int location, bool data) throw (invalid_operation, invalid_value);
 
 				void set (int location, vector<1, float> data) throw (invalid_operation, invalid_value);
 				void set (int location, vector<2, float> data) throw (invalid_operation, invalid_value);
