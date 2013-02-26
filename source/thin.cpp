@@ -465,7 +465,7 @@ namespace gloglotto
 			}
 
 			unsigned int
-			make (std::map<std::string, std::string> source) throw (invalid_operation, failed_linking)
+			make (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_linking)
 			{
 				static std::map<std::string, unsigned int> enums = {
 					{ "vertex",   GL_VERTEX_SHADER },
@@ -476,17 +476,17 @@ namespace gloglotto
 					{ "tessellation:control",    GL_TESS_CONTROL_SHADER }
 				};
 
-				std::map<std::string, unsigned int> id;
+				std::multimap<std::string, unsigned int> id;
 
 				for (auto entry : source) {
-					id[entry.first] = shader::make(enums[entry.first], entry.second);
+					id.insert(std::make_pair(entry.first, shader::make(enums[entry.first], entry.second)));
 				}
 
 				return make(id);
 			}
 
 			unsigned int
-			make (std::map<std::string, unsigned int> id) throw (invalid_operation, failed_linking)
+			make (std::multimap<std::string, unsigned int> id) throw (invalid_operation, failed_linking)
 			{
 				unsigned int program = glCreateProgram();
 

@@ -225,8 +225,8 @@ namespace gloglotto
 				void set (int location, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value);
 			}
 
-			unsigned int make (std::map<std::string, std::string> source) throw (invalid_operation, failed_linking);
-			unsigned int make (std::map<std::string, unsigned int> id) throw (invalid_operation, failed_linking);
+			unsigned int make (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_linking);
+			unsigned int make (std::multimap<std::string, unsigned int> id) throw (invalid_operation, failed_linking);
 			void         destroy (unsigned int program);
 
 			void bind (unsigned int program, unsigned int index, std::string name);
