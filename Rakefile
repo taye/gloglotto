@@ -4,7 +4,7 @@ require 'fileutils'
 
 CXX    = ENV['CXX'] || 'clang++'
 CFLAGS = "-Wall -Wextra -pedantic -Werror-implicit-function-declaration -funroll-loops -std=c++11 -pipe -Iinclude #{ENV['CFLAGS']}"
-LDFLAGS = "-lGL -lGLEW -lglut #{ENV['LDFLAGS']}"
+LDFLAGS = "-lGL -lGLU -lGLEW -lglut #{ENV['LDFLAGS']}"
 
 SOURCES = FileList['source/**/*.cpp']
 OBJECTS = SOURCES.ext('o')
