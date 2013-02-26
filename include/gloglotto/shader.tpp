@@ -35,11 +35,13 @@ namespace gloglotto
 
 	template <typename ...Args>
 	void
-	shader::call (Args... args)
+	shader::begin (Args... args)
 	{
 		auto function = static_cast<std::function<void(shader&, Args...)>>(_function);
 
 		if (typeid(function) == *_signature) {
+			thin::program::use(_id);
+
 			(*function)(*this, args...);
 		}
 		else {

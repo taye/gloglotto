@@ -32,6 +32,12 @@ namespace gloglotto
 	}
 
 	void
+	shader::end (void)
+	{
+		thin::program::use(0);
+	}
+
+	void
 	shader::uniform (std::string name, float data) throw (invalid_operation, invalid_value)
 	{
 		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
