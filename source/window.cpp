@@ -66,6 +66,12 @@ namespace gloglotto
 		}
 
 		void
+		exit (void)
+		{
+			glutLeaveMainLoop();
+		}
+
+		void
 		render (void)
 		{
 			glutSwapBuffers();

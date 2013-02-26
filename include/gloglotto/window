@@ -34,6 +34,8 @@ namespace gloglotto
 		void loop (std::function<void(void)> before);
 		void loop (std::function<void(void)> before, std::function<void(void)> after);
 
+		void exit (void);
+
 		void render (void);
 		void update (void);
 
