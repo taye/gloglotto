@@ -37,7 +37,7 @@ namespace gloglotto
 	void
 	shader::begin (Args... args)
 	{
-		auto function = static_cast<std::function<void(shader&, Args...)>>(_function);
+		auto function = static_cast<std::function<void(shader&, Args...)>*>(_function);
 
 		if (typeid(function) == *_signature) {
 			thin::program::use(_id);
