@@ -33,7 +33,7 @@ namespace gloglotto
 	{
 		public:
 			template <typename Function>
-			shader (std::map<std::string, std::string> source, Function lambda);
+			shader (std::multimap<std::string, std::string> source, Function lambda);
 
 			~shader (void);
 
@@ -169,7 +169,7 @@ namespace gloglotto
 			const std::type_info* _signature;
 			void*                 _function;
 
-			std::map<std::string, std::string> _source;
+			std::multimap<std::string, std::string> _source;
 	};
 }
 

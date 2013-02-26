@@ -22,7 +22,7 @@
 namespace gloglotto
 {
 	template <typename Function>
-	shader::shader (std::map<std::string, std::string> source, Function lambda)
+	shader::shader (std::multimap<std::string, std::string> source, Function lambda)
 	{
 		_id     = thin::program::make(source);
 		_source = source;
