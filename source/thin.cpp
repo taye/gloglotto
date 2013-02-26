@@ -249,6 +249,14 @@ namespace gloglotto
 				}
 
 				void
+				set (int location, bool data) throw (invalid_operation, invalid_value)
+				{
+					check_exception {
+						glUniform1i(location, data);
+					}
+				}
+
+				void
 				set (int location, vector<1, float> data) throw (invalid_operation, invalid_value)
 				{
 					check_exception {
