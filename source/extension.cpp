@@ -16,8 +16,8 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/extension>
 #include <gloglotto/thin>
+#include <gloglotto/extension>
 
 #include <iterator>
 #include <sstream>
@@ -29,6 +29,7 @@ namespace gloglotto
 	{
 		void
 		setup (void) throw (exception)
+		{
 			unsigned int err = glewInit();
 
 			if (err != GLEW_OK) {
