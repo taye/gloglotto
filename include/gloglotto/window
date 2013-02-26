@@ -116,14 +116,17 @@ namespace gloglotto
 			public:
 				key (int modifiers = 0, bool released = false);
 				key (unsigned char key, int modifiers = 0, bool released = false);
+				key (char key, int modifiers = 0, bool released = false);
 				key (int key, int modifiers = 0, bool released = false);
 				key (key const& from);
 
 				bool operator == (unsigned char other);
+				bool operator == (char other);
 				bool operator == (int other);
 				bool operator == (key const& other);
 
 				bool operator != (unsigned char other);
+				bool operator != (char other);
 				bool operator != (int other);
 				bool operator != (key const& other);
 

@@ -259,6 +259,21 @@ namespace gloglotto
 			_released  = released;
 		}
 
+		key::key (char dumb, int modifiers, bool released)
+		{
+			unsigned char key = dumb;
+
+			if (key >= 1 && key <= 26 && key != tab && key != enter && key != backspace) {
+				_key = key + 96;
+			}
+			else {
+				_key = std::tolower(key);
+			}
+
+			_modifiers = modifiers;
+			_released  = released;
+		}
+
 		key::key (int key, int modifiers, bool released)
 		{
 			_key       = (known(key) ? key : none) << 16;
@@ -276,7 +291,13 @@ namespace gloglotto
 		bool
 		key::operator == (unsigned char other)
 		{
-			return _key == other;
+			return _key == std::tolower(other);
+		}
+
+		bool
+		key::operator == (char other)
+		{
+			return _key == std::tolower((unsigned char) other);
 		}
 
 		bool
@@ -300,6 +321,12 @@ namespace gloglotto
 		key::operator != (unsigned char other)
 		{
 			return _key != std::tolower(other);
+		}
+
+		bool
+		key::operator != (char other)
+		{
+			return _key != std::tolower((unsigned char) other);
 		}
 
 		bool
