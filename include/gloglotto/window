@@ -27,8 +27,8 @@ namespace gloglotto
 {
 	namespace window
 	{
-		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, std::string name) throw (std::invalid_argument);
-		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument);
+		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, std::string name) throw (std::invalid_argument, exception);
+		void create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument, exception);
 
 		void loop (void);
 		void loop (std::function<void(void)> before);

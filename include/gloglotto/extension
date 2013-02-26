@@ -26,8 +26,6 @@ namespace gloglotto
 {
 	namespace extension
 	{
-		void setup (void) throw (exception);
-
 		std::vector<std::string> list (void);
 
 		bool supported (std::string name);

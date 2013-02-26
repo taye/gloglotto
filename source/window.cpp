@@ -23,7 +23,7 @@ namespace gloglotto
 	namespace window
 	{
 		void
-		create (int* argc, char* argv[], sized_initializer_list<2, int> size, std::string name) throw (std::invalid_argument)
+		create (int* argc, char* argv[], sized_initializer_list<2, int> size, std::string name) throw (std::invalid_argument, exception)
 		{
 			glutInit(argc, argv);
 			glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
@@ -31,10 +31,15 @@ namespace gloglotto
 			glutInitWindowSize(size[0], size[1]);
 
 			glutCreateWindow(name.c_str());
+
+			unsigned int err = glewInit();
+			if (err != GLEW_OK) {
+				throw exception(reinterpret_cast<const char*>(glewGetErrorString(err)));
+			}
 		}
 
 		void
-		create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument)
+		create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument, exception)
 		{
 			glutInit(argc, argv);
 			glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
@@ -43,6 +48,11 @@ namespace gloglotto
 			glutInitWindowPosition(position[0], position[1]);
 
 			glutCreateWindow(name.c_str());
+
+			unsigned int err = glewInit();
+			if (err != GLEW_OK) {
+				throw exception(reinterpret_cast<const char*>(glewGetErrorString(err)));
+			}
 		}
 
 		void
