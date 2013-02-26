@@ -229,7 +229,7 @@ namespace gloglotto
 			unsigned int make (std::multimap<std::string, unsigned int> id) throw (invalid_operation, failed_linking);
 			void         destroy (unsigned int program);
 
-			void bind (unsigned int program, unsigned int index, std::string name);
+			void use (unsigned int program) throw (invalid_operation, invalid_value);
 		}
 
 		namespace error

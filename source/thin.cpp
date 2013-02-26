@@ -515,10 +515,10 @@ namespace gloglotto
 			}
 
 			void
-			bind (unsigned int program, unsigned int index, std::string name)
+			use (unsigned int program) throw (invalid_operation, invalid_value)
 			{
 				check_exception {
-					glBindAttribLocation(program, index, name.c_str());
+					glUseProgram(program);
 				}
 			}
 		}
