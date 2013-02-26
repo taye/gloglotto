@@ -29,25 +29,39 @@
 
 namespace gloglotto
 {
+	#define USE_SHADER(name, shader) \
+		for (auto& name : (shader))
+
 	class shader_manager
 	{
+		class shader_in_use
+		{
+			public:
+				shader_in_use (shader* in_use);
+
+				shader* begin (void);
+				shader* end (void);
+
+				shader& operator * (void);
+
+			private:
+				shader* _shader;
+		};
+
 		public:
 			shader_manager (void);
 			~shader_manager (void);
 
 			template <typename Function>
-			shader* make (std::vector<std::string> attributes,
-			              std::map<std::string, std::string> source,
-			              Function lambda);
+			shader* make (std::multimap<std::string, std::string> source,  Function lambda);
 
 			template <typename Function>
-			shader& add (std::string name,
-			             std::vector<std::string> attributes,
-			             std::map<std::string, std::string> source,
-			             Function lambda);
+			shader& add (std::string name, std::multimap<std::string, std::string> source, Function lambda);
+
+			shader& get (std::string name);
 
 			template <typename ...Args>
-			shader& use (std::string name, Args... args);
+			shader_in_use use (std::string name, Args... args);
 
 		private:
 			std::map<std::string, shader*> _shaders;

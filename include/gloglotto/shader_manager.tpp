@@ -23,21 +23,16 @@ namespace gloglotto
 {
 	template <typename Function>
 	shader*
-	shader_manager::make (std::vector<std::string> attributes,
-	                      std::map<std::string, std::string> source,
-	                      Function lambda)
+	shader_manager::make (std::multimap<std::string, std::string> source, Function lambda)
 	{
-		return new shader(attributes, source, lambda);
+		return new shader(source, lambda);
 	}
 
 	template <typename Function>
 	shader&
-	shader_manager::add (std::string name,
-	                     std::vector<std::string> attributes,
-	                     std::map<std::string, std::string> source,
-	                     Function lambda)
+	shader_manager::add (std::string name, std::multimap<std::string, std::string> source, Function lambda)
 	{
-		auto current = make(attributes, source, lambda);
+		auto current = make(source, lambda);
 
 		_shaders[name] = current;
 
@@ -45,13 +40,13 @@ namespace gloglotto
 	}
 
 	template <typename ...Args>
-	shader&
+	shader_manager::shader_in_use
 	shader_manager::use (std::string name, Args... args)
 	{
 		auto current = _shaders.at(name);
 
 		current->begin(args...);
 
-		return *current;
+		return shader_in_use(current);
 	}
 }

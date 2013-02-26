@@ -30,4 +30,33 @@ namespace gloglotto
 			delete entry.second;
 		}
 	}
+
+	shader&
+	shader_manager::get (std::string name)
+	{
+		return *_shaders.at(name);
+	}
+
+	shader_manager::shader_in_use::shader_in_use (shader* in_use)
+	{
+		_shader = in_use;
+	}
+
+	shader*
+	shader_manager::shader_in_use::begin (void)
+	{
+		return _shader;
+	}
+
+	shader*
+	shader_manager::shader_in_use::end (void)
+	{
+		return _shader + 1;
+	}
+
+	shader&
+	shader_manager::shader_in_use::operator * (void)
+	{
+		return *_shader;
+	}
 }
