@@ -27,6 +27,15 @@ namespace gloglotto
 {
 	namespace extension
 	{
+		void
+		setup (void) throw (exception)
+			unsigned int err = glewInit();
+
+			if (err != GLEW_OK) {
+				throw exception(reinterpret_cast<const char*>(glewGetErrorString(err)));
+			}
+		}
+
 		std::vector<std::string>
 		list (void)
 		{

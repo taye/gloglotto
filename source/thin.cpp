@@ -25,19 +25,6 @@ namespace gloglotto
 {
 	namespace thin
 	{
-		namespace extensions
-		{
-			void
-			setup (void) throw (exception)
-			{
-				unsigned int err = glewInit();
-
-				if (err != GLEW_OK) {
-					throw exception(reinterpret_cast<const char*>(glewGetErrorString(err)));
-				}
-			}
-		}
-
 		void
 		viewport (int width, int height)
 		{
