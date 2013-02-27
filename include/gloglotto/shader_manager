@@ -29,8 +29,8 @@
 
 namespace gloglotto
 {
-	#define USE_SHADER(name, shader) \
-		for (auto& name : (shader))
+	#define with_shader(manager, name, ...) \
+		for (auto& self : (manager.use(name, ## __VA_ARGS__)))
 
 	class shader_manager
 	{
