@@ -23,14 +23,14 @@ namespace gloglotto
 {
 	template <typename Function>
 	shader*
-	shader_manager::make (std::multimap<std::string, std::string> source, Function lambda)
+	shader_manager::make (std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
 	{
 		return new shader(source, lambda);
 	}
 
 	template <typename Function>
 	shader&
-	shader_manager::add (std::string name, std::multimap<std::string, std::string> source, Function lambda)
+	shader_manager::add (std::string name, std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
 	{
 		auto current = make(source, lambda);
 

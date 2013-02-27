@@ -32,13 +32,13 @@ namespace gloglotto
 	}
 
 	shader*
-	shader_manager::make (std::multimap<std::string, std::string> source)
+	shader_manager::make (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking)
 	{
 		return new shader(source);
 	}
 
 	shader&
-	shader_manager::add (std::string name, std::multimap<std::string, std::string> source)
+	shader_manager::add (std::string name, std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking)
 	{
 		auto current = make(source);
 
