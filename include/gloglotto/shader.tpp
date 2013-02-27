@@ -22,7 +22,7 @@
 namespace gloglotto
 {
 	template <typename Function>
-	shader::shader (std::multimap<std::string, std::string> source, Function lambda)
+	shader::shader (std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
 	{
 		_id     = thin::program::make(source);
 		_source = source;
@@ -35,17 +35,26 @@ namespace gloglotto
 
 	template <typename ...Args>
 	void
-	shader::begin (Args... args)
+	shader::begin (Args... args) throw (std::bad_typeid, invalid_operation, invalid_value)
 	{
-		auto function = static_cast<std::function<void(shader&, Args...)>*>(_function);
+		if (_function) {
+			auto function = static_cast<std::function<void(shader&, Args...)>*>(_function);
 
-		if (typeid(function) == *_signature) {
-			thin::program::use(_id);
+			if (typeid(function) == *_signature) {
+				thin::program::use(_id);
 
-			(*function)(*this, args...);
+				(*function)(*this, args...);
+			}
+			else {
+				throw std::bad_typeid();
+			}
 		}
 		else {
-			throw std::bad_typeid();
+			if (typeid(void(Args...)) != typeid(void(void))) {
+				throw std::bad_typeid();
+			}
+
+			thin::program::use(_id);
 		}
 	}
 

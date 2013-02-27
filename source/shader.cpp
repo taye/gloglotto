@@ -22,6 +22,14 @@
 
 namespace gloglotto
 {
+	shader::shader (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking)
+	{
+		_id     = thin::program::make(source);
+		_source = source;
+
+		_function = nullptr;
+	}
+
 	shader::~shader (void)
 	{
 		if (_id != 0) {

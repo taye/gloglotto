@@ -26,19 +26,22 @@
 
 #include <gloglotto/math>
 #include <gloglotto/exception>
+#include <gloglotto/thin>
 
 namespace gloglotto
 {
 	class shader final
 	{
 		public:
+			shader (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking);
+
 			template <typename Function>
-			shader (std::multimap<std::string, std::string> source, Function lambda);
+			shader (std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking);
 
 			~shader (void);
 
 			template <typename ...Args>
-			void begin (Args... args);
+			void begin (Args... args) throw (std::bad_typeid, invalid_operation, invalid_value);
 
 			void end (void);
 
