@@ -31,6 +31,22 @@ namespace gloglotto
 		}
 	}
 
+	shader*
+	shader_manager::make (std::multimap<std::string, std::string> source)
+	{
+		return new shader(source);
+	}
+
+	shader&
+	shader_manager::add (std::string name, std::multimap<std::string, std::string> source)
+	{
+		auto current = make(source);
+
+		_shaders[name] = current;
+
+		return *current;
+	}
+
 	shader&
 	shader_manager::get (std::string name)
 	{

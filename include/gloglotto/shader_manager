@@ -29,8 +29,8 @@
 
 namespace gloglotto
 {
-	#define with_shader(manager, name, ...) \
-		for (auto& self : (manager.use(name, ## __VA_ARGS__)))
+	#define with_shader(manager, ...) \
+		for (auto& self : (manager.use(__VA_ARGS__)))
 
 	class shader_manager
 	{
@@ -52,8 +52,12 @@ namespace gloglotto
 			shader_manager (void);
 			~shader_manager (void);
 
+			shader* make (std::multimap<std::string, std::string> source);
+
 			template <typename Function>
 			shader* make (std::multimap<std::string, std::string> source,  Function lambda);
+
+			shader& add (std::string name, std::multimap<std::string, std::string> source);
 
 			template <typename Function>
 			shader& add (std::string name, std::multimap<std::string, std::string> source, Function lambda);
