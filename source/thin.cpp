@@ -466,7 +466,7 @@ namespace gloglotto
 			}
 
 			unsigned int
-			make (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_linking)
+			make (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking)
 			{
 				static std::map<std::string, unsigned int> enums = {
 					{ "vertex",   GL_VERTEX_SHADER },
