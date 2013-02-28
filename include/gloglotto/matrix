@@ -43,10 +43,11 @@ namespace gloglotto
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			typedef Type                                              type;
-			typedef iterator::accessible<matrix<Rows, Columns, Type>> iterator;
+			static const int              accessible_size = Rows;
+			typedef vector<Columns, Type> accessible_type;
 
-			static const int size = Rows;
+			typedef iterator::accessible<matrix<Rows, Columns, Type>, std::true_type> const_iterator;
+			typedef iterator::accessible<matrix<Rows, Columns, Type>>                 iterator;
 
 			static const int rows     = Rows;
 			static const int columns  = Columns;
@@ -94,9 +95,29 @@ namespace gloglotto
 			 */
 			matrix<Rows, Columns, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
 
+			/* Access a constant row of the matrix.
+			 */
+			vector<Columns, Type> const& operator [] (int index) const throw (std::out_of_range);
+
+			/* Return a const iterator to the beginning of the matrix.
+			 */
+			const_iterator begin (void) const;
+
+			/* Return a const iterator to the end of the matrix.
+			 */
+			const_iterator end (void) const;
+
 			/* Access a row of the matrix.
 			 */
 			vector<Columns, Type>& operator [] (int index) throw (std::out_of_range);
+
+			/* Return an iterator to the beginning of the matrix.
+			 */
+			iterator begin (void);
+
+			/* Return an iterator to the end of the matrix.
+			 */
+			iterator end (void);
 
 			/* Return the addition of the two matrices.
 			 */
@@ -153,15 +174,11 @@ namespace gloglotto
 
 			/* Return the inverted matrix when possible.
 			 */
-			matrix<Rows, Columns, Type> operator ~ (void) const throw (std::logic_error);
+			matrix<Rows, Columns, Type> operator ! (void) const throw (std::logic_error);
 
-			/* Return an iterator to the beginning of the matrix.
+			/* Return the transposed matrix.
 			 */
-			iterator begin (void);
-
-			/* Return an iterator to the end of the matrix.
-			 */
-			iterator end (void);
+			matrix<Columns, Rows, Type> operator ~ (void) const;
 
 			/* Return the wrapped raw pointer (row major).
 			 */

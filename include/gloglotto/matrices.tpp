@@ -116,6 +116,35 @@ namespace gloglotto
 	}
 
 	template <int Size, class Matrix>
+	Matrix const&
+	matrices<Size, Matrix>::operator [] (int index) const throw (std::out_of_range)
+	{
+		if (index < 0 || index >= Size) {
+			throw std::out_of_range("index out of range");
+		}
+
+		if (!_matrices[index]) {
+			_matrices[index] = new Matrix(_data + (rows * columns * index));
+		}
+
+		return *_matrices[index];
+	}
+
+	template <int Size, class Matrix>
+	typename matrices<Size, Matrix>::const_iterator
+	matrices<Size, Matrix>::begin (void) const
+	{
+		return const_iterator(this);
+	}
+
+	template <int Size, class Matrix>
+	typename matrices<Size, Matrix>::const_iterator
+	matrices<Size, Matrix>::end (void) const
+	{
+		return const_iterator(this, -1);
+	}
+
+	template <int Size, class Matrix>
 	Matrix&
 	matrices<Size, Matrix>::operator [] (int index) throw (std::out_of_range)
 	{

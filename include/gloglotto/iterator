@@ -27,61 +27,71 @@ namespace gloglotto
 	{
 		template <class Type>
 		struct accessible_traits
-			: public accessible_traits<decltype(&Type::operator[])>
 		{
+			typedef typename Type::accessible_type                                type;
+			typedef typename std::add_const<typename Type::accessible_type>::type const_type;
+
+			static const int size = Type::accessible_size;
 		};
 
-		template <typename ClassType, typename ReturnType>
-		struct accessible_traits<ReturnType(ClassType::*)(int)>
+		template <class Type, typename Constant>
+		struct accessible_type;
+
+		template <class Type>
+		struct accessible_type<Type, std::true_type>
 		{
-			typedef typename std::remove_reference<ReturnType>::type type;
+			typedef typename accessible_traits<Type>::const_type type;
 		};
 
-		template <typename Class>
+		template <class Type>
+		struct accessible_type<Type, std::false_type>
+		{
+			typedef typename accessible_traits<Type>::type type;
+		};
+
+		template <typename Class, typename Constant = std::false_type>
 		class accessible : public std::iterator<std::random_access_iterator_tag,
-		                                        typename accessible_traits<Class>::type>
+		                                        typename accessible_type<Class, Constant>::type>
 		{
 			public:
-				typedef int difference_type;
+				typedef typename accessible_type<Class, Constant>::type& reference;
+				typedef typename accessible_type<Class, Constant>::type* pointer;
 
-				typedef typename accessible_traits<Class>::type& reference;
-				typedef typename accessible_traits<Class>::type* pointer;
-
-				static const int size = Class::size;
+				static const int size = accessible_traits<Class>::size;
 
 			public:
-				accessible (Class* object, difference_type const& current = 0);
+				accessible (Class* object, int current = 0);
 
-				accessible (accessible<Class> const& from);
+				accessible (accessible<Class, Constant> const& from);
 
 				reference operator *  (void) const;
-				reference operator [] (difference_type const& n) const;
+				reference operator [] (int n) const;
 				pointer   operator -> (void) const;
 
-				accessible<Class>& operator ++ (void);
-				accessible<Class>  operator ++ (int);
+				accessible<Class, Constant>& operator ++ (void);
+				accessible<Class, Constant>  operator ++ (int);
 
-				accessible<Class>& operator -- (void);
-				accessible<Class>  operator -- (int);
+				accessible<Class, Constant>& operator -- (void);
+				accessible<Class, Constant>  operator -- (int);
 
-				accessible<Class>  operator +  (difference_type const& n) const;
-				accessible<Class>& operator += (difference_type const& n);
+				accessible<Class, Constant>  operator +  (int n) const;
+				accessible<Class, Constant>& operator += (int n);
 
-				accessible<Class>  operator -  (difference_type const& n) const;
-				accessible<Class>& operator -= (difference_type const& n);
+				accessible<Class, Constant>  operator -  (int n) const;
+				accessible<Class, Constant>& operator -= (int n);
 
-				bool operator == (accessible<Class> const& other) const;
-				bool operator != (accessible<Class> const& other) const;
+				bool operator == (accessible<Class, Constant> const& other) const;
+				bool operator != (accessible<Class, Constant> const& other) const;
 
-				bool operator >  (accessible<Class> const& other) const;
-				bool operator >= (accessible<Class> const& other) const;
+				bool operator >  (accessible<Class, Constant> const& other) const;
+				bool operator >= (accessible<Class, Constant> const& other) const;
 
-				bool operator <  (accessible<Class> const& other) const;
-				bool operator <= (accessible<Class> const& other) const;
+				bool operator <  (accessible<Class, Constant> const& other) const;
+				bool operator <= (accessible<Class, Constant> const& other) const;
 
 			private:
-				Class*          _object;
-				difference_type _current;
+				Class* _object;
+				int    _current;
 		};
 	}
 }

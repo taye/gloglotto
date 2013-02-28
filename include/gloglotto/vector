@@ -43,11 +43,13 @@ namespace gloglotto
 		              std::is_same<bool, Type>::value, "only float, double, int, unsigned int and bool");
 
 		public:
-			typedef Type                                     type;
-			typedef iterator::accessible<vector<Size, Type>> iterator;
+			static const int accessible_size = Size;
+			typedef Type     accessible_type;
 
-			static const int size = Size;
+			typedef iterator::accessible<vector<Size, Type>, std::true_type> const_iterator;
+			typedef iterator::accessible<vector<Size, Type>>                 iterator;
 
+			typedef Type type;
 			static const int elements = Size;
 
 		public:
@@ -88,9 +90,29 @@ namespace gloglotto
 			 */
 			vector<Size, Type>& operator = (std::initializer_list<Type> list) throw (std::invalid_argument);
 
+			/* Access a constant element of the vector.
+			 */
+			Type const& operator [] (int index) const throw (std::out_of_range);
+
+			/* Return a const iterator to the beginning of the vector.
+			 */
+			const_iterator begin (void) const;
+
+			/* Return a const iterator to the end of the vector.
+			 */
+			const_iterator end (void) const;
+
 			/* Access an element of the vector.
 			 */
 			Type& operator [] (int index) throw (std::out_of_range);
+
+			/* Return an iterator to the beginning of the vector.
+			 */
+			iterator begin (void);
+
+			/* Return an iterator to the end of the vector.
+			 */
+			iterator end (void);
 
 			/* Return the addition of the two vectors.
 			 */
@@ -157,13 +179,6 @@ namespace gloglotto
 			 */
 			Type magnitude (void) const;
 
-			/* Return an iterator to the beginning of the vector.
-			 */
-			iterator begin (void);
-
-			/* Return an iterator to the end of the vector.
-			 */
-			iterator end (void);
 
 			/* Return the wrapped raw pointer.
 			 */

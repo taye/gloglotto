@@ -173,18 +173,61 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
-	vector<Columns, Type>&
-	matrix<Rows, Columns, Type>::operator [] (int index) throw (std::out_of_range)
+	vector<Columns, Type> const&
+	matrix<Rows, Columns, Type>::operator [] (int row) const throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Rows) {
-			throw std::out_of_range("index out of range");
+		if (row < 0 || row >= Rows) {
+			throw std::out_of_range("row out of range");
 		}
 
-		if (!_vectors[index]) {
-			_vectors[index] = new vector<Columns, Type>(_data + (Columns * index));
+		if (!_vectors[row]) {
+			_vectors[row] = new vector<Columns, Type>(_data + (row * Columns));
 		}
 
-		return *_vectors[index];
+		return *_vectors[row];
+	}
+
+	template <int Rows, int Columns, typename Type>
+	typename matrix<Rows, Columns, Type>::const_iterator
+	matrix<Rows, Columns, Type>::begin (void) const
+	{
+		return const_iterator(this);
+	}
+
+	template <int Rows, int Columns, typename Type>
+	typename matrix<Rows, Columns, Type>::const_iterator
+	matrix<Rows, Columns, Type>::end (void) const
+	{
+		return const_iterator(this, -1);
+	}
+
+	template <int Rows, int Columns, typename Type>
+	vector<Columns, Type>&
+	matrix<Rows, Columns, Type>::operator [] (int row) throw (std::out_of_range)
+	{
+		if (row < 0 || row >= Rows) {
+			throw std::out_of_range("row out of range");
+		}
+
+		if (!_vectors[row]) {
+			_vectors[row] = new vector<Columns, Type>(_data + (row * Columns));
+		}
+
+		return *_vectors[row];
+	}
+
+	template <int Rows, int Columns, typename Type>
+	typename matrix<Rows, Columns, Type>::iterator
+	matrix<Rows, Columns, Type>::begin (void)
+	{
+		return iterator(this);
+	}
+
+	template <int Rows, int Columns, typename Type>
+	typename matrix<Rows, Columns, Type>::iterator
+	matrix<Rows, Columns, Type>::end (void)
+	{
+		return iterator(this, -1);
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -357,7 +400,7 @@ namespace gloglotto
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>
-	matrix<Rows, Columns, Type>::operator ~ (void) const throw (std::logic_error)
+	matrix<Rows, Columns, Type>::operator ! (void) const throw (std::logic_error)
 	{
 		static_assert(Rows == Columns, "only square matrices are invertible");
 
@@ -467,17 +510,18 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
-	typename matrix<Rows, Columns, Type>::iterator
-	matrix<Rows, Columns, Type>::begin (void)
+	matrix<Columns, Rows, Type>
+	matrix<Rows, Columns, Type>::operator ~ (void) const
 	{
-		return iterator(this);
-	}
+		matrix<Columns, Rows, Type> result(0);
 
-	template <int Rows, int Columns, typename Type>
-	typename matrix<Rows, Columns, Type>::iterator
-	matrix<Rows, Columns, Type>::end (void)
-	{
-		return iterator(this, -1);
+		for (int row = 0; row < Rows; row++) {
+			for (int column = 0; column < Columns; column++) {
+				(&result)[column * Rows + row] = _data[row * Columns + column];
+			}
+		}
+
+		return result;
 	}
 
 	template <int Rows, int Columns, typename Type>

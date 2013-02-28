@@ -116,6 +116,35 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
+	Vector const&
+	vectors<Size, Vector>::operator [] (int index) const throw (std::out_of_range)
+	{
+		if (index < 0 || index >= Size) {
+			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors[index]) {
+			_vectors[index] = new Vector(_data + (elements * index));
+		}
+
+		return *_vectors[index];
+	}
+
+	template <int Size, class Vector>
+	typename vectors<Size, Vector>::const_iterator
+	vectors<Size, Vector>::begin (void) const
+	{
+		return const_iterator(this);
+	}
+
+	template <int Size, class Vector>
+	typename vectors<Size, Vector>::const_iterator
+	vectors<Size, Vector>::end (void) const
+	{
+		return const_iterator(this, -1);
+	}
+
+	template <int Size, class Vector>
 	Vector&
 	vectors<Size, Vector>::operator [] (int index) throw (std::out_of_range)
 	{

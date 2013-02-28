@@ -121,6 +121,31 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
+	Type const&
+	vector<Size, Type>::operator [] (int index) const throw (std::out_of_range)
+	{
+		if (index < 0 || index >= Size) {
+			throw std::out_of_range("index out of range");
+		}
+
+		return _data[index];
+	}
+
+	template <int Size, typename Type>
+	typename vector<Size, Type>::const_iterator
+	vector<Size, Type>::begin (void) const
+	{
+		return const_iterator(this);
+	}
+
+	template <int Size, typename Type>
+	typename vector<Size, Type>::const_iterator
+	vector<Size, Type>::end (void) const
+	{
+		return const_iterator(this, -1);
+	}
+
+	template <int Size, typename Type>
 	Type&
 	vector<Size, Type>::operator [] (int index) throw (std::out_of_range)
 	{
@@ -129,6 +154,20 @@ namespace gloglotto
 		}
 
 		return _data[index];
+	}
+
+	template <int Size, typename Type>
+	typename vector<Size, Type>::iterator
+	vector<Size, Type>::begin (void)
+	{
+		return iterator(this);
+	}
+
+	template <int Size, typename Type>
+	typename vector<Size, Type>::iterator
+	vector<Size, Type>::end (void)
+	{
+		return iterator(this, -1);
 	}
 
 	template <int Size, typename Type>
@@ -312,20 +351,6 @@ namespace gloglotto
 		}
 
 		return sqrt(result);
-	}
-
-	template <int Size, typename Type>
-	typename vector<Size, Type>::iterator
-	vector<Size, Type>::begin (void)
-	{
-		return iterator(this);
-	}
-
-	template <int Size, typename Type>
-	typename vector<Size, Type>::iterator
-	vector<Size, Type>::end (void)
-	{
-		return iterator(this, -1);
 	}
 
 	template <int Size, typename Type>

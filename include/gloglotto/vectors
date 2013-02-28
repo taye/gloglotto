@@ -29,10 +29,13 @@ namespace gloglotto
 	class vectors
 	{
 		public:
-			typedef typename Vector::type                       type;
-			typedef iterator::accessible<vectors<Size, Vector>> iterator;
+			static const int accessible_size = Size;
+			typedef Vector   accessible_type;
 
-			static const int size = Size;
+			typedef iterator::accessible<vectors<Size, Vector>, std::true_type> const_iterator;
+			typedef iterator::accessible<vectors<Size, Vector>>                 iterator;
+
+			typedef typename Vector::type type;
 
 			static const int elements = Vector::elements;
 
@@ -68,6 +71,18 @@ namespace gloglotto
 			/* Copy the data passed from the initializer list.
 			 */
 			vectors<Size, Vector>& operator = (std::initializer_list<Vector> list) throw (std::invalid_argument);
+
+			/* Access a matrix in the array.
+			 */
+			Vector const& operator [] (int index) const throw (std::out_of_range);
+
+			/* Return an iterator to the beginning of the vector array.
+			 */
+			const_iterator begin (void) const;
+
+			/* Return an iterator to the end of the vector array.
+			 */
+			const_iterator end (void) const;
 
 			/* Access a matrix in the array.
 			 */
