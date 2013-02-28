@@ -56,9 +56,16 @@ namespace gloglotto
 	{
 		(void) lambda;
 
-		if (typeid(std::function<Signature>) != typeid(typename function_traits<Function>::function)) {
+		if (typeid(Signature*) != typeid(typename function_traits<Function>::pointer)) {
 			throw std::bad_typeid();
 		}
+	}
+
+	template <typename Signature, typename Function>
+	void
+	signature_static_assert (Function lambda)
+	{
+		(void) (Signature*) lambda;
 	}
 
 	template <int Size, typename Type>
