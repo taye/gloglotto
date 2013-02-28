@@ -313,15 +313,15 @@ namespace gloglotto
 
 		matrix<Rows, OtherColumns, Type> result;
 
-		for (int i = 0; i < OtherColumns; i++) {
-			for (int j = 0; j < Rows; j++) {
+		for (int row = 0; row < Rows; row++) {
+			for (int other_column = 0; other_column < OtherColumns; other_column++) {
 				Type element = 0;
 
-				for (int h = 0; h < Columns; h++) {
-					element += _data[j * Columns + h] * (&other)[j * Columns + i];
+				for (int column = 0; column < Columns; column++) {
+					element += _data[other_column * Columns + column] * (&other)[column * OtherColumns + row];
 				}
 
-				(&result)[j * OtherColumns + i] = element;
+				(&result)[other_column * OtherColumns + row] = element;
 			}
 		}
 
@@ -332,15 +332,15 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>&&
 	matrix<Rows, Columns, Type>::operator * (matrix<Rows, Columns, Type>&& other) const
 	{
-		for (int i = 0; i < Columns; i++) {
-			for (int j = 0; j < Rows; j++) {
+		for (int row = 0; row < Rows; row++) {
+			for (int other_column = 0; other_column < Columns; other_column++) {
 				Type element = 0;
 
-				for (int h = 0; h < Columns; h++) {
-					element += _data[j * Columns + h] * (&other)[j * Columns + i];
+				for (int column = 0; column < Columns; column++) {
+					element += _data[other_column * Columns + column] * (&other)[column * Columns + row];
 				}
 
-				(&other)[j * Columns + i] = element;
+				(&other)[other_column * Columns + row] = element;
 			}
 		}
 
@@ -362,14 +362,14 @@ namespace gloglotto
 	{
 		vector<Rows, Type> result;
 
-		for (int i = 0; i < Rows; i++) {
+		for (int row = 0; row < Rows; row++) {
 			Type element = 0;
 
-			for (int j = 0; j < Columns; j++) {
-				element += _data[j * Columns + i] * other[j];
+			for (int column = 0; column < Columns; column++) {
+				element += _data[row * Columns + column] * other[column];
 			}
 
-			result[i] = element;
+			result[row] = element;
 		}
 
 		return result;
@@ -381,14 +381,14 @@ namespace gloglotto
 	{
 		static_assert(Rows == Columns, "only square matrices allowed");
 
-		for (int i = 0; i < Rows; i++) {
+		for (int row = 0; row < Rows; row++) {
 			Type element = 0;
 
-			for (int j = 0; j < Columns; j++) {
-				element += _data[j * Columns + i] * other[j];
+			for (int column = 0; column < Columns; column++) {
+				element += _data[row * Columns + column] * other[column];
 			}
 
-			other[i] = element;
+			other[row] = element;
 		}
 
 		return other;
