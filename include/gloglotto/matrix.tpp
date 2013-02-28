@@ -230,7 +230,7 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>
 	matrix<Rows, Columns, Type>::operator + (matrix<Rows, Columns, Type> const& other) const
 	{
-		return matrix<Rows, Columns, Type>(this) += other;
+		return matrix<Rows, Columns, Type>(*this) += other;
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -259,7 +259,7 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>
 	matrix<Rows, Columns, Type>::operator - (matrix<Rows, Columns, Type> const& other) const
 	{
-		return matrix<Rows, Columns, Type>(this) -= other;
+		return matrix<Rows, Columns, Type>(*this) -= other;
 	}
 
 	template <int Rows, int Columns, typename Type>
