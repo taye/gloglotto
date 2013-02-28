@@ -24,39 +24,35 @@
 namespace gloglotto
 {
 	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (void)
+	matrix<Rows, Columns, Type>::matrix (bool identity) throw (std::logic_error)
 	{
+		if (identity && Rows != Columns) {
+			throw std::logic_error("identity matrices must be square");
+		}
+
 		_data      = new Type[Columns * Rows];
 		_allocated = true;
 
 		std::fill(_data, _data + Columns * Rows, 0);
 		std::fill(_vectors, _vectors + Rows, nullptr);
 
-		if (Columns == 2 && Rows == 2) {
-			_data[0] = 1.0; _data[1] = 0.0;
-			_data[2] = 0.0; _data[3] = 1.0;
+		if (identity) {
+			if (Columns == 2 && Rows == 2) {
+				_data[0] = 1.0; _data[1] = 0.0;
+				_data[2] = 0.0; _data[3] = 1.0;
+			}
+			else if (Columns == 3 && Rows == 3) {
+				_data[0] = 1.0; _data[1] = 0.0; _data[2] = 0.0;
+				_data[3] = 0.0; _data[4] = 1.0; _data[5] = 0.0;
+				_data[6] = 0.0; _data[7] = 0.0; _data[8] = 1.0;
+			}
+			else if (Columns == 4 && Rows == 4) {
+				_data[0]  = 1.0; _data[1]  = 0.0; _data[2]  = 0.0; _data[3]  = 0.0;
+				_data[4]  = 0.0; _data[5]  = 1.0; _data[6]  = 0.0; _data[7]  = 0.0;
+				_data[8]  = 0.0; _data[9]  = 0.0; _data[10] = 1.0; _data[11] = 0.0;
+				_data[12] = 0.0; _data[13] = 0.0; _data[14] = 0.0; _data[15] = 1.0;
+			}
 		}
-		else if (Columns == 3 && Rows == 3) {
-			_data[0] = 1.0; _data[1] = 0.0; _data[2] = 0.0;
-			_data[3] = 0.0; _data[4] = 1.0; _data[5] = 0.0;
-			_data[6] = 0.0; _data[7] = 0.0; _data[8] = 1.0;
-		}
-		else if (Columns == 4 && Rows == 4) {
-			_data[0]  = 1.0; _data[1]  = 0.0; _data[2]  = 0.0; _data[3]  = 0.0;
-			_data[4]  = 0.0; _data[5]  = 1.0; _data[6]  = 0.0; _data[7]  = 0.0;
-			_data[8]  = 0.0; _data[9]  = 0.0; _data[10] = 1.0; _data[11] = 0.0;
-			_data[12] = 0.0; _data[13] = 0.0; _data[14] = 0.0; _data[15] = 1.0;
-		}
-	}
-
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (Type init)
-	{
-		_data      = new Type[Columns * Rows];
-		_allocated = true;
-
-		std::fill(_data, _data + Columns * Rows, init);
-		std::fill(_vectors, _vectors + Rows, nullptr);
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -513,7 +509,7 @@ namespace gloglotto
 	matrix<Columns, Rows, Type>
 	matrix<Rows, Columns, Type>::operator ~ (void) const
 	{
-		matrix<Columns, Rows, Type> result(0);
+		matrix<Columns, Rows, Type> result;
 
 		for (int row = 0; row < Rows; row++) {
 			for (int column = 0; column < Columns; column++) {
@@ -537,7 +533,7 @@ namespace gloglotto
 		matrix<4, 4, Type>
 		perspective (angle fov, Type aspect, std::array<Type, 2> z)
 		{
-			matrix<4, 4> result;
+			matrix<4, 4> result(true);
 
 			Type max_y = z[0] * tan(angle_cast<angle::radians>(fov) * 0.5);
 			Type min_y = -max_y;
@@ -561,7 +557,7 @@ namespace gloglotto
 		matrix<4, 4, Type>
 		orthographic (std::array<Type, 2> x, std::array<Type, 2> y, std::array<Type, 2> z)
 		{
-			matrix<4, 4> result;
+			matrix<4, 4> result(true);
 
 			(&result)[0]  = 2.0 / (x[1] - x[0]);
 			(&result)[5]  = 2.0 / (y[1] - y[0]);
@@ -577,7 +573,7 @@ namespace gloglotto
 		template <typename Type>
 		matrix<4, 4, Type> translation (Type x, Type y, Type z)
 		{
-			matrix<4, 4, Type> result;
+			matrix<4, 4, Type> result(true);
 
 			result[0][3] = x;
 			result[1][3] = y;
@@ -598,7 +594,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result;
+			matrix<Size, Size, Type> result(true);
 
 			Type s   = sin(angle_cast<angle::radians>(a));
 			Type c   = cos(angle_cast<angle::radians>(a));
@@ -654,7 +650,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result;
+			matrix<Size, Size, Type> result(true);
 
 			result[0][0] = x;
 			result[1][0] = y;

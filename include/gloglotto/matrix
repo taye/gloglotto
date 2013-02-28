@@ -54,13 +54,10 @@ namespace gloglotto
 			static const int elements = Rows * Columns;
 
 		public:
-			/* Create an identity matrix if it's square, or an empty matrix.
+			/* Create a matrix, if identity is true and the matrix is square it will be filled
+			 * with the identity matrix values.
 			 */
-			matrix (void);
-
-			/* Create a matrix initialized with the passed value.
-			 */
-			matrix (Type init);
+			matrix (bool identity = false) throw (std::logic_error);
 
 			/* Create a matrix from another matrix, copying the data.
 			 */
