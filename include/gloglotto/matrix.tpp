@@ -116,9 +116,9 @@ namespace gloglotto
 			delete[] _data;
 		}
 
-		for (int i = 0; i < Rows; i++) {
-			if (_vectors[i]) {
-				delete _vectors[i];
+		for (int row = 0; row < Rows; row++) {
+			if (_vectors[row]) {
+				delete _vectors[row];
 			}
 		}
 	}
@@ -149,20 +149,20 @@ namespace gloglotto
 			throw std::invalid_argument("number of arguments doesn't match matrix rows");
 		}
 
-		int i = 0;
+		int row = 0;
 		for (auto list : list) {
 			if (list.size() != Columns) {
 				throw std::invalid_argument("number of arguments doesn't match matrix columns");
 			}
 
-			int j = 0;
+			int column = 0;
 			for (auto value : list) {
-				_data[i * Columns + j] = value;
+				_data[row * Columns + column] = value;
 
-				j++;
+				column++;
 			}
 
-			i++;
+			row++;
 		}
 
 		return *this;
@@ -246,9 +246,9 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator += (matrix<Rows, Columns, Type> const& other)
 	{
-		for (int i = 0; i < Rows; i++) {
-			for (int j = 0; j < Columns; j++) {
-				_data[j * Columns + i] += (&other)[i * Rows + j];
+		for (int row = 0; row < Rows; row++) {
+			for (int column = 0; column < Columns; column++) {
+				_data[row * Columns + column] += (&other)[row * Columns + column];
 			}
 		}
 
@@ -275,9 +275,9 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator -= (matrix<Rows, Columns, Type> const& other)
 	{
-		for (int i = 0; i < Rows; i++) {
-			for (int j = 0; j < Columns; j++) {
-				_data[j * Columns + i] -= (&other)[i * Rows + j];
+		for (int row = 0; row < Rows; row++) {
+			for (int column = 0; column < Columns; column++) {
+				_data[row * Columns + column] -= (&other)[row * Columns + column];
 			}
 		}
 
@@ -288,16 +288,16 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>
 	matrix<Rows, Columns, Type>::operator * (Type other) const
 	{
-		return matrix<Rows, Columns, Type>(this) *= other;
+		return matrix<Rows, Columns, Type>(*this) *= other;
 	}
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator *= (Type other)
 	{
-		for (int i = 0; i < Rows; i++) {
-			for (int j = 0; j < Columns; j++) {
-				_data[j * Columns + i] *= other;
+		for (int row = 0; row < Rows; row++) {
+			for (int column = 0; column < Columns; column++) {
+				_data[row * Columns + column] *= other;
 			}
 		}
 
