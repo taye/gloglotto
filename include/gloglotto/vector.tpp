@@ -237,9 +237,9 @@ namespace gloglotto
 	{
 		static_assert(Size == 3, "cross product only available on 3 dimensional vectors");
 
-		Type v0 = _data[1] * other[2] - other[1] * _data[2];
+		Type v0 =  _data[1] * other[2] - other[1] * _data[2];
 		Type v1 = -_data[0] * other[2] + other[0] * _data[2];
-		Type v2 = _data[0] * other[1] - other[0] * _data[1];
+		Type v2 =  _data[0] * other[1] - other[0] * _data[1];
 
 		other[0] = v0;
 		other[1] = v1;
@@ -254,9 +254,9 @@ namespace gloglotto
 	{
 		static_assert(Size == 3, "cross product only available on 3 dimensional vectors");
 
-		Type v0 = _data[1] * other[2] - other[1] * _data[2];
+		Type v0 =  _data[1] * other[2] - other[1] * _data[2];
 		Type v1 = -_data[0] * other[2] + other[0] * _data[2];
-		Type v2 = _data[0] * other[1] - other[0] * _data[1];
+		Type v2 =  _data[0] * other[1] - other[0] * _data[1];
 
 		_data[0] = v0;
 		_data[1] = v1;
@@ -272,14 +272,14 @@ namespace gloglotto
 	{
 		vector<Columns, Type> result;
 
-		for (int i = 0; i < Columns; i++) {
+		for (int column = 0; column < Columns; column++) {
 			Type element = 0;
 
-			for (int j = 0; j < Size; j++) {
-				element += _data[j] * (&other)[i * Columns + j];
+			for (int row = 0; row < Size; row++) {
+				element += _data[row] * (&other)[row * Columns + column];
 			}
 
-			result[i] = element;
+			result[column] = element;
 		}
 
 		return result;
@@ -289,14 +289,14 @@ namespace gloglotto
 	vector<Size, Type>&
 	vector<Size, Type>::operator *= (matrix<Size, Size, Type> const& other)
 	{
-		for (int i = 0; i < Size; i++) {
+		for (int column = 0; column < Size; column++) {
 			Type element = 0;
 
-			for (int j = 0; j < Size; j++) {
-				element += _data[j] * (&other)[i * Size + j];
+			for (int row = 0; row < Size; row++) {
+				element += _data[row] * (&other)[row * Size + column];
 			}
 
-			_data[i] = element;
+			_data[column] = element;
 		}
 
 		return *this;
