@@ -174,7 +174,7 @@ namespace gloglotto
 	vector<Size, Type>
 	vector<Size, Type>::operator + (vector<Size, Type> const& other) const
 	{
-		return vector<Size, Type>(this) += other;
+		return vector<Size, Type>(*this) += other;
 	}
 
 	template <int Size, typename Type>
@@ -201,7 +201,7 @@ namespace gloglotto
 	vector<Size, Type>
 	vector<Size, Type>::operator - (vector<Size, Type> const& other) const
 	{
-		return vector<Size, Type>(this) -= other;
+		return vector<Size, Type>(*this) -= other;
 	}
 
 	template <int Size, typename Type>
@@ -228,7 +228,7 @@ namespace gloglotto
 	vector<3, Type>
 	vector<Size, Type>::operator * (vector<3, Type> const& other) const
 	{
-		return vector<3, Type>(this) *= other;
+		return vector<3, Type>(*this) *= other;
 	}
 
 	template <int Size, typename Type>
