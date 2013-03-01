@@ -16,15 +16,16 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_PRIVATE_H
-#define _GLOGLOTTO_PRIVATE_H
+#ifndef _GLOGLOTTO_VIEWPORT_H
+#define _GLOGLOTTO_VIEWPORT_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
 
 namespace gloglotto
 {
-	void raise (void);
-
-	#define check_exception \
-		for (bool __flag__ = false; __flag__ == false; __flag__ = true, raise())
+	void viewport (int width, int height) throw (invalid_value);
+	void viewport (int x, int y, int width, int height) throw (invalid_value);
 }
 
 #endif

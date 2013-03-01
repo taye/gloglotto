@@ -17,14 +17,14 @@
  */
 
 #include <gloglotto/shader>
-#include <gloglotto/thin>
+#include <gloglotto/utility>
 
 namespace gloglotto
 {
 	template <typename Function>
 	shader::shader (std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
 	{
-		_id     = thin::program::make(source);
+		_id     = make(source);
 		_source = source;
 
 		auto function = new decltype(to_function(lambda))(to_function(lambda));
@@ -41,7 +41,7 @@ namespace gloglotto
 			auto function = static_cast<std::function<void(shader&, Args...)>*>(_function);
 
 			if (typeid(function) == *_signature) {
-				thin::program::use(_id);
+				glUseProgram(_id);
 
 				(*function)(*this, args...);
 			}
@@ -54,210 +54,293 @@ namespace gloglotto
 				throw std::bad_typeid();
 			}
 
-			thin::program::use(_id);
+			glUseProgram(_id);
 		}
 	}
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, std::array<float, Size>data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, std::array<float, Size> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform1fv(uniform(name), Size, data.data());
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, std::array<int, Size> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform1iv(uniform(name), Size, data.data());
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, std::array<unsigned int, Size> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform1uiv(uniform(name), Size, data.data());
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, std::array<bool, Size> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		int buffer[Size];
+		for (int i = 0; i < Size; i++) {
+			buffer[i] = data[i];
+		}
+
+		check_exception {
+			glUniform1iv(uniform(name), Size, &buffer);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform1fv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<2, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform2fv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<3, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform3fv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<4, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform4fv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<1, int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform1iv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<2, int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform2iv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<3, int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform3iv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<4, int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform4iv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<1, unsigned int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform1uiv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<2, unsigned int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform2uiv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<3, unsigned int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform3uiv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<4, unsigned int>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniform4uiv(uniform(name), Size, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<1, bool>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		int buffer[Size];
+		for (int i = 0; i < Size; i++) {
+			buffer[i] = (&data)[i];
+		}
+
+		check_exception {
+			glUniform1iv(uniform(name), Size, buffer);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<2, bool>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		int buffer[Size * 2];
+		for (int i = 0; i < Size * 2; i++) {
+			buffer[i] = (&data)[i];
+		}
+
+		check_exception {
+			glUniform2iv(uniform(name), Size, buffer);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<3, bool>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		int buffer[Size * 3];
+		for (int i = 0; i < Size * 3; i++) {
+			buffer[i] = (&data)[i];
+		}
+
+		check_exception {
+			glUniform3iv(uniform(name), Size, buffer);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, vectors<Size, vector<4, bool>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		int buffer[Size * 4];
+		for (int i = 0; i < Size * 4; i++) {
+			buffer[i] = (&data)[i];
+		}
+
+		check_exception {
+			glUniform4iv(uniform(name), Size, buffer);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix2fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<3, 3, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix3fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix4fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix3x2fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix2x3fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix4x2fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix2x4fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix4x3fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 
 	template <int Size>
 	void
 	shader::uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value)
 	{
-		thin::program::uniform::set(thin::program::uniform::location(_id, name), data);
+		check_exception {
+			glUniformMatrix3x4fv(uniform(name), Size, GL_TRUE, &data);
+		}
 	}
 }

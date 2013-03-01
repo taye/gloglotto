@@ -23,8 +23,18 @@
 
 namespace gloglotto
 {
+	#define check_exception \
+		for (bool __flag__ = false; __flag__ == false; __flag__ = true, gloglotto::exception::raise())
+
+	#define check_exception_with(text) \
+		for (bool __flag__ = false; __flag__ == false; __flag__ = true, gloglotto::exception::raise(text))
+
 	class exception : public std::runtime_error
 	{
+		public:
+			static void raise (void);
+			static void raise (std::string text);
+
 		public:
 			explicit exception (const std::string& what_arg) : std::runtime_error(what_arg) { }
 			explicit exception (const char* what_arg) : std::runtime_error(what_arg) { }
@@ -33,6 +43,8 @@ namespace gloglotto
 	class invalid_enum : public exception
 	{
 		public:
+			invalid_enum (void) : exception("invalid enumerant") { }
+
 			explicit invalid_enum (const std::string& what_arg) : exception(what_arg) { }
 			explicit invalid_enum (const char* what_arg) : exception(what_arg) { }
 	};
@@ -40,6 +52,8 @@ namespace gloglotto
 	class invalid_value : public exception
 	{
 		public:
+			invalid_value (void) : exception("invalid value") { }
+
 			explicit invalid_value (const std::string& what_arg) : exception(what_arg) { }
 			explicit invalid_value (const char* what_arg) : exception(what_arg) { }
 	};
@@ -47,6 +61,8 @@ namespace gloglotto
 	class invalid_operation : public exception
 	{
 		public:
+			invalid_operation (void) : exception("invalid operation") { }
+
 			explicit invalid_operation (const std::string& what_arg) : exception(what_arg) { }
 			explicit invalid_operation (const char* what_arg) : exception(what_arg) { }
 	};
@@ -54,6 +70,8 @@ namespace gloglotto
 	class stack_overflow : public exception
 	{
 		public:
+			stack_overflow (void) : exception("stack overflow") { }
+
 			explicit stack_overflow (const std::string& what_arg) : exception(what_arg) { }
 			explicit stack_overflow (const char* what_arg) : exception(what_arg) { }
 	};
@@ -61,6 +79,8 @@ namespace gloglotto
 	class stack_underflow : public exception
 	{
 		public:
+			stack_underflow (void) : exception("stack underflow") { }
+
 			explicit stack_underflow (const std::string& what_arg) : exception(what_arg) { }
 			explicit stack_underflow (const char* what_arg) : exception(what_arg) { }
 	};
@@ -68,6 +88,8 @@ namespace gloglotto
 	class out_of_memory : public exception
 	{
 		public:
+			out_of_memory (void) : exception("out of memory") { }
+
 			explicit out_of_memory (const std::string& what_arg) : exception(what_arg) { }
 			explicit out_of_memory (const char* what_arg) : exception(what_arg) { }
 	};
@@ -75,6 +97,8 @@ namespace gloglotto
 	class table_too_large : public exception
 	{
 		public:
+			table_too_large (void) : exception("table too large") { }
+
 			explicit table_too_large (const std::string& what_arg) : exception(what_arg) { }
 			explicit table_too_large (const char* what_arg) : exception(what_arg) { }
 	};

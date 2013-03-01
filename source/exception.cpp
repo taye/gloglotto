@@ -16,49 +16,62 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/private>
-#include <gloglotto/thin>
+#include <gloglotto/headers>
+#include <gloglotto/exception>
 
 namespace gloglotto
 {
 	void
-	raise (void)
+	exception::raise (void)
 	{
-		GLenum error = thin::error::code();
-
-		switch (error) {
+		switch (glGetError()) {
 			case GL_INVALID_ENUM:
-				throw invalid_enum(thin::error::string(error));
+				throw invalid_enum();
 
 			case GL_INVALID_VALUE:
-				throw invalid_value(thin::error::string(error));
+				throw invalid_value();
 
 			case GL_INVALID_OPERATION:
-				throw invalid_operation(thin::error::string(error));
+				throw invalid_operation();
 
 			case GL_STACK_OVERFLOW:
-				throw stack_overflow(thin::error::string(error));
+				throw stack_overflow();
 
 			case GL_STACK_UNDERFLOW:
-				throw stack_underflow(thin::error::string(error));
+				throw stack_underflow();
 
 			case GL_OUT_OF_MEMORY:
-				throw out_of_memory(thin::error::string(error));
+				throw out_of_memory();
 
 			case GL_TABLE_TOO_LARGE:
-				throw table_too_large(thin::error::string(error));
+				throw table_too_large();
+		}
+	}
 
-			case GLU_INVALID_ENUM:
-				throw invalid_enum(thin::error::string(error));
+	void
+	exception::raise (std::string text)
+	{
+		switch (glGetError()) {
+			case GL_INVALID_ENUM:
+				throw invalid_enum(text);
 
-			case GLU_INVALID_VALUE:
-				throw invalid_value(thin::error::string(error));
+			case GL_INVALID_VALUE:
+				throw invalid_value(text);
 
-			case GLU_OUT_OF_MEMORY:
-				throw out_of_memory(thin::error::string(error));
+			case GL_INVALID_OPERATION:
+				throw invalid_operation(text);
 
-			case GLU_INVALID_OPERATION:
-				throw invalid_operation(thin::error::string(error));
+			case GL_STACK_OVERFLOW:
+				throw stack_overflow(text);
+
+			case GL_STACK_UNDERFLOW:
+				throw stack_underflow(text);
+
+			case GL_OUT_OF_MEMORY:
+				throw out_of_memory(text);
+
+			case GL_TABLE_TOO_LARGE:
+				throw table_too_large(text);
 		}
 	}
 }

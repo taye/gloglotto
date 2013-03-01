@@ -24,12 +24,30 @@
 #include <vector>
 #include <typeinfo>
 
+#include <gloglotto/headers>
 #include <gloglotto/math>
 #include <gloglotto/exception>
-#include <gloglotto/thin>
 
 namespace gloglotto
 {
+	/* Exception thrown when a shader compilation fails.
+	 */
+	class failed_compilation : public exception
+	{
+		public:
+			explicit failed_compilation (const std::string& what_arg) : exception(what_arg) { }
+			explicit failed_compilation (const char* what_arg) : exception(what_arg) { }
+	};
+
+	/* Exception thrown when shader program linking fails.
+	 */
+	class failed_linking : public exception
+	{
+		public:
+			explicit failed_linking (const std::string& what_arg) : exception(what_arg) { }
+			explicit failed_linking (const char* what_arg) : exception(what_arg) { }
+	};
+
 	class shader final
 	{
 		public:
@@ -167,6 +185,11 @@ namespace gloglotto
 
 			template <int Size>
 			void uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value);
+
+		private:
+			unsigned int make (std::multimap<std::string, std::string>& source) const throw (failed_compilation, failed_linking, invalid_enum, invalid_operation);
+
+			int uniform (std::string name) const throw (invalid_operation);
 
 		private:
 			unsigned int _id;

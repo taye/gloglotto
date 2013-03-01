@@ -16,34 +16,23 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/headers>
-#include <gloglotto/extension>
-
-#include <iterator>
-#include <sstream>
-#include <algorithm>
+#include <gloglotto/viewport>
 
 namespace gloglotto
 {
-	namespace extension
+	void
+	viewport (int width, int height) throw (invalid_value)
 	{
-		std::vector<std::string>
-		list (void)
-		{
-			std::vector<std::string> result;
-			std::istringstream       stream(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-
-			std::copy(std::istream_iterator<std::string>(stream),
-			          std::istream_iterator<std::string>(),
-			          std::back_inserter<std::vector<std::string>>(result));
-
-			return result;
+		check_exception {
+			glViewport(0, 0, width, height);
 		}
+	}
 
-		bool
-		supported (std::string name)
-		{
-			return glewIsSupported(name.c_str());
+	void
+	viewport (int x, int y, int width, int height) throw (invalid_value)
+	{
+		check_exception {
+			glViewport(x, y, width, height);
 		}
 	}
 }

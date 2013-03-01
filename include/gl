@@ -19,8 +19,10 @@
 #ifndef _GLOGLOTTO_H
 #define _GLOGLOTTO_H
 
-#include <gloglotto/thin>
 #include <gloglotto/extension>
+
+#include <gloglotto/clear>
+#include <gloglotto/viewport>
 
 #include <gloglotto/shader>
 #include <gloglotto/shader_manager>

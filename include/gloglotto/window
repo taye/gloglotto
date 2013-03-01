@@ -19,7 +19,9 @@
 #ifndef _GLOGLOTTO_WINDOW_H
 #define _GLOGLOTTO_WINDOW_H
 
-#include <gloglotto/thin>
+#include <gloglotto/headers>
+#include <gloglotto/utility>
+#include <gloglotto/exception>
 
 #include <chrono>
 

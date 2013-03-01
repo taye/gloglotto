@@ -19,6 +19,8 @@
 #include <gloglotto/utility>
 #include <gloglotto/window>
 
+#include <map>
+
 namespace gloglotto
 {
 	namespace window

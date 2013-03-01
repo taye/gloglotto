@@ -1,0 +1,49 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_CLEAR_H
+#define _GLOGLOTTO_CLEAR_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
+
+namespace gloglotto
+{
+	enum class clear : unsigned int
+	{
+		color        = GL_COLOR_BUFFER_BIT,
+		depth        = GL_DEPTH_BUFFER_BIT,
+		accumulation = GL_ACCUM_BUFFER_BIT,
+		stencil      = GL_STENCIL_BUFFER_BIT
+	};
+
+	inline constexpr clear
+	operator | (enum clear a, enum clear b)
+	{
+		return static_cast<clear>(static_cast<unsigned int>(a) | static_cast<unsigned int>(b));
+	}
+
+	void clear (enum clear mask) throw (invalid_value, invalid_operation);
+	void clear (enum clear mask, float red, float green, float blue, float alpha) throw (invalid_value, invalid_operation);
+	void clear (enum clear mask, float red, float green, float blue) throw (invalid_value, invalid_operation);
+	void clear (enum clear mask, double depth) throw (invalid_value, invalid_operation);
+	void clear (enum clear mask, float index) throw (invalid_value, invalid_operation);
+	void clear (enum clear mask, int index) throw (invalid_value, invalid_operation);
+}
+
+#endif
