@@ -54,6 +54,10 @@ namespace gloglotto
 			 */
 			matrices (matrices<Size, Matrix> const& from);
 
+			/* Create a matrix array from the state of the passed rvalue matrix array.
+			 */
+			matrices (matrices<Size, Matrix>&& from);
+
 			/* Create a matrix array from an initializer list.
 			 */
 			matrices (std::initializer_list<Matrix> list);
@@ -66,6 +70,10 @@ namespace gloglotto
 			 */
 			matrices<Size, Matrix>& operator = (matrices<Size, Matrix> const& from);
 
+			/* Swap with the passed temporary matrix array.
+			 */
+			matrices<Size, Matrix>& operator = (matrices<Size, Matrix>&& from);
+
 			/* Copy the data present in the passed pointer.
 			 */
 			matrices<Size, Matrix>& operator = (const type* data);
@@ -73,6 +81,22 @@ namespace gloglotto
 			/* Copy the data passed from the initializer list.
 			 */
 			matrices<Size, Matrix>& operator = (std::initializer_list<Matrix> list) throw (std::invalid_argument);
+
+			/* Check if the matrix array owns the pointer.
+			 */
+			bool owner (void) const;
+
+			/* Tell the matrix array to own the pointer.
+			 */
+			matrices<Size, Matrix>& own (void);
+
+			/* Tell the matrix array to disown the pointer.
+			 */
+			matrices<Size, Matrix>& disown (void);
+
+			/* Swap the state with another matrix array.
+			 */
+			matrices<Size, Matrix>& swap (matrices<Size, Matrix>& other);
 
 			/* Return a const matrix from the array.
 			 */
@@ -104,9 +128,9 @@ namespace gloglotto
 
 		private:
 			type* _data;
-			bool  _allocated;
+			bool  _owner;
 
-			Matrix* _matrices[Size];
+			Matrix** _matrices;
 	};
 }
 

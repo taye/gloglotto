@@ -23,39 +23,39 @@ namespace gloglotto
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>::matrices (void)
 	{
-		_data      = new type[Size * rows * columns];
-		_allocated = true;
+		_data     = new type[Size * rows * columns];
+		_matrices = nullptr;
 
 		std::fill(_data, _data + Size * rows * columns, 0);
-		std::fill(_matrices, _matrices + Size, nullptr);
+
+		own();
 	}
 
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>::matrices (type* pointer)
 	{
-		_data      = pointer;
-		_allocated = false;
+		_data     = pointer;
+		_matrices = nullptr;
 
-		std::fill(_matrices, _matrices + Size, nullptr);
+		disown();
 	}
 
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>::matrices (matrices<Size, Matrix> const& from)
 	{
-		_data      = new type[Size * rows * columns];
-		_allocated = true;
+		_data     = new type[Size * rows * columns];
+		_matrices = nullptr;
 
-		std::move(&from, &from + Size * rows * columns, _data);
-		std::fill(_matrices, _matrices + Size, nullptr);
+		std::copy(&from, &from + Size * rows * columns, _data);
+
+		own();
 	}
 
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>::matrices (std::initializer_list<Matrix> list)
 	{
-		_data      = new type[Size * rows * columns];
-		_allocated = true;
-
-		std::fill(_matrices, _matrices + Size, nullptr);
+		_data     = new type[Size * rows * columns];
+		_matrices = nullptr;
 
 		try {
 			*this = list;
@@ -65,18 +65,22 @@ namespace gloglotto
 
 			throw e;
 		}
+
+		own();
 	}
 
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>::~matrices (void)
 	{
-		if (_allocated) {
+		if (owner()) {
 			delete[] _data;
 		}
 
-		for (int i = 0; i < Size; i++) {
-			if (_matrices[i]) {
-				delete _matrices[i];
+		if (_matrices) {
+			for (int i = 0; i < Size; i++) {
+				if (_matrices[i]) {
+					delete _matrices[i];
+				}
 			}
 		}
 	}
@@ -85,16 +89,23 @@ namespace gloglotto
 	matrices<Size, Matrix>&
 	matrices<Size, Matrix>::operator = (matrices<Size, Matrix> const& from)
 	{
-		std::move(&from, &from + Size * rows * columns, _data);
+		std::copy(&from, &from + Size * rows * columns, _data);
 
 		return *this;
 	}
 
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>&
+	matrices<Size, Matrix>::operator = (matrices<Size, Matrix>&& from)
+	{
+		return swap(from);
+	}
+
+	template <int Size, class Matrix>
+	matrices<Size, Matrix>&
 	matrices<Size, Matrix>::operator = (const type* from)
 	{
-		std::move(from, from + Size * rows * columns, _data);
+		std::copy(from, from + Size * rows * columns, _data);
 
 		return *this;
 	}
@@ -115,12 +126,61 @@ namespace gloglotto
 		return *this;
 	}
 
+	template <int Size, typename Matrix>
+	bool
+	matrices<Size, Matrix>::owner (void) const
+	{
+		return _owner;
+	}
+
+	template <int Size, typename Matrix>
+	matrices<Size, Matrix>&
+	matrices<Size, Matrix>::own (void)
+	{
+		_owner = true;
+
+		return *this;
+	}
+
+	template <int Size, typename Matrix>
+	matrices<Size, Matrix>&
+	matrices<Size, Matrix>::disown (void)
+	{
+		_owner = false;
+
+		return *this;
+	}
+
+	template <int Size, typename Matrix>
+	matrices<Size, Matrix>&
+	matrices<Size, Matrix>::swap (matrices<Size, Matrix>& other)
+	{
+		auto data     = _data;
+		auto owner    = _owner;
+		auto matrices = _matrices;
+
+		_data     = other._data;
+		_owner    = other._owner;
+		_matrices = other._matrices;
+
+		other._data     = data;
+		other._owner    = owner;
+		other._matrices = matrices;
+
+		return *this;
+	}
+
 	template <int Size, class Matrix>
 	Matrix const&
 	matrices<Size, Matrix>::operator [] (int index) const throw (std::out_of_range)
 	{
 		if (index < 0 || index >= Size) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_matrices) {
+			_matrices = new Matrix*[Size];
+			std::fill(_matrices, _matrices + Size, nullptr);
 		}
 
 		if (!_matrices[index]) {
@@ -150,6 +210,11 @@ namespace gloglotto
 	{
 		if (index < 0 || index >= Size) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_matrices) {
+			_matrices = new Matrix*[Size];
+			std::fill(_matrices, _matrices + Size, nullptr);
 		}
 
 		if (!_matrices[index]) {
