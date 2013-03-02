@@ -30,11 +30,10 @@ namespace gloglotto
 			throw std::logic_error("identity matrices must be square");
 		}
 
-		_data      = new Type[Columns * Rows];
-		_allocated = true;
+		_data    = new Type[Columns * Rows];
+		_vectors = nullptr;
 
 		std::fill(_data, _data + Columns * Rows, 0);
-		std::fill(_vectors, _vectors + Rows, nullptr);
 
 		if (identity) {
 			if (Columns == 2 && Rows == 2) {
@@ -53,51 +52,52 @@ namespace gloglotto
 				_data[12] = 0.0; _data[13] = 0.0; _data[14] = 0.0; _data[15] = 1.0;
 			}
 		}
+
+		own();
 	}
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type> const& from)
 	{
-		_data      = new Type[Columns * Rows];
-		_allocated = true;
+		_data    = new Type[Columns * Rows];
+		_vectors = nullptr;
 
-		std::fill(_vectors, _vectors + Rows, nullptr);
 		std::move(&from, &from + Columns * Rows, _data);
+
+		own();
 	}
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type>&& from)
 	{
-		_data = from._data;
+		_data    = from._data;
+		_vectors = from._vectors;
 
-		if (from._allocated) {
-			from._allocated = false;
-			_allocated      = true;
+		from._vectors = nullptr;
+
+		if (from.owner()) {
+			from.disown();
+			own();
 		}
 		else {
-			_allocated = false;
+			disown();
 		}
-
-		std::move(from._vectors, from._vectors + Rows, _vectors);
-		std::fill(from._vectors, from._vectors + Rows, nullptr);
 	}
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>::matrix (Type* data)
 	{
-		_data      = data;
-		_allocated = false;
+		_data    = data;
+		_vectors = nullptr;
 
-		std::fill(_vectors, _vectors + Rows, nullptr);
+		disown();
 	}
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>::matrix (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument)
 	{
-		_data      = new Type[Columns * Rows];
-		_allocated = true;
-
-		std::fill(_vectors, _vectors + Rows, nullptr);
+		_data    = new Type[Columns * Rows];
+		_vectors = nullptr;
 
 		try {
 			*this = list;
@@ -107,19 +107,25 @@ namespace gloglotto
 
 			throw e;
 		}
+
+		own();
 	}
 
 	template <int Rows, int Columns, typename Type>
 	matrix<Rows, Columns, Type>::~matrix (void)
 	{
-		if (_allocated) {
+		if (owner()) {
 			delete[] _data;
 		}
 
-		for (int row = 0; row < Rows; row++) {
-			if (_vectors[row]) {
-				delete _vectors[row];
+		if (_vectors) {
+			for (int row = 0; row < Rows; row++) {
+				if (_vectors[row]) {
+					delete _vectors[row];
+				}
 			}
+
+			delete[] _vectors;
 		}
 	}
 
@@ -130,6 +136,13 @@ namespace gloglotto
 		std::move(&from, &from + Columns * Rows, _data);
 
 		return *this;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&
+	matrix<Rows, Columns, Type>::operator = (matrix<Rows, Columns, Type>&& from)
+	{
+		return swap(from);
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -169,11 +182,60 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
+	bool
+	matrix<Rows, Columns, Type>::owner (void) const
+	{
+		return _owner;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&
+	matrix<Rows, Columns, Type>::own (void)
+	{
+		_owner = true;
+
+		return *this;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&
+	matrix<Rows, Columns, Type>::disown (void)
+	{
+		_owner = false;
+
+		return *this;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	matrix<Rows, Columns, Type>&
+	matrix<Rows, Columns, Type>::swap (matrix<Rows, Columns, Type>& other)
+	{
+		auto data    = _data;
+		auto owner   = _owner;
+		auto vectors = _vectors;
+
+		_data    = other._data;
+		_owner   = other._owner;
+		_vectors = other._vectors;
+
+		other._data    = data;
+		other._owner   = owner;
+		other._vectors = vectors;
+
+		return *this;
+	}
+
+	template <int Rows, int Columns, typename Type>
 	vector<Columns, Type> const&
 	matrix<Rows, Columns, Type>::operator [] (int row) const throw (std::out_of_range)
 	{
 		if (row < 0 || row >= Rows) {
 			throw std::out_of_range("row out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new vector<Columns, Type>*[Rows];
+			std::fill(_vectors, _vectors + Rows, nullptr);
 		}
 
 		if (!_vectors[row]) {
@@ -203,6 +265,11 @@ namespace gloglotto
 	{
 		if (row < 0 || row >= Rows) {
 			throw std::out_of_range("row out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new vector<Columns, Type>*[Rows];
+			std::fill(_vectors, _vectors + Rows, nullptr);
 		}
 
 		if (!_vectors[row]) {

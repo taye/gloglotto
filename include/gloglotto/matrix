@@ -84,6 +84,10 @@ namespace gloglotto
 			 */
 			matrix<Rows, Columns, Type>& operator = (matrix<Rows, Columns, Type> const& from);
 
+			/* Swap with the passed temporary matrix.
+			 */
+			matrix<Rows, Columns, Type>& operator = (matrix<Rows, Columns, Type>&& from);
+
 			/* Copy the data present in the passed pointer.
 			 */
 			matrix<Rows, Columns, Type>& operator = (const Type* data);
@@ -91,6 +95,22 @@ namespace gloglotto
 			/* Copy the data passed from the initializer list.
 			 */
 			matrix<Rows, Columns, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
+
+			/* Check if the matrix owns the pointer.
+			 */
+			bool owner (void) const;
+
+			/* Tell the matrix to own the pointer.
+			 */
+			matrix<Rows, Columns, Type>& own (void);
+
+			/* Tell the matrix to disown the pointer.
+			 */
+			matrix<Rows, Columns, Type>& disown (void);
+
+			/* Swap the state with another matrix.
+			 */
+			matrix<Rows, Columns, Type>& swap (matrix<Rows, Columns, Type>& other);
 
 			/* Access a constant row of the matrix.
 			 */
@@ -183,9 +203,9 @@ namespace gloglotto
 
 		private:
 			Type* _data;
-			bool  _allocated;
+			bool  _owner;
 
-			vector<Columns, Type>* _vectors[Rows];
+			vector<Columns, Type>** _vectors;
 	};
 
 	namespace make
