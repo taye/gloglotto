@@ -52,6 +52,10 @@ namespace gloglotto
 			 */
 			vectors (vectors<Size, Vector> const& from);
 
+			/* Create a vector array from the state of the passed rvalue vector array.
+			 */
+			vectors (vectors<Size, Vector>&& from);
+
 			/* Create a vector array from an initializer list.
 			 */
 			vectors (std::initializer_list<Vector> list);
@@ -64,6 +68,10 @@ namespace gloglotto
 			 */
 			vectors<Size, Vector>& operator = (vectors<Size, Vector> const& from);
 
+			/* Swap with the passed temporary vector array.
+			 */
+			vectors<Size, Vector>& operator = (vectors<Size, Vector>&& from);
+
 			/* Copy the data present in the passed pointer.
 			 */
 			vectors<Size, Vector>& operator = (const type* data);
@@ -71,6 +79,22 @@ namespace gloglotto
 			/* Copy the data passed from the initializer list.
 			 */
 			vectors<Size, Vector>& operator = (std::initializer_list<Vector> list) throw (std::invalid_argument);
+
+			/* Check if the vector array owns the pointer.
+			 */
+			bool owner (void) const;
+
+			/* Tell the vector array to own the pointer.
+			 */
+			vectors<Size, Vector>& own (void);
+
+			/* Tell the vector array to disown the pointer.
+			 */
+			vectors<Size, Vector>& disown (void);
+
+			/* Swap the state with another vector array.
+			 */
+			vectors<Size, Vector>& swap (vectors<Size, Vector>& other);
 
 			/* Access a matrix in the array.
 			 */
@@ -102,9 +126,9 @@ namespace gloglotto
 
 		private:
 			type* _data;
-			bool  _allocated;
+			bool  _owner;
 
-			Vector* _vectors[Size];
+			Vector** _vectors;
 	};
 }
 

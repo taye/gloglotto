@@ -23,39 +23,56 @@ namespace gloglotto
 	template <int Size, class Vector>
 	vectors<Size, Vector>::vectors (void)
 	{
-		_data      = new type[Size * elements];
-		_allocated = true;
+		_data    = new type[Size * elements];
+		_vectors = nullptr;
 
 		std::fill(_data, _data + Size * elements, 0);
-		std::fill(_vectors, _vectors + Size, nullptr);
+
+		own();
 	}
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>::vectors (type* pointer)
 	{
-		_data      = pointer;
-		_allocated = false;
+		_data    = pointer;
+		_vectors = nullptr;
 
-		std::fill(_vectors, _vectors + Size, nullptr);
+		disown();
 	}
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>::vectors (vectors<Size, Vector> const& from)
 	{
-		_data      = new type[Size * elements];
-		_allocated = true;
+		_data    = new type[Size * elements];
+		_vectors = nullptr;
 
-		std::move(&from, &from + Size * elements, _data);
-		std::fill(_vectors, _vectors + Size, nullptr);
+		std::copy(&from, &from + Size * elements, _data);
+
+		own();
+	}
+
+	template <int Size, class Vector>
+	vectors<Size, Vector>::vectors (vectors<Size, Vector>&& from)
+	{
+		_data    = from._data;
+		_vectors = from._vectors;
+
+		from._vectors = nullptr;
+
+		if (from.owner()) {
+			from.disown();
+			own();
+		}
+		else {
+			disown();
+		}
 	}
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>::vectors (std::initializer_list<Vector> list)
 	{
-		_data      = new type[Size * elements];
-		_allocated = true;
-
-		std::fill(_vectors, _vectors + Size, nullptr);
+		_data    = new type[Size * elements];
+		_vectors = nullptr;
 
 		try {
 			*this = list;
@@ -65,27 +82,38 @@ namespace gloglotto
 
 			throw e;
 		}
+
+		own();
 	}
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>::~vectors (void)
 	{
-		if (_allocated) {
+		if (owner()) {
 			delete[] _data;
 		}
 
-		for (int i = 0; i < Size; i++) {
-			if (_vectors[i]) {
-				delete _vectors[i];
+		if (_vectors) {
+			for (int i = 0; i < Size; i++) {
+				if (_vectors[i]) {
+					delete _vectors[i];
+				}
 			}
 		}
 	}
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>&
+	vectors<Size, Vector>::operator = (vectors<Size, Vector>&& from)
+	{
+		return swap(from);
+	}
+
+	template <int Size, class Vector>
+	vectors<Size, Vector>&
 	vectors<Size, Vector>::operator = (vectors<Size, Vector> const& from)
 	{
-		std::move(&from, &from + Size * elements, _data);
+		std::copy(&from, &from + Size * elements, _data);
 
 		return *this;
 	}
@@ -94,7 +122,7 @@ namespace gloglotto
 	vectors<Size, Vector>&
 	vectors<Size, Vector>::operator = (const type* from)
 	{
-		std::move(from, from + Size * elements, _data);
+		std::copy(from, from + Size * elements, _data);
 
 		return *this;
 	}
@@ -115,12 +143,61 @@ namespace gloglotto
 		return *this;
 	}
 
+	template <int Size, typename Vector>
+	bool
+	vectors<Size, Vector>::owner (void) const
+	{
+		return _owner;
+	}
+
+	template <int Size, typename Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::own (void)
+	{
+		_owner = true;
+
+		return *this;
+	}
+
+	template <int Size, typename Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::disown (void)
+	{
+		_owner = false;
+
+		return *this;
+	}
+
+	template <int Size, typename Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::swap (vectors<Size, Vector>& other)
+	{
+		auto data    = _data;
+		auto owner   = _owner;
+		auto vectors = _vectors;
+
+		_data    = other._data;
+		_owner   = other._owner;
+		_vectors = other._vectors;
+
+		other._data    = data;
+		other._owner   = owner;
+		other._vectors = vectors;
+
+		return *this;
+	}
+
 	template <int Size, class Vector>
 	Vector const&
 	vectors<Size, Vector>::operator [] (int index) const throw (std::out_of_range)
 	{
 		if (index < 0 || index >= Size) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new Vector*[Size];
+			std::fill(_vectors, _vectors + Size, nullptr);
 		}
 
 		if (!_vectors[index]) {
@@ -150,6 +227,11 @@ namespace gloglotto
 	{
 		if (index < 0 || index >= Size) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new Vector*[Size];
+			std::fill(_vectors, _vectors + Size, nullptr);
 		}
 
 		if (!_vectors[index]) {
