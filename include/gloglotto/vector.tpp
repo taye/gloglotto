@@ -26,19 +26,19 @@ namespace gloglotto
 	template <int Size, typename Type>
 	vector<Size, Type>::vector (void)
 	{
-		_data      = new Type[Size];
-		_allocated = true;
-
+		_data  = new Type[Size];
 		std::fill(_data, _data + Size, 0);
+
+		own();
 	}
 
 	template <int Size, typename Type>
 	vector<Size, Type>::vector (vector<Size, Type> const& from)
 	{
-		_data      = new Type[Size];
-		_allocated = true;
-
+		_data = new Type[Size];
 		std::move(&from, &from + Size, _data);
+
+		own();
 	}
 
 	template <int Size, typename Type>
@@ -46,20 +46,19 @@ namespace gloglotto
 	{
 		_data = from._data;
 
-		if (from._allocated) {
-			from._allocated = false;
-			_allocated      = true;
+		if (from.owner()) {
+			from.disown();
+			own();
 		}
 		else {
-			_allocated = false;
+			disown();
 		}
 	}
 
 	template <int Size, typename Type>
 	vector<Size, Type>::vector (std::initializer_list<Type> list) throw (std::invalid_argument)
 	{
-		_data      = new Type[Size];
-		_allocated = true;
+		_data = new Type[Size];
 
 		try {
 			*this = list;
@@ -69,19 +68,22 @@ namespace gloglotto
 
 			throw e;
 		}
+
+		own();
 	}
 
 	template <int Size, typename Type>
 	vector<Size, Type>::vector (Type* data)
 	{
-		_data      = data;
-		_allocated = false;
+		_data = data;
+
+		disown();
 	}
 
 	template <int Size, typename Type>
 	vector<Size, Type>::~vector (void)
 	{
-		if (_allocated) {
+		if (owner()) {
 			delete _data;
 		}
 	}
@@ -93,6 +95,13 @@ namespace gloglotto
 		std::move(&from, &from + Size, _data);
 
 		return *this;
+	}
+
+	template <int Size, typename Type>
+	vector<Size, Type>&
+	vector<Size, Type>::operator = (vector<Size, Type>&& from)
+	{
+		return swap(from);
 	}
 
 	template <int Size, typename Type>
@@ -116,6 +125,47 @@ namespace gloglotto
 		for (auto value : list) {
 			_data[i++] = value;
 		}
+
+		return *this;
+	}
+
+	template <int Size, typename Type>
+	bool
+	vector<Size, Type>::owner (void) const
+	{
+		return _owner;
+	}
+
+	template <int Size, typename Type>
+	vector<Size, Type>&
+	vector<Size, Type>::own (void)
+	{
+		_owner = true;
+
+		return *this;
+	}
+
+	template <int Size, typename Type>
+	vector<Size, Type>&
+	vector<Size, Type>::disown (void)
+	{
+		_owner = false;
+
+		return *this;
+	}
+
+	template <int Size, typename Type>
+	vector<Size, Type>&
+	vector<Size, Type>::swap (vector<Size, Type>& other)
+	{
+		auto data  = _data;
+		auto  owner = _owner;
+
+		_data  = other._data;
+		_owner = other._owner;
+
+		other._data  = data;
+		other._owner = owner;
 
 		return *this;
 	}

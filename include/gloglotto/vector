@@ -82,6 +82,10 @@ namespace gloglotto
 			 */
 			vector<Size, Type>& operator = (vector<Size, Type> const& from);
 
+			/* Swap with the passed temporary vector.
+			 */
+			vector<Size, Type>& operator = (vector<Size, Type>&& from);
+
 			/* Copy the data present in the passed pointer.
 			 */
 			vector<Size, Type>& operator = (const Type* data);
@@ -89,6 +93,22 @@ namespace gloglotto
 			/* Copy the data passed from the initializer list.
 			 */
 			vector<Size, Type>& operator = (std::initializer_list<Type> list) throw (std::invalid_argument);
+
+			/* Check if the vector owns the pointer.
+			 */
+			bool owner (void) const;
+
+			/* Tell the vector to own the pointer.
+			 */
+			vector<Size, Type>& own (void);
+
+			/* Tell the vector to disown the pointer.
+			 */
+			vector<Size, Type>& disown (void);
+
+			/* Swap the state with another vector.
+			 */
+			vector<Size, Type>& swap (vector<Size, Type>& other);
 
 			/* Access a constant element of the vector.
 			 */
@@ -179,14 +199,13 @@ namespace gloglotto
 			 */
 			Type magnitude (void) const;
 
-
 			/* Return the wrapped raw pointer.
 			 */
 			Type* operator & (void) const;
 
 		private:
 			Type* _data;
-			bool  _allocated;
+			bool  _owner;
 	};
 
 	namespace make
