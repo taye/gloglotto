@@ -159,7 +159,7 @@ namespace gloglotto
 	vector<Size, Type>::swap (vector<Size, Type>& other)
 	{
 		auto data  = _data;
-		auto  owner = _owner;
+		auto owner = _owner;
 
 		_data  = other._data;
 		_owner = other._owner;
