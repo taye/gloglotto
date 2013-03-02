@@ -62,7 +62,7 @@ namespace gloglotto
 		_data    = new Type[Columns * Rows];
 		_vectors = nullptr;
 
-		std::move(&from, &from + Columns * Rows, _data);
+		std::copy(&from, &from + Columns * Rows, _data);
 
 		own();
 	}
@@ -133,7 +133,7 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator = (matrix<Rows, Columns, Type> const& from)
 	{
-		std::move(&from, &from + Columns * Rows, _data);
+		std::copy(&from, &from + Columns * Rows, _data);
 
 		return *this;
 	}
@@ -149,7 +149,7 @@ namespace gloglotto
 	matrix<Rows, Columns, Type>&
 	matrix<Rows, Columns, Type>::operator = (const Type* data)
 	{
-		std::move(data, data + Columns * Rows, _data);
+		std::copy(data, data + Columns * Rows, _data);
 
 		return *this;
 	}
