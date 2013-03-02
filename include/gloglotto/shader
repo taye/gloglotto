@@ -19,6 +19,7 @@
 #ifndef _GLOGLOTTO_SHADER_H
 #define _GLOGLOTTO_SHADER_H
 
+#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
@@ -50,6 +51,17 @@ namespace gloglotto
 
 	class shader final
 	{
+		public:
+			static shader from_file (std::multimap<std::string, std::string> files) throw (invalid_operation, failed_compilation, failed_linking);
+
+			template <typename Function>
+			static shader from_file (std::multimap<std::string, std::string> files, Function lambda) throw (invalid_operation, failed_compilation, failed_linking);
+
+			static shader from_stream (std::multimap<std::string, std::istream&> streams) throw (invalid_operation, failed_compilation, failed_linking);
+
+			template <typename Function>
+			static shader from_stream (std::multimap<std::string, std::istream&> streams, Function lambda) throw (invalid_operation, failed_compilation, failed_linking);
+
 		public:
 			shader (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking);
 

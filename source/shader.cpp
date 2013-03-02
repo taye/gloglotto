@@ -19,8 +19,42 @@
 #include <gloglotto/shader_manager>
 #include <gloglotto/math>
 
+#include <fstream>
+
 namespace gloglotto
 {
+	shader
+	shader::from_file (std::multimap<std::string, std::string> files) throw (invalid_operation, failed_compilation, failed_linking)
+	{
+		std::multimap<std::string, std::string> source;
+
+		for (auto file : files) {
+			std::ifstream stream(file.second);
+
+			if (stream.fail()) {
+				throw invalid_operation("file not found");
+			}
+
+			source.insert(std::make_pair(file.first, std::string(
+				std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>())));
+		}
+
+		return shader(source);
+	}
+
+	shader
+	shader::from_stream (std::multimap<std::string, std::istream&> streams) throw (invalid_operation, failed_compilation, failed_linking)
+	{
+		std::multimap<std::string, std::string> source;
+
+		for (auto stream : streams) {
+			source.insert(std::make_pair(stream.first, std::string(
+				std::istreambuf_iterator<char>(stream.second), std::istreambuf_iterator<char>())));
+		}
+
+		return shader(source);
+	}
+
 	shader::shader (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking)
 	{
 		_id     = make(source);
