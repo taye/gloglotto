@@ -36,7 +36,7 @@ namespace gloglotto
 	vector<Size, Type>::vector (vector<Size, Type> const& from)
 	{
 		_data = new Type[Size];
-		std::move(&from, &from + Size, _data);
+		std::copy(&from, &from + Size, _data);
 
 		own();
 	}
@@ -92,7 +92,7 @@ namespace gloglotto
 	vector<Size, Type>&
 	vector<Size, Type>::operator = (vector<Size, Type> const& from)
 	{
-		std::move(&from, &from + Size, _data);
+		std::copy(&from, &from + Size, _data);
 
 		return *this;
 	}
@@ -108,7 +108,7 @@ namespace gloglotto
 	vector<Size, Type>&
 	vector<Size, Type>::operator = (const Type* data)
 	{
-		std::move(data, data + Size, _data);
+		std::copy(data, data + Size, _data);
 
 		return *this;
 	}
