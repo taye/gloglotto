@@ -61,8 +61,7 @@ namespace gloglotto
 			 */
 			vector (vector<Size, Type> const& from);
 
-			/* Create a vector from the pointer of the rvalue vector and take ownership
-			 * of it if it was allocated by it.
+			/* Create a vector from the state of the passed rvalue vector array.
 			 */
 			vector (vector<Size, Type>&& from);
 
