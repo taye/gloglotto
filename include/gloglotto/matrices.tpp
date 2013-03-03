@@ -240,6 +240,13 @@ namespace gloglotto
 
 	template <int Size, class Matrix>
 	typename matrices<Size, Matrix>::type*
+	matrices<Size, Matrix>::operator & (void)
+	{
+		return _data;
+	}
+
+	template <int Size, class Matrix>
+	typename matrices<Size, Matrix>::type const*
 	matrices<Size, Matrix>::operator & (void) const
 	{
 		return _data;
