@@ -200,7 +200,12 @@ namespace gloglotto
 
 			/* Return the wrapped raw pointer.
 			 */
-			Type* operator & (void) const;
+			Type* operator & (void);
+
+			/* Return the wrapped constant raw pointer.
+			 */
+			Type const* operator & (void) const;
+
 
 		private:
 			Type* _data;

@@ -405,6 +405,13 @@ namespace gloglotto
 
 	template <int Size, typename Type>
 	Type*
+	vector<Size, Type>::operator & (void)
+	{
+		return _data;
+	}
+
+	template <int Size, typename Type>
+	Type const*
 	vector<Size, Type>::operator & (void) const
 	{
 		return _data;
