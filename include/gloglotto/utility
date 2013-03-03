@@ -67,48 +67,6 @@ namespace gloglotto
 	{
 		(void) (Signature*) lambda;
 	}
-
-	template <int Size, typename Type>
-	class sized_initializer_list final
-	{
-		public:
-			sized_initializer_list (std::initializer_list<Type> list) throw (std::length_error)
-			{
-				if (list.size() != Size) {
-					throw std::length_error("list size doesn't match defined size");
-				}
-
-				int i = 0;
-				for (auto value : list) {
-					_data[i++] = value;
-				}
-			}
-
-			Type
-			operator [] (int index) throw (std::out_of_range)
-			{
-				if (index < 0 || index >= Size) {
-					throw std::out_of_range("index out of range");
-				}
-
-				return _data[index];
-			}
-
-			Type*
-			begin (void) const
-			{
-				return _data;
-			}
-
-			Type*
-			end (void) const
-			{
-				return _data + Size;
-			}
-
-		private:
-			Type _data[Size];
-	};
 }
 
 #endif

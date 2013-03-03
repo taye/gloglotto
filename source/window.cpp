@@ -23,12 +23,12 @@ namespace gloglotto
 	namespace window
 	{
 		void
-		create (int* argc, char* argv[], sized_initializer_list<2, int> size, std::string name) throw (std::invalid_argument, exception)
+		create (int* argc, char* argv[], size size, std::string name) throw (exception)
 		{
 			glutInit(argc, argv);
 			glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
 
-			glutInitWindowSize(size[0], size[1]);
+			glutInitWindowSize(size.width, size.height);
 
 			glutCreateWindow(name.c_str());
 
@@ -39,13 +39,13 @@ namespace gloglotto
 		}
 
 		void
-		create (int* argc, char* argv[], sized_initializer_list<2, int> size, sized_initializer_list<2, int> position, std::string name) throw (std::invalid_argument, exception)
+		create (int* argc, char* argv[], size size, position position, std::string name) throw (exception)
 		{
 			glutInit(argc, argv);
 			glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
 
-			glutInitWindowSize(size[0], size[1]);
-			glutInitWindowPosition(position[0], position[1]);
+			glutInitWindowSize(size.width, size.height);
+			glutInitWindowPosition(position.x, position.y);
 
 			glutCreateWindow(name.c_str());
 
