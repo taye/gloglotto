@@ -63,10 +63,10 @@ namespace gloglotto
 		_function = nullptr;
 	}
 
-	unsigned int
+	unsigned
 	shader::make (std::multimap<std::string, std::string>& source) const throw (failed_compilation, failed_linking, invalid_enum, invalid_operation)
 	{
-		static std::map<std::string, unsigned int> enums = {
+		static std::map<std::string, unsigned> enums = {
 			{ "vertex",   GL_VERTEX_SHADER },
 			{ "fragment", GL_FRAGMENT_SHADER },
 			{ "geometry", GL_GEOMETRY_SHADER },
@@ -75,17 +75,17 @@ namespace gloglotto
 			{ "tessellation:control",    GL_TESS_CONTROL_SHADER }
 		};
 
-		unsigned int program = 0;
+		unsigned program = 0;
 
 		check_exception {
 			program = glCreateProgram();
 		}
 
-		std::vector<unsigned int> shaders;
+		std::vector<unsigned> shaders;
 		try {
 			for (auto entry : source) {
 				const GLchar* string[1] = { (GLchar*) entry.second.c_str() };
-				unsigned int  shader;
+				unsigned shader;
 
 				check_exception {
 					shader = glCreateShader(enums.at(entry.first));
@@ -164,6 +164,18 @@ namespace gloglotto
 	}
 
 	int
+	shader::attribute (std::string name) const throw (invalid_operation)
+	{
+		int location;
+
+		check_exception {
+			location = glGetAttribLocation(_id, name.c_str());
+		}
+
+		return location;
+	}
+
+	int
 	shader::uniform (std::string name) const throw (invalid_operation)
 	{
 		int location;
@@ -192,7 +204,7 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, unsigned int data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, unsigned data) throw (invalid_operation, invalid_value)
 	{
 		check_exception {
 			glUniform1ui(uniform(name), data);
@@ -272,7 +284,7 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, vector<1, unsigned int> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vector<1, unsigned> data) throw (invalid_operation, invalid_value)
 	{
 		check_exception {
 			glUniform1uiv(uniform(name), 1, &data);
@@ -280,7 +292,7 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, vector<2, unsigned int> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vector<2, unsigned> data) throw (invalid_operation, invalid_value)
 	{
 		check_exception {
 			glUniform2uiv(uniform(name), 1, &data);
@@ -288,7 +300,7 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, vector<3, unsigned int> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vector<3, unsigned> data) throw (invalid_operation, invalid_value)
 	{
 		check_exception {
 			glUniform3uiv(uniform(name), 1, &data);
@@ -296,7 +308,7 @@ namespace gloglotto
 	}
 
 	void
-	shader::uniform (std::string name, vector<4, unsigned int> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vector<4, unsigned> data) throw (invalid_operation, invalid_value)
 	{
 		check_exception {
 			glUniform4uiv(uniform(name), 1, &data);

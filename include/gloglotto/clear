@@ -24,7 +24,7 @@
 
 namespace gloglotto
 {
-	enum class clear : unsigned int
+	enum class clear : unsigned
 	{
 		color        = GL_COLOR_BUFFER_BIT,
 		depth        = GL_DEPTH_BUFFER_BIT,
@@ -35,7 +35,7 @@ namespace gloglotto
 	inline constexpr clear
 	operator | (enum clear a, enum clear b)
 	{
-		return static_cast<clear>(static_cast<unsigned int>(a) | static_cast<unsigned int>(b));
+		return static_cast<clear>(static_cast<unsigned>(a) | static_cast<unsigned>(b));
 	}
 
 	void clear (enum clear mask) throw (invalid_value, invalid_operation);

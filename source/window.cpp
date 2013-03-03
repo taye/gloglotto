@@ -32,7 +32,7 @@ namespace gloglotto
 
 			glutCreateWindow(name.c_str());
 
-			unsigned int err = glewInit();
+			unsigned err = glewInit();
 			if (err != GLEW_OK) {
 				throw exception(reinterpret_cast<const char*>(glewGetErrorString(err)));
 			}
@@ -49,7 +49,7 @@ namespace gloglotto
 
 			glutCreateWindow(name.c_str());
 
-			unsigned int err = glewInit();
+			unsigned err = glewInit();
 			if (err != GLEW_OK) {
 				throw exception(reinterpret_cast<const char*>(glewGetErrorString(err)));
 			}
