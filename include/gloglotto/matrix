@@ -199,7 +199,11 @@ namespace gloglotto
 
 			/* Return the wrapped raw pointer (row major).
 			 */
-			Type* operator & (void) const;
+			Type* operator & (void);
+
+			/* Return the wrapped constant raw pointer (row major).
+			 */
+			Type const* operator & (void) const;
 
 		private:
 			Type* _data;

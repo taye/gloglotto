@@ -589,6 +589,13 @@ namespace gloglotto
 
 	template <int Rows, int Columns, typename Type>
 	Type*
+	matrix<Rows, Columns, Type>::operator & (void)
+	{
+		return _data;
+	}
+
+	template <int Rows, int Columns, typename Type>
+	Type const*
 	matrix<Rows, Columns, Type>::operator & (void) const
 	{
 		return _data;
