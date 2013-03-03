@@ -69,7 +69,7 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
-	vectors<Size, Vector>::vectors (std::initializer_list<Vector> list)
+	vectors<Size, Vector>::vectors (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument)
 	{
 		_data    = new type[Size * elements];
 		_vectors = nullptr;
@@ -129,15 +129,26 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>&
-	vectors<Size, Vector>::operator = (std::initializer_list<Vector> list) throw (std::invalid_argument)
+	vectors<Size, Vector>::operator = (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument)
 	{
 		if (list.size() != Size) {
 			throw std::invalid_argument("number of arguments doesn't match vectors size");
 		}
 
 		int i = 0;
-		for (auto matrix : list) {
-			(*this)[i] = matrix;
+		for (auto list : list) {
+			if (list.size() != elements) {
+				throw std::invalid_argument("number of arguments doesn't match vector size");
+			}
+
+			int j = 0;
+			for (auto value : list) {
+				_data[i * elements + j] = value;
+
+				j++;
+			}
+
+			i++;
 		}
 
 		return *this;

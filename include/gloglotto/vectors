@@ -20,8 +20,7 @@
 #define _GLOGLOTTO_VECTORS_H
 
 #include <gloglotto/vector>
-
-#include <stdexcept>
+#include <gloglotto/exception>
 
 namespace gloglotto
 {
@@ -58,7 +57,7 @@ namespace gloglotto
 
 			/* Create a vector array from an initializer list.
 			 */
-			vectors (std::initializer_list<Vector> list);
+			vectors (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument);
 
 			/* Destroy the data if it's not a wrapper.
 			 */
@@ -78,7 +77,7 @@ namespace gloglotto
 
 			/* Copy the data passed from the initializer list.
 			 */
-			vectors<Size, Vector>& operator = (std::initializer_list<Vector> list) throw (std::invalid_argument);
+			vectors<Size, Vector>& operator = (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument);
 
 			/* Check if the vector array owns the pointer.
 			 */
