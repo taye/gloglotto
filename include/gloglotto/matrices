@@ -19,9 +19,8 @@
 #ifndef _GLOGLOTTO_MATRICES_H
 #define _GLOGLOTTO_MATRICES_H
 
-#include <gloglotto/matrix>
-
-#include <stdexcept>
+#include <gloglotto/math>
+#include <gloglotto/exception>
 
 namespace gloglotto
 {
@@ -60,7 +59,7 @@ namespace gloglotto
 
 			/* Create a matrix array from an initializer list.
 			 */
-			matrices (std::initializer_list<Matrix> list);
+			matrices (std::initializer_list<std::initializer_list<std::initializer_list<type>>> list) throw (std::invalid_argument);
 
 			/* Destroy the data if it's not a wrapper.
 			 */
@@ -80,7 +79,7 @@ namespace gloglotto
 
 			/* Copy the data passed from the initializer list.
 			 */
-			matrices<Size, Matrix>& operator = (std::initializer_list<Matrix> list) throw (std::invalid_argument);
+			matrices<Size, Matrix>& operator = (std::initializer_list<std::initializer_list<std::initializer_list<type>>> list) throw (std::invalid_argument);
 
 			/* Check if the matrix array owns the pointer.
 			 */

@@ -52,7 +52,7 @@ namespace gloglotto
 	}
 
 	template <int Size, class Matrix>
-	matrices<Size, Matrix>::matrices (std::initializer_list<Matrix> list)
+	matrices<Size, Matrix>::matrices (std::initializer_list<std::initializer_list<std::initializer_list<type>>> list) throw (std::invalid_argument)
 	{
 		_data     = new type[Size * rows * columns];
 		_matrices = nullptr;
@@ -112,7 +112,7 @@ namespace gloglotto
 
 	template <int Size, class Matrix>
 	matrices<Size, Matrix>&
-	matrices<Size, Matrix>::operator = (std::initializer_list<Matrix> list) throw (std::invalid_argument)
+	matrices<Size, Matrix>::operator = (std::initializer_list<std::initializer_list<std::initializer_list<type>>> list) throw (std::invalid_argument)
 	{
 		if (list.size() != Size) {
 			throw std::invalid_argument("number of arguments doesn't match matrices size");
@@ -120,7 +120,19 @@ namespace gloglotto
 
 		int i = 0;
 		for (auto matrix : list) {
-			(*this)[i] = matrix;
+			int row = 0;
+			for (auto list : matrix) {
+				int column = 0;
+				for (auto value : list) {
+					_data[i * elements + row * columns + column] = value;
+
+					column++;
+				}
+
+				row++;
+			}
+
+			i++;
 		}
 
 		return *this;
