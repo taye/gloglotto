@@ -23,33 +23,25 @@ namespace gloglotto
 	template <int Size, typename Type>
 	buffer::buffer (unsigned target, unsigned usage, vector<Size, Type> const& data) : buffer()
 	{
-		bind(target);
 		set(target, usage, data);
-		unbind(target);
 	}
 
 	template <int Size, typename Vector>
 	buffer::buffer (unsigned target, unsigned usage, vectors<Size, Vector> const& data) : buffer()
 	{
-		bind(target);
 		set(target, usage, data);
-		unbind(target);
 	}
 
 	template <int Rows, int Columns, typename Type>
 	buffer::buffer (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) : buffer()
 	{
-		bind(target);
 		set(target, usage, data);
-		unbind(target);
 	}
 
 	template <int Size, typename Matrix>
 	buffer::buffer (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) : buffer()
 	{
-		bind(target);
 		set(target, usage, data);
-		unbind(target);
 	}
 
 	template <int Size, typename Type>
