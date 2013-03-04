@@ -146,4 +146,38 @@ namespace gloglotto
 	{
 		return set(target, usage, &data, sizeof(data));
 	}
+
+	buffer const&
+	buffer::replace (unsigned target, void const* data, size_t size, size_t offset) const
+	{
+		bind(target);
+		glBufferSubData(target, offset, size, data);
+		unbind(target);
+
+		return *this;
+	}
+
+	buffer const&
+	buffer::replace (unsigned target, float data, size_t offset) const
+	{
+		return replace(target, &data, sizeof(data), offset);
+	}
+
+	buffer const&
+	buffer::replace (unsigned target, int data, size_t offset) const
+	{
+		return replace(target, &data, sizeof(data), offset);
+	}
+
+	buffer const&
+	buffer::replace (unsigned target, unsigned data, size_t offset) const
+	{
+		return replace(target, &data, sizeof(data), offset);
+	}
+
+	buffer const&
+	buffer::replace (unsigned target, bool data, size_t offset) const
+	{
+		return replace(target, &data, sizeof(data), offset);
+	}
 }

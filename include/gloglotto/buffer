@@ -143,6 +143,28 @@ namespace gloglotto
 			template <int Size, typename Matrix>
 			buffer const& set (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) const;
 
+			buffer const& replace (unsigned target, void const* data, size_t size, size_t offset = 0) const;
+
+			buffer const& replace (unsigned target, float data, size_t offset = 0) const;
+
+			buffer const& replace (unsigned target, int data, size_t offset = 0) const;
+
+			buffer const& replace (unsigned target, unsigned data, size_t offset = 0) const;
+
+			buffer const& replace (unsigned target, bool data, size_t offset = 0) const;
+
+			template <int Size, typename Type>
+			buffer const& replace (unsigned target, vector<Size, Type> const& data, size_t offset = 0) const;
+
+			template <int Size, typename Vector>
+			buffer const& replace (unsigned target, vectors<Size, Vector> const& data, size_t offset = 0) const;
+
+			template <int Rows, int Columns, typename Type>
+			buffer const& replace (unsigned target, matrix<Rows, Columns, Type> const& data, size_t offset = 0) const;
+
+			template <int Size, typename Matrix>
+			buffer const& replace (unsigned target, matrices<Size, Matrix> const& data, size_t offset = 0) const;
+
 		private:
 			unsigned _id = 0;
 	};

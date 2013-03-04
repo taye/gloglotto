@@ -71,4 +71,32 @@ namespace gloglotto
 	{
 		return set(target, usage, reinterpret_cast<void const*>(&data), sizeof(typename Matrix::type) * Size * Matrix::elements);
 	}
+
+	template <int Size, typename Type>
+	buffer const&
+	buffer::replace (unsigned target, vector<Size, Type> const& data, size_t offset) const
+	{
+		return replace(target, reinterpret_cast<void const*>(&data), sizeof(Type) * vector<Size, Type>::elements, offset);
+	}
+
+	template <int Size, typename Vector>
+	buffer const&
+	buffer::replace (unsigned target, vectors<Size, Vector> const& data, size_t offset) const
+	{
+		return replace(target, reinterpret_cast<void const*>(&data), sizeof(typename Vector::type) * Size * Vector::elements, offset);
+	}
+
+	template <int Rows, int Columns, typename Type>
+	buffer const&
+	buffer::replace (unsigned target, matrix<Rows, Columns, Type> const& data, size_t offset) const
+	{
+		return replace(target, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Rows, Columns, Type>::elements, offset);
+	}
+
+	template <int Size, typename Matrix>
+	buffer const&
+	buffer::replace (unsigned target, matrices<Size, Matrix> const& data, size_t offset) const
+	{
+		return replace(target, reinterpret_cast<void const*>(&data), sizeof(typename Matrix::type) * Size * Matrix::elements, offset);
+	}
 }
