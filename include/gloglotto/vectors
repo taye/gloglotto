@@ -119,6 +119,14 @@ namespace gloglotto
 			 */
 			iterator end (void);
 
+			/* Return a new vector array multiplied by the matrix.
+			 */
+			vectors<Size, Vector> operator * (matrix<elements, elements, type> const& other) const;
+
+			/* Multiply the vector array in place by the matrix.
+			 */
+			vectors<Size, Vector>& operator *= (matrix<elements, elements, type> const& other);
+
 			/* Return the wrapped raw pointer (row major).
 			 */
 			type* operator & (void);

@@ -267,6 +267,24 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
+	vectors<Size, Vector>
+	vectors<Size, Vector>::operator * (matrix<elements, elements, type> const& other) const
+	{
+		return vectors<Size, Vector>(*this) *= other;
+	}
+
+	template <int Size, class Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::operator *= (matrix<elements, elements, type> const& other)
+	{
+		for (auto& vector : *this) {
+			vector *= other;
+		}
+
+		return *this;
+	}
+
+	template <int Size, class Vector>
 	typename vectors<Size, Vector>::type*
 	vectors<Size, Vector>::operator & (void)
 	{
