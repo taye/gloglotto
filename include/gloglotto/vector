@@ -50,6 +50,7 @@ namespace gloglotto
 			typedef iterator::accessible<vector<Size, Type>>                 iterator;
 
 			typedef Type type;
+
 			static const int elements = Size;
 
 		public:
