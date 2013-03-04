@@ -207,7 +207,6 @@ namespace gloglotto
 			 */
 			Type const* operator & (void) const;
 
-
 		private:
 			Type* _data;
 			bool  _owner;
