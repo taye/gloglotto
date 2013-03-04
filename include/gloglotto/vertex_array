@@ -16,21 +16,33 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_H
-#define _GLOGLOTTO_H
+#ifndef _GLOGLOTTO_VERTEX_ARRAY_H
+#define _GLOGLOTTO_VERTEX_ARRAY_H
 
-#include <gloglotto/extension>
+#include <gloglotto/buffer>
 
-#include <gloglotto/clear>
-#include <gloglotto/viewport>
+namespace gloglotto
+{
+	class vertex_array
+	{
+		public:
+			vertex_array (void);
+			~vertex_array (void);
 
-#include <gloglotto/object>
+			vertex_array const& bind (void) const throw (invalid_operation);
+			vertex_array const& unbind (void) const throw (invalid_operation);
 
-#include <gloglotto/shader>
-#include <gloglotto/shader_manager>
+			vertex_array const& enable (unsigned index) const throw (invalid_value, invalid_operation);
+			vertex_array const& disable (unsigned index) const throw (invalid_value, invalid_operation);
 
-#include <gloglotto/window>
+			template <typename Type>
+			vertex_array const& define (unsigned index, size_t offset = 0, int stride = 0, bool normalized = false) const throw (invalid_value);
 
-namespace gl = gloglotto;
+		private:
+			unsigned _id = 0;
+	};
+}
+
+#include <gloglotto/vertex_array.tpp>
 
 #endif

@@ -16,21 +16,10 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_H
-#define _GLOGLOTTO_H
+#ifndef _GLOGLOTTO_OBJECT_H
+#define _GLOGLOTTO_OBJECT_H
 
-#include <gloglotto/extension>
-
-#include <gloglotto/clear>
-#include <gloglotto/viewport>
-
-#include <gloglotto/object>
-
-#include <gloglotto/shader>
-#include <gloglotto/shader_manager>
-
-#include <gloglotto/window>
-
-namespace gl = gloglotto;
+#include <gloglotto/buffer>
+#include <gloglotto/vertex_array>
 
 #endif

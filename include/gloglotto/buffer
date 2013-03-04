@@ -1,0 +1,130 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_BUFFER_H
+#define _GLOGLOTTO_BUFFER_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
+#include <gloglotto/math>
+
+namespace gloglotto
+{
+	namespace target
+	{
+		namespace vertex
+		{
+			static constexpr unsigned data    = GL_ARRAY_BUFFER;
+			static constexpr unsigned indices = GL_ELEMENT_ARRAY_BUFFER;
+		}
+
+		namespace pixel
+		{
+			static constexpr unsigned pack   = GL_PIXEL_PACK_BUFFER;
+			static constexpr unsigned unpack = GL_PIXEL_UNPACK_BUFFER;
+		}
+
+		namespace copy
+		{
+			static constexpr unsigned read  = GL_COPY_READ_BUFFER;
+			static constexpr unsigned write = GL_COPY_WRITE_BUFFER;
+		}
+
+		namespace indirect
+		{
+			static constexpr unsigned draw     = GL_DRAW_INDIRECT_BUFFER;
+			static constexpr unsigned dispatch = GL_DISPATCH_INDIRECT_BUFFER;
+		}
+
+		namespace shader
+		{
+			static constexpr unsigned storage = GL_SHADER_STORAGE_BUFFER;
+			static constexpr unsigned texture = GL_TEXTURE_BUFFER;
+			static constexpr unsigned uniform = GL_UNIFORM_BUFFER;
+		}
+	}
+
+	namespace usage
+	{
+		namespace constant
+		{
+			static constexpr unsigned draw = GL_STATIC_DRAW;
+			static constexpr unsigned read = GL_STATIC_READ;
+			static constexpr unsigned copy = GL_STATIC_COPY;
+		}
+
+		namespace dynamic
+		{
+			static constexpr unsigned draw = GL_DYNAMIC_DRAW;
+			static constexpr unsigned read = GL_DYNAMIC_READ;
+			static constexpr unsigned copy = GL_DYNAMIC_COPY;
+		}
+
+		namespace stream
+		{
+			static constexpr unsigned draw = GL_STREAM_DRAW;
+			static constexpr unsigned read = GL_STREAM_READ;
+			static constexpr unsigned copy = GL_STREAM_COPY;
+		}
+	}
+
+	class buffer
+	{
+		public:
+			unsigned bound (unsigned target) throw (invalid_enum);
+
+		public:
+			buffer (void);
+			~buffer (void);
+
+			bool bound (unsigned target) const throw (invalid_enum);
+
+			buffer const& bind (unsigned target) const throw (invalid_enum);
+
+			buffer const& unbind (unsigned target) const throw (invalid_enum);
+
+			buffer const& set (unsigned target, unsigned usage, void const* data, size_t size) const;
+
+			buffer const& set (unsigned target, unsigned usage, float data) const;
+
+			buffer const& set (unsigned target, unsigned usage, int data) const;
+
+			buffer const& set (unsigned target, unsigned usage, unsigned data) const;
+
+			buffer const& set (unsigned target, unsigned usage, bool data) const;
+
+			template <int Size, typename Type>
+			buffer const& set (unsigned target, unsigned usage, vector<Size, Type> const& data) const;
+
+			template <int Size, typename Vector>
+			buffer const& set (unsigned target, unsigned usage, vectors<Size, Vector> const& data) const;
+
+			template <int Rows, int Columns, typename Type>
+			buffer const& set (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) const;
+
+			template <int Size, typename Matrix>
+			buffer const& set (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) const;
+
+		private:
+			unsigned _id = 0;
+	};
+}
+
+#include <gloglotto/buffer.tpp>
+
+#endif
