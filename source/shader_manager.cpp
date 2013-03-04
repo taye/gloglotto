@@ -56,23 +56,68 @@ namespace gloglotto
 	shader_manager::shader_in_use::shader_in_use (shader* in_use)
 	{
 		_shader = in_use;
+
+		_vertex_array = nullptr;
+		_owner        = false;
 	}
 
-	shader*
+	shader_manager::shader_in_use::~shader_in_use (void)
+	{
+		if (_vertex_array) {
+			_vertex_array->unbind();
+
+			if (_owner) {
+				delete _vertex_array;
+			}
+		}
+	}
+
+	shader_manager::shader_in_use&
+	shader_manager::shader_in_use::with (vertex_array const* vertex_array)
+	{
+		if (_owner && _vertex_array) {
+			delete _vertex_array;
+		}
+
+		_vertex_array = const_cast<class vertex_array*>(vertex_array);
+		_owner        = false;
+
+		return *this;
+	}
+
+	shader_manager::shader_in_use&
+	shader_manager::shader_in_use::use (buffer const& buffer)
+	{
+		buffer.bind(target::vertex::data);
+
+		return *this;
+	}
+
+	shader_manager::shader_in_use&
+	shader_manager::shader_in_use::draw (unsigned primitive, size_t count, size_t offset) throw (invalid_enum, invalid_value, invalid_operation)
+	{
+		check_exception {
+			glDrawArrays(primitive, offset, count);
+		}
+
+		return *this;
+	}
+
+	shader_manager::shader_in_use*
 	shader_manager::shader_in_use::begin (void)
 	{
-		return _shader;
+		return this;
+	}
+
+	shader_manager::shader_in_use*
+	shader_manager::shader_in_use::end (void)
+	{
+		return this + 1;
 	}
 
 	shader*
-	shader_manager::shader_in_use::end (void)
+	shader_manager::shader_in_use::operator -> (void)
 	{
-		return _shader + 1;
-	}
-
-	shader&
-	shader_manager::shader_in_use::operator * (void)
-	{
-		return *_shader;
+		return _shader;
 	}
 }

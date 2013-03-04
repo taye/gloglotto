@@ -25,6 +25,8 @@
 #include <typeinfo>
 
 #include <gloglotto/math>
+#include <gloglotto/primitive>
+#include <gloglotto/object>
 #include <gloglotto/shader>
 
 namespace gloglotto
@@ -38,14 +40,29 @@ namespace gloglotto
 		{
 			public:
 				shader_in_use (shader* in_use);
+				~shader_in_use (void);
 
-				shader* begin (void);
-				shader* end (void);
+				shader_in_use& with (vertex_array const* buffer);
+				shader_in_use& use (buffer const& buffer);
 
-				shader& operator * (void);
+				template <typename Type>
+				shader_in_use& attribute (std::string name, size_t offset = 0, int stride = 0, bool normalized = false) throw (invalid_value);
+
+				template <typename Type>
+				shader_in_use& attribute (std::string name, buffer const& buffer, size_t offset = 0, int stride = 0, bool normalized = false) throw (invalid_value);
+
+				shader_in_use& draw (unsigned primitive, size_t count, size_t offset = 0) throw (invalid_enum, invalid_value, invalid_operation);
+
+				shader_in_use* begin (void);
+				shader_in_use* end (void);
+
+				shader* operator -> (void);
 
 			private:
 				shader* _shader;
+
+				vertex_array* _vertex_array;
+				bool          _owner;
 		};
 
 		public:

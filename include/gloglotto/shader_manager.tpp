@@ -49,4 +49,32 @@ namespace gloglotto
 
 		return shader_in_use(current);
 	}
+
+	template <typename Type>
+	shader_manager::shader_in_use&
+	shader_manager::shader_in_use::attribute (std::string name, size_t offset, int stride, bool normalized) throw (invalid_value)
+	{
+		if (!_vertex_array) {
+			_vertex_array = new vertex_array();
+		}
+
+		unsigned location = _shader->attribute(name);
+
+		_vertex_array->bind();
+		_vertex_array->enable(location);
+		_vertex_array->define<Type>(location, offset, stride, normalized);
+
+		return *this;
+	}
+
+	template <typename Type>
+	shader_manager::shader_in_use&
+	shader_manager::shader_in_use::attribute (std::string name, buffer const& buffer, size_t offset, int stride, bool normalized) throw (invalid_value)
+	{
+		buffer.bind(target::vertex::data);
+		attribute<Type>(name, offset, stride, normalized);
+		buffer.unbind(target::vertex::data);
+
+		return *this;
+	}
 }
