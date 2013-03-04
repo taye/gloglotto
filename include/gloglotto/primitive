@@ -16,22 +16,38 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_H
-#define _GLOGLOTTO_H
+#ifndef _GLOGLOTTO_PRIMITIVE_H
+#define _GLOGLOTTO_PRIMITIVE_H
 
-#include <gloglotto/extension>
+#include <gloglotto/headers>
 
-#include <gloglotto/clear>
-#include <gloglotto/viewport>
+namespace gloglotto
+{
+	namespace primitive
+	{
+		static constexpr unsigned point    = GL_POINTS;
+		static constexpr unsigned line     = GL_LINES;
+		static constexpr unsigned triangle = GL_TRIANGLES;
+		static constexpr unsigned quad     = GL_QUADS;
+		static constexpr unsigned polygon  = GL_POLYGON;
 
-#include <gloglotto/primitive>
-#include <gloglotto/object>
+		namespace strip
+		{
+			static constexpr unsigned line     = GL_LINE_STRIP;
+			static constexpr unsigned triangle = GL_TRIANGLE_STRIP;
+			static constexpr unsigned quad     = GL_QUAD_STRIP;
+		}
 
-#include <gloglotto/shader>
-#include <gloglotto/shader_manager>
+		namespace loop
+		{
+			static constexpr unsigned line = GL_LINE_LOOP;
+		}
 
-#include <gloglotto/window>
-
-namespace gl = gloglotto;
+		namespace fan
+		{
+			static constexpr unsigned triangle = GL_TRIANGLE_FAN;
+		}
+	}
+}
 
 #endif
