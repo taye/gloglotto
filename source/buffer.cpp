@@ -58,6 +58,41 @@ namespace gloglotto
 		glGenBuffers(1, &_id);
 	}
 
+	buffer::buffer (unsigned target, unsigned usage, void const* data, size_t size) : buffer()
+	{
+		bind(target);
+		set(target, usage, data, size);
+		unbind(target);
+	}
+
+	buffer::buffer (unsigned target, unsigned usage, float data) : buffer()
+	{
+		bind(target);
+		set(target, usage, data);
+		unbind(target);
+	}
+
+	buffer::buffer (unsigned target, unsigned usage, int data) : buffer()
+	{
+		bind(target);
+		set(target, usage, data);
+		unbind(target);
+	}
+
+	buffer::buffer (unsigned target, unsigned usage, unsigned data) : buffer()
+	{
+		bind(target);
+		set(target, usage, data);
+		unbind(target);
+	}
+
+	buffer::buffer (unsigned target, unsigned usage, bool data) : buffer()
+	{
+		bind(target);
+		set(target, usage, data);
+		unbind(target);
+	}
+
 	buffer::~buffer (void)
 	{
 		glDeleteBuffers(1, &_id);

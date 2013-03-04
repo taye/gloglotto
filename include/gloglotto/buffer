@@ -90,6 +90,29 @@ namespace gloglotto
 
 		public:
 			buffer (void);
+
+			buffer (unsigned target, unsigned usage, void const* data, size_t size);
+
+			buffer (unsigned target, unsigned usage, float data);
+
+			buffer (unsigned target, unsigned usage, int data);
+
+			buffer (unsigned target, unsigned usage, unsigned data);
+
+			buffer (unsigned target, unsigned usage, bool data);
+
+			template <int Size, typename Type>
+			buffer (unsigned target, unsigned usage, vector<Size, Type> const& data);
+
+			template <int Size, typename Vector>
+			buffer (unsigned target, unsigned usage, vectors<Size, Vector> const& data);
+
+			template <int Rows, int Columns, typename Type>
+			buffer (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data);
+
+			template <int Size, typename Matrix>
+			buffer (unsigned target, unsigned usage, matrices<Size, Matrix> const& data);
+
 			~buffer (void);
 
 			bool bound (unsigned target) const throw (invalid_enum);
