@@ -52,8 +52,21 @@ main (int argc, char* argv[])
 
 		static gl::buffer buffer(gl::target::vertex::data, gl::usage::dynamic::draw, triangle);
 
-		triangle *= gl::make::rotation(gl::angle::radians::make(0.01), 1.0f, 1.0f, 1.0f);
-		buffer.replace(gl::target::vertex::data, triangle);
+		static auto beginning = std::chrono::high_resolution_clock::now();
+		       auto now       = std::chrono::high_resolution_clock::now();
+
+		static int last_tick = 0;
+		       int tick      = std::chrono::duration_cast<std::chrono::milliseconds>(now - beginning).count();
+
+		if (tick > last_tick) {
+			while (tick > last_tick) {
+				triangle *= gl::make::rotation(gl::angle::radians::make(0.01), 1.0f, 1.0f, 1.0f);
+
+				last_tick += 1000 / 60.0;
+			}
+
+			buffer.replace(gl::target::vertex::data, triangle);
+		}
 
 		gl::clear(gl::clear::color | gl::clear::depth | gl::clear::stencil);
 
