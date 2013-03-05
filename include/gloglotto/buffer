@@ -121,6 +121,8 @@ namespace gloglotto
 
 			buffer const& unbind (unsigned target) const throw (invalid_enum);
 
+			buffer const& reallocate (unsigned target, unsigned usage, size_t size) const;
+
 			buffer const& set (unsigned target, unsigned usage, void const* data, size_t size) const;
 
 			buffer const& set (unsigned target, unsigned usage, float data) const;

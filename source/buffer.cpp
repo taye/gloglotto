@@ -114,6 +114,14 @@ namespace gloglotto
 	}
 
 	buffer const&
+	buffer::reallocate (unsigned target, unsigned usage, size_t size) const
+	{
+		glBufferData(target, size, NULL, usage);
+
+		return *this;
+	}
+
+	buffer const&
 	buffer::set (unsigned target, unsigned usage, void const* data, size_t size) const
 	{
 		bind(target);
