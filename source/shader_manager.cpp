@@ -96,9 +96,7 @@ namespace gloglotto
 	shader_manager::shader_in_use&
 	shader_manager::shader_in_use::draw (unsigned primitive, size_t count, size_t offset) throw (invalid_enum, invalid_value, invalid_operation)
 	{
-		check_exception {
-			glDrawArrays(primitive, offset, count);
-		}
+		_shader->draw(primitive, count, offset);
 
 		return *this;
 	}
@@ -106,9 +104,7 @@ namespace gloglotto
 	shader_manager::shader_in_use&
 	shader_manager::shader_in_use::draw (unsigned primitive, std::vector<unsigned char> indices, size_t count) throw (invalid_enum, invalid_value, invalid_operation)
 	{
-		check_exception {
-			glDrawElements(primitive, (count == (size_t) -1) ? indices.size() : count, GL_UNSIGNED_BYTE, indices.data());
-		}
+		_shader->draw(primitive, indices, count);
 
 		return *this;
 	}
@@ -116,19 +112,14 @@ namespace gloglotto
 	shader_manager::shader_in_use&
 	shader_manager::shader_in_use::draw (unsigned primitive, std::vector<unsigned short> indices, size_t count) throw (invalid_enum, invalid_value, invalid_operation)
 	{
-		check_exception {
-			glDrawElements(primitive, (count == (size_t) -1) ? indices.size() : count, GL_UNSIGNED_SHORT, indices.data());
-		}
+		_shader->draw(primitive, indices, count);
 
 		return *this;
 	}
 
 	shader_manager::shader_in_use&
 	shader_manager::shader_in_use::draw (unsigned primitive, std::vector<unsigned> indices, size_t count) throw (invalid_enum, invalid_value, invalid_operation)
-	{
-		check_exception {
-			glDrawElements(primitive, (count == (size_t) -1) ? indices.size() : count, GL_UNSIGNED_INT, indices.data());
-		}
+	{ _shader->draw(primitive, indices, count);
 
 		return *this;
 	}

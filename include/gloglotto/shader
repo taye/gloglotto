@@ -73,6 +73,12 @@ namespace gloglotto
 			template <typename ...Args>
 			void begin (Args... args) throw (std::bad_typeid, invalid_operation, invalid_value);
 
+			shader& draw (unsigned primitive, size_t count, size_t offset = 0) throw (invalid_enum, invalid_value, invalid_operation);
+
+			shader& draw (unsigned primitive, std::vector<unsigned char> indices, size_t count = -1) throw (invalid_enum, invalid_value, invalid_operation);
+			shader& draw (unsigned primitive, std::vector<unsigned short> indices, size_t count = -1) throw (invalid_enum, invalid_value, invalid_operation);
+			shader& draw (unsigned primitive, std::vector<unsigned> indices, size_t count = -1) throw (invalid_enum, invalid_value, invalid_operation);
+
 			void end (void);
 
 			int attribute (std::string name) const throw (invalid_operation);

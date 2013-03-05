@@ -157,6 +157,46 @@ namespace gloglotto
 		delete static_cast<std::function<void()>*>(_function);
 	}
 
+	shader&
+	shader::draw (unsigned primitive, size_t count, size_t offset) throw (invalid_enum, invalid_value, invalid_operation)
+	{
+		check_exception {
+			glDrawArrays(primitive, offset, count);
+		}
+
+		return *this;
+	}
+
+	shader&
+	shader::draw (unsigned primitive, std::vector<unsigned char> indices, size_t count) throw (invalid_enum, invalid_value, invalid_operation)
+	{
+		check_exception {
+			glDrawElements(primitive, (count == (size_t) -1) ? indices.size() : count, GL_UNSIGNED_BYTE, indices.data());
+		}
+
+		return *this;
+	}
+
+	shader&
+	shader::draw (unsigned primitive, std::vector<unsigned short> indices, size_t count) throw (invalid_enum, invalid_value, invalid_operation)
+	{
+		check_exception {
+			glDrawElements(primitive, (count == (size_t) -1) ? indices.size() : count, GL_UNSIGNED_SHORT, indices.data());
+		}
+
+		return *this;
+	}
+
+	shader&
+	shader::draw (unsigned primitive, std::vector<unsigned> indices, size_t count) throw (invalid_enum, invalid_value, invalid_operation)
+	{
+		check_exception {
+			glDrawElements(primitive, (count == (size_t) -1) ? indices.size() : count, GL_UNSIGNED_INT, indices.data());
+		}
+
+		return *this;
+	}
+
 	void
 	shader::end (void)
 	{
