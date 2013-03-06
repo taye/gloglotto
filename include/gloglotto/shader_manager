@@ -73,15 +73,17 @@ namespace gloglotto
 			shader_manager (void);
 			~shader_manager (void);
 
-			shader* make (std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking);
+			shader* make (std::multimap<std::string, std::string> source) throw (failed_compilation, failed_linking, invalid_operation);
 
 			template <typename Function>
-			shader* make (std::multimap<std::string, std::string> source,  Function lambda) throw (invalid_operation, failed_compilation, failed_linking);
+			shader* make (std::multimap<std::string, std::string> source,  Function lambda) throw (failed_compilation, failed_linking, invalid_operation);
 
-			shader& add (std::string name, std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking);
+			shader& add (std::string name, shader* shader) throw (invalid_operation);
+
+			shader& add (std::string name, std::multimap<std::string, std::string> source) throw (failed_compilation, failed_linking, invalid_operation);
 
 			template <typename Function>
-			shader& add (std::string name, std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking);
+			shader& add (std::string name, std::multimap<std::string, std::string> source, Function lambda) throw (failed_compilation, failed_linking, invalid_operation);
 
 			shader& get (std::string name);
 

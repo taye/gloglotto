@@ -21,7 +21,7 @@
 namespace gloglotto
 {
 	void
-	clear (enum clear mask) throw (invalid_value, invalid_operation)
+	clear (enum clear mask) throw (invalid_value)
 	{
 		check_exception {
 			glClear(static_cast<unsigned>(mask));
@@ -29,7 +29,7 @@ namespace gloglotto
 	}
 
 	void
-	clear (enum clear mask, float red, float green, float blue, float alpha) throw (invalid_value, invalid_operation)
+	clear (enum clear mask, float red, float green, float blue, float alpha) throw (invalid_value)
 	{
 		unsigned bitmask = static_cast<unsigned>(mask);
 
@@ -51,13 +51,13 @@ namespace gloglotto
 	}
 
 	void
-	clear (enum clear mask, float red, float green, float blue) throw (invalid_value, invalid_operation)
+	clear (enum clear mask, float red, float green, float blue) throw (invalid_value)
 	{
 		clear(mask, red, green, blue, 1.0);
 	}
 
 	void
-	clear (enum clear mask, double depth) throw (invalid_value, invalid_operation)
+	clear (enum clear mask, double depth) throw (invalid_value)
 	{
 		unsigned bitmask = static_cast<unsigned>(mask);
 
@@ -71,7 +71,7 @@ namespace gloglotto
 	}
 
 	void
-	clear (enum clear mask, float index) throw (invalid_value, invalid_operation)
+	clear (enum clear mask, float index) throw (invalid_value)
 	{
 		unsigned bitmask = static_cast<unsigned>(mask);
 
@@ -85,7 +85,7 @@ namespace gloglotto
 	}
 
 	void
-	clear (enum clear mask, int index) throw (invalid_value, invalid_operation)
+	clear (enum clear mask, int index) throw (invalid_value)
 	{
 		unsigned bitmask = static_cast<unsigned>(mask);
 

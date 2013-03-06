@@ -38,12 +38,12 @@ namespace gloglotto
 		return static_cast<clear>(static_cast<unsigned>(a) | static_cast<unsigned>(b));
 	}
 
-	void clear (enum clear mask) throw (invalid_value, invalid_operation);
-	void clear (enum clear mask, float red, float green, float blue, float alpha) throw (invalid_value, invalid_operation);
-	void clear (enum clear mask, float red, float green, float blue) throw (invalid_value, invalid_operation);
-	void clear (enum clear mask, double depth) throw (invalid_value, invalid_operation);
-	void clear (enum clear mask, float index) throw (invalid_value, invalid_operation);
-	void clear (enum clear mask, int index) throw (invalid_value, invalid_operation);
+	void clear (enum clear mask) throw (invalid_value);
+	void clear (enum clear mask, float red, float green, float blue, float alpha) throw (invalid_value);
+	void clear (enum clear mask, float red, float green, float blue) throw (invalid_value);
+	void clear (enum clear mask, double depth) throw (invalid_value);
+	void clear (enum clear mask, float index) throw (invalid_value);
+	void clear (enum clear mask, int index) throw (invalid_value);
 }
 
 #endif

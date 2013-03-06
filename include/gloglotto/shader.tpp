@@ -25,7 +25,7 @@ namespace gloglotto
 {
 	template <typename Function>
 	shader
-	shader::from_file (std::multimap<std::string, std::string> files, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
+	shader::from_file (std::multimap<std::string, std::string> files, Function lambda) throw (failed_compilation, failed_linking, invalid_operation, invalid_enum)
 	{
 		std::multimap<std::string, std::string> source;
 
@@ -45,7 +45,7 @@ namespace gloglotto
 
 	template <typename Function>
 	shader
-	shader::from_stream (std::multimap<std::string, std::istream&> streams, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
+	shader::from_stream (std::multimap<std::string, std::istream&> streams, Function lambda) throw (failed_compilation, failed_linking, invalid_enum)
 	{
 		std::multimap<std::string, std::string> source;
 
@@ -58,7 +58,7 @@ namespace gloglotto
 	}
 
 	template <typename Function>
-	shader::shader (std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
+	shader::shader (std::multimap<std::string, std::string> source, Function lambda) throw (failed_compilation, failed_linking, invalid_enum)
 	{
 		_id     = make(source);
 		_source = source;
@@ -96,7 +96,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, std::array<float, Size> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, std::array<float, Size> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform1fv(uniform(name), Size, data.data());
@@ -105,7 +105,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, std::array<int, Size> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, std::array<int, Size> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform1iv(uniform(name), Size, data.data());
@@ -114,7 +114,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, std::array<unsigned, Size> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, std::array<unsigned, Size> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform1uiv(uniform(name), Size, data.data());
@@ -123,7 +123,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, std::array<bool, Size> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, std::array<bool, Size> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		int buffer[Size];
 		for (int i = 0; i < Size; i++) {
@@ -137,7 +137,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<1, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform1fv(uniform(name), Size, &data);
@@ -146,7 +146,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<2, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform2fv(uniform(name), Size, &data);
@@ -155,7 +155,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<3, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform3fv(uniform(name), Size, &data);
@@ -164,7 +164,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<4, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform4fv(uniform(name), Size, &data);
@@ -173,7 +173,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<1, int>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<1, int>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform1iv(uniform(name), Size, &data);
@@ -182,7 +182,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<2, int>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<2, int>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform2iv(uniform(name), Size, &data);
@@ -191,7 +191,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<3, int>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<3, int>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform3iv(uniform(name), Size, &data);
@@ -200,7 +200,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<4, int>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<4, int>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform4iv(uniform(name), Size, &data);
@@ -209,7 +209,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<1, unsigned>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<1, unsigned>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform1uiv(uniform(name), Size, &data);
@@ -218,7 +218,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<2, unsigned>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<2, unsigned>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform2uiv(uniform(name), Size, &data);
@@ -227,7 +227,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<3, unsigned>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<3, unsigned>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform3uiv(uniform(name), Size, &data);
@@ -236,7 +236,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<4, unsigned>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<4, unsigned>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniform4uiv(uniform(name), Size, &data);
@@ -245,7 +245,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<1, bool>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<1, bool>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		int buffer[Size];
 		for (int i = 0; i < Size; i++) {
@@ -259,7 +259,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<2, bool>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<2, bool>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		int buffer[Size * 2];
 		for (int i = 0; i < Size * 2; i++) {
@@ -273,7 +273,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<3, bool>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<3, bool>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		int buffer[Size * 3];
 		for (int i = 0; i < Size * 3; i++) {
@@ -287,7 +287,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, vectors<Size, vector<4, bool>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, vectors<Size, vector<4, bool>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		int buffer[Size * 4];
 		for (int i = 0; i < Size * 4; i++) {
@@ -301,7 +301,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<2, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix2fv(uniform(name), Size, GL_TRUE, &data);
@@ -310,7 +310,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<3, 3, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<3, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix3fv(uniform(name), Size, GL_TRUE, &data);
@@ -319,7 +319,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix4fv(uniform(name), Size, GL_TRUE, &data);
@@ -328,7 +328,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix3x2fv(uniform(name), Size, GL_TRUE, &data);
@@ -337,7 +337,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix2x3fv(uniform(name), Size, GL_TRUE, &data);
@@ -346,7 +346,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix4x2fv(uniform(name), Size, GL_TRUE, &data);
@@ -355,7 +355,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix2x4fv(uniform(name), Size, GL_TRUE, &data);
@@ -364,7 +364,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix4x3fv(uniform(name), Size, GL_TRUE, &data);
@@ -373,7 +373,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value)
+	shader::uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix3x4fv(uniform(name), Size, GL_TRUE, &data);

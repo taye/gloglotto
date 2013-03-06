@@ -32,11 +32,11 @@ namespace gloglotto
 	shader&
 	shader_manager::add (std::string name, std::multimap<std::string, std::string> source, Function lambda) throw (invalid_operation, failed_compilation, failed_linking)
 	{
-		auto current = make(source, lambda);
+		if (_shaders.find(name) != _shaders.end()) {
+			throw invalid_operation("shader already registered");
+		}
 
-		_shaders[name] = current;
-
-		return *current;
+		return *(_shaders[name] = make(source, lambda));
 	}
 
 	template <typename ...Args>

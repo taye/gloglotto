@@ -52,7 +52,7 @@ namespace gloglotto
 	}
 
 	vertex_array const&
-	vertex_array::enable (unsigned index) const throw (invalid_value, invalid_operation)
+	vertex_array::enable (unsigned index) const throw (invalid_value)
 	{
 		glEnableVertexAttribArray(index);
 
@@ -60,7 +60,7 @@ namespace gloglotto
 	}
 
 	vertex_array const&
-	vertex_array::disable (unsigned index) const throw (invalid_value, invalid_operation)
+	vertex_array::disable (unsigned index) const throw (invalid_value)
 	{
 		glDisableVertexAttribArray(index);
 

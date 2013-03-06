@@ -32,8 +32,8 @@ namespace gloglotto
 			vertex_array const& bind (void) const throw (invalid_operation);
 			vertex_array const& unbind (void) const throw (invalid_operation);
 
-			vertex_array const& enable (unsigned index) const throw (invalid_value, invalid_operation);
-			vertex_array const& disable (unsigned index) const throw (invalid_value, invalid_operation);
+			vertex_array const& enable (unsigned index) const throw (invalid_value);
+			vertex_array const& disable (unsigned index) const throw (invalid_value);
 
 			template <typename Type>
 			vertex_array const& define (unsigned index, size_t offset = 0, int stride = 0, bool normalized = false) const throw (invalid_value);

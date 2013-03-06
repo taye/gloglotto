@@ -38,13 +38,25 @@ namespace gloglotto
 	}
 
 	shader&
+	shader_manager::add (std::string name, shader* shader) throw (invalid_operation)
+	{
+		if (_shaders.find(name) != _shaders.end()) {
+			throw invalid_operation("shader already registered");
+		}
+
+		_shaders[name] = shader;
+
+		return *shader;
+	}
+
+	shader&
 	shader_manager::add (std::string name, std::multimap<std::string, std::string> source) throw (invalid_operation, failed_compilation, failed_linking)
 	{
-		auto current = make(source);
+		if (_shaders.find(name) != _shaders.end()) {
+			throw invalid_operation("shader already registered");
+		}
 
-		_shaders[name] = current;
-
-		return *current;
+		return *(_shaders[name] = make(source));
 	}
 
 	shader&
