@@ -251,6 +251,18 @@ namespace gloglotto
 	}
 
 	template <int Size, class Matrix>
+	template <int SliceSize>
+	matrices<SliceSize, Matrix>
+	matrices<Size, Matrix>::slice (int offset) throw (std::out_of_range)
+	{
+		if (offset + SliceSize > Size) {
+			throw std::out_of_range("slice out of range");
+		}
+
+		return matrices<SliceSize, Matrix>(_data + (offset * elements));
+	}
+
+	template <int Size, class Matrix>
 	typename matrices<Size, Matrix>::type*
 	matrices<Size, Matrix>::operator & (void)
 	{

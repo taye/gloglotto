@@ -121,6 +121,9 @@ namespace gloglotto
 			 */
 			iterator end (void);
 
+			template <int SliceSize>
+			matrices<SliceSize, Matrix> slice (int offset = 0) throw (std::out_of_range);
+
 			/* Return the wrapped raw pointer (row major).
 			 */
 			type* operator & (void);
