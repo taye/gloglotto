@@ -209,7 +209,7 @@ namespace gloglotto
 		int location = glGetAttribLocation(_id, name.c_str());
 
 		if (location == -1) {
-			throw invalid_value("attribute variable not found");
+			throw invalid_value(name + ": attribute identifier not found");
 		}
 
 		return location;
@@ -221,7 +221,7 @@ namespace gloglotto
 		int location = glGetUniformLocation(_id, name.c_str());
 
 		if (location == -1) {
-			throw invalid_value("uniform variable not found");
+			throw invalid_value(name + ": uniform identifier not found");
 		}
 
 		return location;
