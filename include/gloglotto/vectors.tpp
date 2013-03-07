@@ -267,6 +267,18 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
+	template <int SliceSize>
+	vectors<SliceSize, Vector>
+	vectors<Size, Vector>::slice (int offset) throw (std::out_of_range)
+	{
+		if (offset + SliceSize > Size) {
+			throw std::out_of_range("slice out of range");
+		}
+
+		return vectors<SliceSize, Vector>(_data + (offset * elements));
+	}
+
+	template <int Size, class Vector>
 	vectors<Size, Vector>
 	vectors<Size, Vector>::operator * (matrix<elements, elements, type> const& other) const
 	{

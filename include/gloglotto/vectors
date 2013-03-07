@@ -119,6 +119,9 @@ namespace gloglotto
 			 */
 			iterator end (void);
 
+			template <int SliceSize>
+			vectors<SliceSize, Vector> slice (int offset = 0) throw (std::out_of_range);
+
 			/* Return a new vector array multiplied by the matrix.
 			 */
 			vectors<Size, Vector> operator * (matrix<elements, elements, type> const& other) const;
