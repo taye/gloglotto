@@ -50,7 +50,7 @@ main (int argc, char* argv[])
 			{  0.75, -0.75, 0.0 },
 			{ -0.75, -0.75, 0.0 } };
 
-		static gl::buffer buffer(gl::target::vertex::data, gl::usage::dynamic::draw, triangle);
+		static gl::buffer buffer(gl::target::vertex::data, gl::usage::stream::draw, triangle);
 
 		static auto beginning = std::chrono::high_resolution_clock::now();
 		       auto now       = std::chrono::high_resolution_clock::now();
