@@ -86,32 +86,34 @@ namespace gloglotto
 	class buffer
 	{
 		public:
-			unsigned bound (unsigned target) throw (invalid_enum);
+			static unsigned current (unsigned target) throw (invalid_enum);
 
 		public:
 			buffer (void);
 
-			buffer (unsigned target, unsigned usage, void const* data, size_t size);
+			buffer (unsigned target) throw (invalid_enum);
 
-			buffer (unsigned target, unsigned usage, float data);
+			buffer (unsigned target, unsigned usage, void const* data, size_t size) throw (invalid_enum);
 
-			buffer (unsigned target, unsigned usage, int data);
+			buffer (unsigned target, unsigned usage, float data) throw (invalid_enum);
 
-			buffer (unsigned target, unsigned usage, unsigned data);
+			buffer (unsigned target, unsigned usage, int data) throw (invalid_enum);
 
-			buffer (unsigned target, unsigned usage, bool data);
+			buffer (unsigned target, unsigned usage, unsigned data) throw (invalid_enum);
+
+			buffer (unsigned target, unsigned usage, bool data) throw (invalid_enum);
 
 			template <int Size, typename Type>
-			buffer (unsigned target, unsigned usage, vector<Size, Type> const& data);
+			buffer (unsigned target, unsigned usage, vector<Size, Type> const& data) throw (invalid_enum);
 
 			template <int Size, typename Vector>
-			buffer (unsigned target, unsigned usage, vectors<Size, Vector> const& data);
+			buffer (unsigned target, unsigned usage, vectors<Size, Vector> const& data) throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data);
+			buffer (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) throw (invalid_enum);
 
 			template <int Size, typename Matrix>
-			buffer (unsigned target, unsigned usage, matrices<Size, Matrix> const& data);
+			buffer (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) throw (invalid_enum);
 
 			~buffer (void);
 
@@ -121,54 +123,105 @@ namespace gloglotto
 
 			buffer const& unbind (unsigned target) const throw (invalid_enum);
 
-			buffer const& reallocate (unsigned target, unsigned usage, size_t size) const;
+			buffer const& reallocate (unsigned target, unsigned usage, size_t size) const throw (invalid_enum);
 
-			buffer const& set (unsigned target, unsigned usage, void const* data, size_t size) const;
+			buffer const& set (unsigned target, unsigned usage, void const* data, size_t size) const throw (invalid_enum);
 
-			buffer const& set (unsigned target, unsigned usage, float data) const;
+			buffer const& set (unsigned target, unsigned usage, float data) const throw (invalid_enum);
 
-			buffer const& set (unsigned target, unsigned usage, int data) const;
+			buffer const& set (unsigned target, unsigned usage, int data) const throw (invalid_enum);
 
-			buffer const& set (unsigned target, unsigned usage, unsigned data) const;
+			buffer const& set (unsigned target, unsigned usage, unsigned data) const throw (invalid_enum);
 
-			buffer const& set (unsigned target, unsigned usage, bool data) const;
-
-			template <int Size, typename Type>
-			buffer const& set (unsigned target, unsigned usage, vector<Size, Type> const& data) const;
-
-			template <int Size, typename Vector>
-			buffer const& set (unsigned target, unsigned usage, vectors<Size, Vector> const& data) const;
-
-			template <int Rows, int Columns, typename Type>
-			buffer const& set (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) const;
-
-			template <int Size, typename Matrix>
-			buffer const& set (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) const;
-
-			buffer const& replace (unsigned target, void const* data, size_t size, size_t offset = 0) const;
-
-			buffer const& replace (unsigned target, float data, size_t offset = 0) const;
-
-			buffer const& replace (unsigned target, int data, size_t offset = 0) const;
-
-			buffer const& replace (unsigned target, unsigned data, size_t offset = 0) const;
-
-			buffer const& replace (unsigned target, bool data, size_t offset = 0) const;
+			buffer const& set (unsigned target, unsigned usage, bool data) const throw (invalid_enum);
 
 			template <int Size, typename Type>
-			buffer const& replace (unsigned target, vector<Size, Type> const& data, size_t offset = 0) const;
+			buffer const& set (unsigned target, unsigned usage, vector<Size, Type> const& data) const throw (invalid_enum);
 
 			template <int Size, typename Vector>
-			buffer const& replace (unsigned target, vectors<Size, Vector> const& data, size_t offset = 0) const;
+			buffer const& set (unsigned target, unsigned usage, vectors<Size, Vector> const& data) const throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer const& replace (unsigned target, matrix<Rows, Columns, Type> const& data, size_t offset = 0) const;
+			buffer const& set (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) const throw (invalid_enum);
 
 			template <int Size, typename Matrix>
-			buffer const& replace (unsigned target, matrices<Size, Matrix> const& data, size_t offset = 0) const;
+			buffer const& set (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) const throw (invalid_enum);
+
+			buffer const& replace (unsigned target, void const* data, size_t size, size_t offset = 0) const throw (invalid_enum);
+
+			buffer const& replace (unsigned target, float data, size_t offset = 0) const throw (invalid_enum);
+
+			buffer const& replace (unsigned target, int data, size_t offset = 0) const throw (invalid_enum);
+
+			buffer const& replace (unsigned target, unsigned data, size_t offset = 0) const throw (invalid_enum);
+
+			buffer const& replace (unsigned target, bool data, size_t offset = 0) const throw (invalid_enum);
+
+			template <int Size, typename Type>
+			buffer const& replace (unsigned target, vector<Size, Type> const& data, size_t offset = 0) const throw (invalid_enum);
+
+			template <int Size, typename Vector>
+			buffer const& replace (unsigned target, vectors<Size, Vector> const& data, size_t offset = 0) const throw (invalid_enum);
+
+			template <int Rows, int Columns, typename Type>
+			buffer const& replace (unsigned target, matrix<Rows, Columns, Type> const& data, size_t offset = 0) const throw (invalid_enum);
+
+			template <int Size, typename Matrix>
+			buffer const& replace (unsigned target, matrices<Size, Matrix> const& data, size_t offset = 0) const throw (invalid_enum);
+
+			buffer& bind (unsigned target) throw (invalid_enum);
+
+			buffer& unbind (void) throw (invalid_enum);
+
+			buffer& reallocate (unsigned usage, size_t size) throw (invalid_enum);
+
+			buffer& set (unsigned usage, void const* data, size_t size) throw (invalid_enum);
+
+			buffer& set (unsigned usage, float data) throw (invalid_enum);
+
+			buffer& set (unsigned usage, int data) throw (invalid_enum);
+
+			buffer& set (unsigned usage, unsigned data) throw (invalid_enum);
+
+			buffer& set (unsigned usage, bool data) throw (invalid_enum);
+
+			template <int Size, typename Type>
+			buffer& set (unsigned usage, vector<Size, Type> const& data) throw (invalid_enum);
+
+			template <int Size, typename Vector>
+			buffer& set (unsigned usage, vectors<Size, Vector> const& data) throw (invalid_enum);
+
+			template <int Rows, int Columns, typename Type>
+			buffer& set (unsigned usage, matrix<Rows, Columns, Type> const& data) throw (invalid_enum);
+
+			template <int Size, typename Matrix>
+			buffer& set (unsigned usage, matrices<Size, Matrix> const& data) throw (invalid_enum);
+
+			buffer& replace (void const* data, size_t size, size_t offset = 0) throw (invalid_enum);
+
+			buffer& replace (float data, size_t offset = 0) throw (invalid_enum);
+
+			buffer& replace (int data, size_t offset = 0) throw (invalid_enum);
+
+			buffer& replace (unsigned data, size_t offset = 0) throw (invalid_enum);
+
+			buffer& replace (bool data, size_t offset = 0) throw (invalid_enum);
+
+			template <int Size, typename Type>
+			buffer& replace (vector<Size, Type> const& data, size_t offset = 0) throw (invalid_enum);
+
+			template <int Size, typename Vector>
+			buffer& replace (vectors<Size, Vector> const& data, size_t offset = 0) throw (invalid_enum);
+
+			template <int Rows, int Columns, typename Type>
+			buffer& replace (matrix<Rows, Columns, Type> const& data, size_t offset = 0) throw (invalid_enum);
+
+			template <int Size, typename Matrix>
+			buffer& replace (matrices<Size, Matrix> const& data, size_t offset = 0) throw (invalid_enum);
 
 		private:
-			unsigned _id = 0;
+			unsigned _id     = 0;
+			unsigned _target = 0;
 	};
 }
 

@@ -24,7 +24,7 @@
 namespace gloglotto
 {
 	unsigned
-	buffer::bound (unsigned target) throw (invalid_enum)
+	buffer::current (unsigned target) throw (invalid_enum)
 	{
 		static std::map<unsigned, unsigned> targets = {
 			{ target::vertex::data, GL_ARRAY_BUFFER_BINDING },
@@ -58,27 +58,39 @@ namespace gloglotto
 		glGenBuffers(1, &_id);
 	}
 
-	buffer::buffer (unsigned target, unsigned usage, void const* data, size_t size) : buffer()
+	buffer::buffer (unsigned target) throw (invalid_enum) : buffer()
+	{
+		try {
+			bind(target);
+		}
+		catch (invalid_enum& e) {
+			glDeleteBuffers(1, &_id);
+
+			throw e;
+		}
+	}
+
+	buffer::buffer (unsigned target, unsigned usage, void const* data, size_t size) throw (invalid_enum) : buffer(target)
 	{
 		set(target, usage, data, size);
 	}
 
-	buffer::buffer (unsigned target, unsigned usage, float data) : buffer()
+	buffer::buffer (unsigned target, unsigned usage, float data) throw (invalid_enum) : buffer(target)
 	{
 		set(target, usage, data);
 	}
 
-	buffer::buffer (unsigned target, unsigned usage, int data) : buffer()
+	buffer::buffer (unsigned target, unsigned usage, int data) throw (invalid_enum) : buffer(target)
 	{
 		set(target, usage, data);
 	}
 
-	buffer::buffer (unsigned target, unsigned usage, unsigned data) : buffer()
+	buffer::buffer (unsigned target, unsigned usage, unsigned data) throw (invalid_enum) : buffer(target)
 	{
 		set(target, usage, data);
 	}
 
-	buffer::buffer (unsigned target, unsigned usage, bool data) : buffer()
+	buffer::buffer (unsigned target, unsigned usage, bool data) throw (invalid_enum) : buffer(target)
 	{
 		set(target, usage, data);
 	}
@@ -91,11 +103,12 @@ namespace gloglotto
 	bool
 	buffer::bound (unsigned target) const throw (invalid_enum)
 	{
-		return buffer::bound(target) == _id;
+		return buffer::current(target) == _id;
 	}
 
 	buffer const&
-	buffer::bind (unsigned target) const throw (invalid_enum) {
+	buffer::bind (unsigned target) const throw (invalid_enum)
+	{
 		check_exception {
 			glBindBuffer(target, _id);
 		}
@@ -114,78 +127,174 @@ namespace gloglotto
 	}
 
 	buffer const&
-	buffer::reallocate (unsigned target, unsigned usage, size_t size) const
+	buffer::reallocate (unsigned target, unsigned usage, size_t size) const throw (invalid_enum)
 	{
-		glBufferData(target, size, NULL, usage);
+		check_exception {
+			glBufferData(target, size, NULL, usage);
+		}
 
 		return *this;
 	}
 
 	buffer const&
-	buffer::set (unsigned target, unsigned usage, void const* data, size_t size) const
+	buffer::set (unsigned target, unsigned usage, void const* data, size_t size) const throw (invalid_enum)
 	{
-		bind(target);
 		glBufferData(target, size, data, usage);
-		unbind(target);
 
 		return *this;
 	}
 
 	buffer const&
-	buffer::set (unsigned target, unsigned usage, float data) const
+	buffer::set (unsigned target, unsigned usage, float data) const throw (invalid_enum)
 	{
 		return set(target, usage, &data, sizeof(data));
 	}
 
 	buffer const&
-	buffer::set (unsigned target, unsigned usage, int data) const
+	buffer::set (unsigned target, unsigned usage, int data) const throw (invalid_enum)
 	{
 		return set(target, usage, &data, sizeof(data));
 	}
 
 	buffer const&
-	buffer::set (unsigned target, unsigned usage, unsigned data) const
+	buffer::set (unsigned target, unsigned usage, unsigned data) const throw (invalid_enum)
 	{
 		return set(target, usage, &data, sizeof(data));
 	}
 
 	buffer const&
-	buffer::set (unsigned target, unsigned usage, bool data) const
+	buffer::set (unsigned target, unsigned usage, bool data) const throw (invalid_enum)
 	{
 		return set(target, usage, &data, sizeof(data));
 	}
 
 	buffer const&
-	buffer::replace (unsigned target, void const* data, size_t size, size_t offset) const
+	buffer::replace (unsigned target, void const* data, size_t size, size_t offset) const throw (invalid_enum)
 	{
-		bind(target);
 		glBufferSubData(target, offset, size, data);
-		unbind(target);
 
 		return *this;
 	}
 
 	buffer const&
-	buffer::replace (unsigned target, float data, size_t offset) const
+	buffer::replace (unsigned target, float data, size_t offset) const throw (invalid_enum)
 	{
 		return replace(target, &data, sizeof(data), offset);
 	}
 
 	buffer const&
-	buffer::replace (unsigned target, int data, size_t offset) const
+	buffer::replace (unsigned target, int data, size_t offset) const throw (invalid_enum)
 	{
 		return replace(target, &data, sizeof(data), offset);
 	}
 
 	buffer const&
-	buffer::replace (unsigned target, unsigned data, size_t offset) const
+	buffer::replace (unsigned target, unsigned data, size_t offset) const throw (invalid_enum)
 	{
 		return replace(target, &data, sizeof(data), offset);
 	}
 
 	buffer const&
-	buffer::replace (unsigned target, bool data, size_t offset) const
+	buffer::replace (unsigned target, bool data, size_t offset) const throw (invalid_enum)
 	{
 		return replace(target, &data, sizeof(data), offset);
+	}
+
+	buffer&
+	buffer::bind (unsigned target) throw (invalid_enum)
+	{
+		check_exception {
+			glBindBuffer(target, _id);
+		}
+
+		_target = target;
+
+		return *this;
+	}
+
+	buffer&
+	buffer::unbind (void) throw (invalid_enum)
+	{
+		check_exception {
+			glBindBuffer(_target, 0);
+		}
+
+		_target = 0;
+
+		return *this;
+	}
+
+	buffer&
+	buffer::reallocate (unsigned usage, size_t size) throw (invalid_enum)
+	{
+		check_exception {
+			glBufferData(_target, size, NULL, usage);
+		}
+
+		return *this;
+	}
+
+	buffer&
+	buffer::set (unsigned usage, void const* data, size_t size) throw (invalid_enum)
+	{
+		glBufferData(_target, size, data, usage);
+
+		return *this;
+	}
+
+	buffer&
+	buffer::set (unsigned usage, float data) throw (invalid_enum)
+	{
+		return set(usage, &data, sizeof(data));
+	}
+
+	buffer&
+	buffer::set (unsigned usage, int data) throw (invalid_enum)
+	{
+		return set(usage, &data, sizeof(data));
+	}
+
+	buffer&
+	buffer::set (unsigned usage, unsigned data) throw (invalid_enum)
+	{
+		return set(usage, &data, sizeof(data));
+	}
+
+	buffer&
+	buffer::set (unsigned usage, bool data) throw (invalid_enum)
+	{
+		return set(usage, &data, sizeof(data));
+	}
+
+	buffer&
+	buffer::replace (void const* data, size_t size, size_t offset) throw (invalid_enum)
+	{
+		glBufferSubData(_target, offset, size, data);
+
+		return *this;
+	}
+
+	buffer&
+	buffer::replace (float data, size_t offset) throw (invalid_enum)
+	{
+		return replace(&data, sizeof(data), offset);
+	}
+
+	buffer&
+	buffer::replace (int data, size_t offset) throw (invalid_enum)
+	{
+		return replace(&data, sizeof(data), offset);
+	}
+
+	buffer&
+	buffer::replace (unsigned data, size_t offset) throw (invalid_enum)
+	{
+		return replace(&data, sizeof(data), offset);
+	}
+
+	buffer&
+	buffer::replace (bool data, size_t offset) throw (invalid_enum)
+	{
+		return replace(&data, sizeof(data), offset);
 	}
 }
