@@ -23,6 +23,7 @@
 
 #include <gloglotto/clear>
 #include <gloglotto/viewport>
+#include <gloglotto/capabilities>
 
 #include <gloglotto/primitive>
 

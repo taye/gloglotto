@@ -1,0 +1,87 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_CAPABILITIES_H
+#define _GLOGLOTTO_CAPABILITIES_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
+
+namespace gloglotto
+{
+	namespace capability
+	{
+		static constexpr unsigned cull_face   = GL_CULL_FACE;
+		static constexpr unsigned dither      = GL_DITHER;
+		static constexpr unsigned multisample = GL_MULTISAMPLE;
+
+		namespace alpha
+		{
+			static constexpr unsigned test = GL_ALPHA_TEST;
+		}
+
+		namespace color
+		{
+			static constexpr unsigned operation = GL_COLOR_LOGIC_OP;
+			static constexpr unsigned material  = GL_COLOR_MATERIAL;
+			static constexpr unsigned sum       = GL_COLOR_SUM;
+			static constexpr unsigned table     = GL_COLOR_TABLE;
+		}
+
+		namespace index
+		{
+			static constexpr unsigned operation = GL_INDEX_LOGIC_OP;
+		}
+
+		namespace line
+		{
+			static constexpr unsigned smooth  = GL_LINE_SMOOTH;
+			static constexpr unsigned stipple = GL_LINE_STIPPLE;
+		}
+
+		namespace point
+		{
+			static constexpr unsigned smooth = GL_POINT_SMOOTH;
+			static constexpr unsigned sprite = GL_POINT_SPRITE;
+		}
+		
+		namespace polygon
+		{
+			static constexpr unsigned smooth  = GL_POLYGON_SMOOTH;
+			static constexpr unsigned stipple = GL_POLYGON_STIPPLE;
+
+			namespace offset
+			{
+				static constexpr unsigned fill  = GL_POLYGON_OFFSET_FILL;
+				static constexpr unsigned line  = GL_POLYGON_OFFSET_LINE;
+				static constexpr unsigned point = GL_POLYGON_OFFSET_POINT;
+			}
+		}
+	}
+
+	bool enabled (unsigned capability) throw (invalid_enum);
+	bool enabled (unsigned capability, unsigned index) throw (invalid_enum);
+
+	void enable (unsigned capability) throw (invalid_enum);
+	void enable (unsigned capability, unsigned index) throw (invalid_enum);
+
+	void disable (unsigned capability) throw (invalid_enum);
+	void disable (unsigned capability, unsigned index) throw (invalid_enum);
+}
+
+#endif
