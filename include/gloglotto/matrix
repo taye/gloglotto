@@ -43,17 +43,18 @@ namespace gloglotto
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			static const int              accessible_size = Rows;
+			static constexpr int              accessible_size = Rows;
 			typedef vector<Columns, Type> accessible_type;
 
 			typedef iterator::accessible<matrix<Rows, Columns, Type>, std::true_type> const_iterator;
 			typedef iterator::accessible<matrix<Rows, Columns, Type>>                 iterator;
 
 			typedef Type type;
+			static constexpr int size = Rows * Columns * sizeof(Type);
 
-			static const int rows     = Rows;
-			static const int columns  = Columns;
-			static const int elements = Rows * Columns;
+			static constexpr int rows     = Rows;
+			static constexpr int columns  = Columns;
+			static constexpr int elements = Rows * Columns;
 
 		public:
 			/* Create a matrix, if identity is true and the matrix is square it will be filled
