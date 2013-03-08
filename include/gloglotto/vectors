@@ -28,15 +28,16 @@ namespace gloglotto
 	class vectors
 	{
 		public:
-			static const int accessible_size = Size;
+			static constexpr int accessible_size = Size;
 			typedef Vector   accessible_type;
 
 			typedef iterator::accessible<vectors<Size, Vector>, std::true_type> const_iterator;
 			typedef iterator::accessible<vectors<Size, Vector>>                 iterator;
 
 			typedef typename Vector::type type;
+			static constexpr int size = Vector::size * Size;
 
-			static const int elements = Vector::elements;
+			static constexpr int elements = Vector::elements;
 
 		public:
 			/* Create a vector array with everything set to 0.
