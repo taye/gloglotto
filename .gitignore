@@ -1,5 +1,6 @@
 doc
 *.o
+*.out.*
 libgloglotto.so
 libgloglotto.a
 
