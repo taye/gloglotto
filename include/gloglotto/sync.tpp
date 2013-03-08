@@ -16,47 +16,29 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_REST_H
-#define _GLOGLOTTO_REST_H
-
-#include <gloglotto/headers>
-#include <gloglotto/exception>
+#include <gloglotto/sync>
 
 namespace gloglotto
 {
-	class sync
+	template <>
+	inline
+	sync::status
+	sync::wait<sync::server> (unsigned timeout) throw (std::invalid_argument)
 	{
-		public:
-			class server final { };
-			class client final { };
+		if (timeout != 0) {
+			throw std::invalid_argument("server wait doesn't support timeout");
+		}
 
-		public:
-			enum class status : unsigned
-			{
-				already_signaled    = GL_ALREADY_SIGNALED,
-				timeout_expired     = GL_TIMEOUT_EXPIRED,
-				condition_satisfied = GL_CONDITION_SATISFIED,
-				wait_failed         = GL_WAIT_FAILED
-			};
+		glWaitSync(_sync, 0, GL_TIMEOUT_IGNORED);
 
-		public:
-			sync (void);
+		return status::condition_satisfied;
+	}
 
-			~sync (void);
-
-			bool signaled (void);
-
-			template <class Type = client>
-			status wait (unsigned timeout = 0) throw (std::invalid_argument);
-
-		private:
-			GLsync _sync;
-	};
-
-	void flush (void);
-	void finish (void);
+	template <>
+	inline
+	sync::status
+	sync::wait<sync::client> (unsigned timeout) throw (std::invalid_argument)
+	{
+		return static_cast<status>(glClientWaitSync(_sync, GL_SYNC_FLUSH_COMMANDS_BIT, timeout));
+	}
 }
-
-#include <gloglotto/sync.tpp>
-
-#endif

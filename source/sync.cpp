@@ -16,11 +16,29 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/headers>
 #include <gloglotto/sync>
 
 namespace gloglotto
 {
+	sync::sync (void)
+	{
+		_sync = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+	}
+
+	sync::~sync (void)
+	{
+		glDeleteSync(_sync);
+	}
+
+	bool
+	sync::signaled (void)
+	{
+		GLint result = GL_UNSIGNALED;
+		glGetSynciv(_sync, GL_SYNC_STATUS, sizeof(GLint), NULL, &result);
+
+		return result == GL_SIGNALED;
+	}
+
 	void
 	flush (void)
 	{
