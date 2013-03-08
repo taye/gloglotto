@@ -28,17 +28,18 @@ namespace gloglotto
 	class matrices
 	{
 		public:
-			static const int accessible_size = Size;
+			static constexpr int accessible_size = Size;
 			typedef Matrix   accessible_type;
 
 			typedef iterator::accessible<matrices<Size, Matrix>, std::true_type> const_iterator;
 			typedef iterator::accessible<matrices<Size, Matrix>>                 iterator;
 
 			typedef typename Matrix::type type;
+			static constexpr int size = Matrix::size * Size;
 
-			static const int rows     = Matrix::rows;
-			static const int columns  = Matrix::columns;
-			static const int elements = Matrix::elements;
+			static constexpr int rows     = Matrix::rows;
+			static constexpr int columns  = Matrix::columns;
+			static constexpr int elements = Matrix::elements;
 
 		public:
 			/* Create a matrix array with everything set to 0.
