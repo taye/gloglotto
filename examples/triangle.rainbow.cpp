@@ -51,7 +51,7 @@ main (int argc, char* argv[])
 			{  0.75, -0.75, 0.0 },
 			{ -0.75, -0.75, 0.0 },
 			
-			{ 1.0, 0.0, 0.0 }, 
+			{ 1.0, 0.0, 0.0 },
 			{ 0.0, 1.0, 0.0 },
 			{ 0.0, 0.0, 1.0 } };
 
@@ -78,7 +78,7 @@ main (int argc, char* argv[])
 		with_shader(shaders, "arcobaleno") {
 			self.use(buffer);
 			self.attribute<gl::vector<3>>("vertex");
-			self.attribute<gl::vector<3>>("vertex_color", sizeof(float) * 3 * 3);
+			self.attribute<gl::vector<3>>("vertex_color", gl::vector<3>::size * 3);
 
 			self.draw(gl::primitive::triangle, 3);
 		}
