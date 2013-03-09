@@ -83,7 +83,7 @@ namespace gloglotto
 		}
 	}
 
-	class buffer
+	class buffer final
 	{
 		public:
 			static unsigned current (unsigned target) throw (invalid_enum);
