@@ -24,7 +24,7 @@
 
 namespace gloglotto
 {
-	class sync
+	class sync final
 	{
 		public:
 			class server final { };
