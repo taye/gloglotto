@@ -19,6 +19,7 @@
 #ifndef _GLOGLOTTO_UTILITY_H
 #define _GLOGLOTTO_UTILITY_H
 
+#include <string>
 #include <functional>
 #include <stdexcept>
 
@@ -51,6 +52,7 @@ namespace gloglotto
 	}
 
 	template <typename Signature, typename Function>
+	inline
 	void
 	signature_assert (Function lambda) throw (std::bad_typeid)
 	{
@@ -62,11 +64,14 @@ namespace gloglotto
 	}
 
 	template <typename Signature, typename Function>
+	inline
 	void
 	signature_static_assert (Function lambda)
 	{
 		(void) (Signature*) lambda;
 	}
+
+	std::string demangle (std::type_info const* info);
 }
 
 #endif
