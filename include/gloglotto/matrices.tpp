@@ -26,7 +26,7 @@ namespace gloglotto
 		_data     = new type[Size * rows * columns];
 		_matrices = nullptr;
 
-		std::fill(_data, _data + Size * rows * columns, 0);
+		std::fill_n(_data, Size * rows * columns, 0);
 
 		own();
 	}
@@ -182,7 +182,7 @@ namespace gloglotto
 
 		if (!_matrices) {
 			_matrices = new Matrix*[Size];
-			std::fill(_matrices, _matrices + Size, nullptr);
+			std::fill_n(_matrices, Size, nullptr);
 		}
 
 		if (!_matrices[index]) {
@@ -216,7 +216,7 @@ namespace gloglotto
 
 		if (!_matrices) {
 			_matrices = new Matrix*[Size];
-			std::fill(_matrices, _matrices + Size, nullptr);
+			std::fill_n(_matrices, Size, nullptr);
 		}
 
 		if (!_matrices[index]) {
