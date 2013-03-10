@@ -26,7 +26,7 @@ namespace gloglotto
 		_data    = new type[Size * elements];
 		_vectors = nullptr;
 
-		std::fill(_data, _data + Size * elements, 0);
+		std::fill_n(_data, Size * elements, 0);
 
 		own();
 	}
@@ -218,7 +218,7 @@ namespace gloglotto
 
 		if (!_vectors) {
 			_vectors = new Vector*[Size];
-			std::fill(_vectors, _vectors + Size, nullptr);
+			std::fill_n(_vectors, Size, nullptr);
 		}
 
 		if (!_vectors[index]) {
@@ -252,7 +252,7 @@ namespace gloglotto
 
 		if (!_vectors) {
 			_vectors = new Vector*[Size];
-			std::fill(_vectors, _vectors + Size, nullptr);
+			std::fill_n(_vectors, Size, nullptr);
 		}
 
 		if (!_vectors[index]) {
