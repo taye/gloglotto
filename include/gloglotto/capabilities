@@ -26,9 +26,25 @@ namespace gloglotto
 {
 	namespace capability
 	{
+		static constexpr unsigned blend       = GL_BLEND;
 		static constexpr unsigned cull_face   = GL_CULL_FACE;
 		static constexpr unsigned dither      = GL_DITHER;
 		static constexpr unsigned multisample = GL_MULTISAMPLE;
+
+		namespace depth
+		{
+			static constexpr unsigned clamp = GL_DEPTH_CLAMP;
+			static constexpr unsigned test  = GL_DEPTH_TEST;
+		}
+
+		namespace sample
+		{
+			static constexpr unsigned alpha_to_coverage = GL_SAMPLE_ALPHA_TO_COVERAGE;
+			static constexpr unsigned alpha_to_one      = GL_SAMPLE_ALPHA_TO_ONE;
+			static constexpr unsigned coverage          = GL_SAMPLE_COVERAGE;
+			static constexpr unsigned shading           = GL_SAMPLE_SHADING;
+			static constexpr unsigned mask              = GL_SAMPLE_MASK;
+		}
 
 		namespace alpha
 		{
