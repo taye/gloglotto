@@ -167,7 +167,7 @@ namespace gloglotto
 			 */
 			matrix<Rows, Columns, Type> operator * (Type other) const;
 
-			/* Scalar multiplicate in place.
+			/* Scalar multiplication in place.
 			 */
 			matrix<Rows, Columns, Type>& operator *= (Type other);
 
@@ -180,7 +180,7 @@ namespace gloglotto
 			 */
 			matrix<Rows, Columns, Type>&& operator * (matrix<Rows, Columns, Type>&& other) const;
 
-			/* Multiplicate the other matrix in place, when possible.
+			/* Multiply the other matrix in place, when possible.
 			 */
 			matrix<Rows, Columns, Type>& operator *= (matrix<Rows, Columns, Type> const& other);
 
