@@ -26,19 +26,16 @@ namespace gloglotto
 	template <int Size, typename Type>
 	vector<Size, Type>::vector (void)
 	{
-		_data  = new Type[Size];
+		_data = new Type[Size];
 		std::fill(_data, _data + Size, 0);
 
 		own();
 	}
 
 	template <int Size, typename Type>
-	vector<Size, Type>::vector (vector<Size, Type> const& from)
+	vector<Size, Type>::vector (vector<Size, Type> const& from) : vector()
 	{
-		_data = new Type[Size];
 		std::copy(&from, &from + Size, _data);
-
-		own();
 	}
 
 	template <int Size, typename Type>
@@ -56,10 +53,8 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
-	vector<Size, Type>::vector (std::initializer_list<Type> list) throw (std::invalid_argument)
+	vector<Size, Type>::vector (std::initializer_list<Type> list) throw (std::invalid_argument) : vector()
 	{
-		_data = new Type[Size];
-
 		try {
 			*this = list;
 		}
@@ -68,8 +63,6 @@ namespace gloglotto
 
 			throw e;
 		}
-
-		own();
 	}
 
 	template <int Size, typename Type>
