@@ -27,7 +27,7 @@ namespace gloglotto
 	vector<Size, Type>::vector (void)
 	{
 		_data = new Type[Size];
-		std::fill(_data, _data + Size, 0);
+		std::fill_n(_data, Size, 0);
 
 		own();
 	}
