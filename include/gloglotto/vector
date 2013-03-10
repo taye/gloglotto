@@ -135,6 +135,24 @@ namespace gloglotto
 			 */
 			iterator end (void);
 
+			template <int OtherSize>
+			bool operator == (vector<OtherSize, Type> const& other);
+
+			template <int OtherSize>
+			bool operator != (vector<OtherSize, Type> const& other);
+
+			template <int OtherSize>
+			bool operator > (vector<OtherSize, Type> const& other);
+
+			template <int OtherSize>
+			bool operator >= (vector<OtherSize, Type> const& other);
+
+			template <int OtherSize>
+			bool operator < (vector<OtherSize, Type> const& other);
+
+			template <int OtherSize>
+			bool operator <= (vector<OtherSize, Type> const& other);
+
 			/* Return the addition of the two vectors.
 			 */
 			vector<Size, Type> operator + (vector<Size, Type> const& other) const;

@@ -214,6 +214,116 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
+	template <int OtherSize>
+	bool
+	vector<Size, Type>::operator == (vector<OtherSize, Type> const& other)
+	{
+		if (Size != OtherSize) {
+			return false;
+		}
+
+		for (int i = 0; i < Size; i++) {
+			if (_data[i] != (&other)[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	template <int Size, typename Type>
+	template <int OtherSize>
+	bool
+	vector<Size, Type>::operator != (vector<OtherSize, Type> const& other)
+	{
+		return !(*this == other);
+	}
+
+	template <int Size, typename Type>
+	template <int OtherSize>
+	bool
+	vector<Size, Type>::operator > (vector<OtherSize, Type> const& other)
+	{
+		if (Size > OtherSize) {
+			return true;
+		}
+		else if (Size < OtherSize) {
+			return false;
+		}
+
+		for (int i = 0; i < Size; i++) {
+			if (_data[i] <= (&other)[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	template <int Size, typename Type>
+	template <int OtherSize>
+	bool
+	vector<Size, Type>::operator >= (vector<OtherSize, Type> const& other)
+	{
+		if (Size > OtherSize) {
+			return true;
+		}
+		else if (Size < OtherSize) {
+			return false;
+		}
+
+		for (int i = 0; i < Size; i++) {
+			if (_data[i] < (&other)[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	template <int Size, typename Type>
+	template <int OtherSize>
+	bool
+	vector<Size, Type>::operator < (vector<OtherSize, Type> const& other)
+	{
+		if (Size < OtherSize) {
+			return true;
+		}
+		else if (Size > OtherSize) {
+			return false;
+		}
+
+		for (int i = 0; i < Size; i++) {
+			if (_data[i] >= (&other)[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	template <int Size, typename Type>
+	template <int OtherSize>
+	bool
+	vector<Size, Type>::operator <= (vector<OtherSize, Type> const& other)
+	{
+		if (Size < OtherSize) {
+			return true;
+		}
+		else if (Size > OtherSize) {
+			return false;
+		}
+
+		for (int i = 0; i < Size; i++) {
+			if (_data[i] > (&other)[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	template <int Size, typename Type>
 	vector<Size, Type>
 	vector<Size, Type>::operator + (vector<Size, Type> const& other) const
 	{
