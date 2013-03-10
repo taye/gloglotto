@@ -32,7 +32,7 @@ namespace gloglotto
 
 	/* Class to handle matrices.
 	 */
-	template <int Rows = 4, int Columns = 4, typename Type = float>
+	template <int Rows = 4, int Columns = Rows, typename Type = float>
 	class matrix
 	{
 		static_assert(Rows >= 2 && Rows <= 4, "rows can only be 2, 3 and 4");
