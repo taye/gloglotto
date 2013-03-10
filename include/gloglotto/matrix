@@ -43,7 +43,7 @@ namespace gloglotto
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			static constexpr int              accessible_size = Rows;
+			static constexpr int          accessible_size = Rows;
 			typedef vector<Columns, Type> accessible_type;
 
 			typedef iterator::accessible<matrix<Rows, Columns, Type>, std::true_type> const_iterator;
