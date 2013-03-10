@@ -236,6 +236,9 @@ namespace gloglotto
 		matrix<Size, Size, Type> rotation (angle a, vector<3, Type> with);
 
 		template <int Size = 3, typename Type = float>
+		matrix<Size, Size, Type> rotation (angle x, angle y, angle z);
+
+		template <int Size = 3, typename Type = float>
 		matrix<Size, Size, Type> scale (Type x, Type y, Type z);
 
 		template <int Size = 3, typename Type = float>

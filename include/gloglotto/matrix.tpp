@@ -654,6 +654,37 @@ namespace gloglotto
 
 		template <int Size, typename Type>
 		matrix<Size, Size, Type>
+		rotation (angle x, angle y, angle z)
+		{
+			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
+
+			matrix<Size, Size, Type> result(true);
+
+			Type sx  = sin(angle_cast<angle::radians>(x));
+			Type sy  = sin(angle_cast<angle::radians>(y));
+			Type sz  = sin(angle_cast<angle::radians>(z));
+
+			Type cx  = cos(angle_cast<angle::radians>(x));
+			Type cy  = cos(angle_cast<angle::radians>(y));
+			Type cz  = cos(angle_cast<angle::radians>(z));
+
+			result[0][0] =  cy * cz;
+			result[0][1] =  cx * sz + sx * sy * cz;
+			result[0][2] =  sx * sz - cx * sy * cz;
+
+			result[1][0] = -cy * sz;
+			result[1][1] =  cx * cz - sx * sy * sz;
+			result[1][2] =  sx * cz + cx * sy * sz;
+
+			result[2][0] =  sy;
+			result[2][1] = -sx * cy;
+			result[2][2] =  cx * cy;
+
+			return result;
+		}
+
+		template <int Size, typename Type>
+		matrix<Size, Size, Type>
 		rotation (angle a, Type x, Type y, Type z)
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
