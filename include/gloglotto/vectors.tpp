@@ -41,6 +41,12 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
+	vectors<Size, Vector>::vectors (sub<Size> const& slice) : vectors()
+	{
+		*this = slice;
+	}
+
+	template <int Size, class Vector>
 	vectors<Size, Vector>::vectors (vectors<Size, Vector> const& from) : vectors()
 	{
 		std::copy(&from, &from + Size * elements, _data);
@@ -77,12 +83,6 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
-	vectors<Size, Vector>::vectors (sub<Size> const& slice) : vectors()
-	{
-		*this = slice;
-	}
-
-	template <int Size, class Vector>
 	vectors<Size, Vector>::~vectors (void)
 	{
 		if (owner()) {
@@ -100,6 +100,29 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	vectors<Size, Vector>&
+	vectors<Size, Vector>::operator = (type const* from)
+	{
+		std::copy(from, from + Size * elements, _data);
+
+		return *this;
+	}
+
+	template <int Size, class Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::operator = (sub<Size> const& slice)
+	{
+		int i = 0;
+		for (auto& vector : slice) {
+			std::copy(&vector, &vector + elements, _data + (i * elements));
+
+			i++;
+		}
+
+		return *this;
+	}
+
+	template <int Size, class Vector>
+	vectors<Size, Vector>&
 	vectors<Size, Vector>::operator = (vectors<Size, Vector>&& from)
 	{
 		return swap(from);
@@ -110,15 +133,6 @@ namespace gloglotto
 	vectors<Size, Vector>::operator = (vectors<Size, Vector> const& from)
 	{
 		std::copy(&from, &from + Size * elements, _data);
-
-		return *this;
-	}
-
-	template <int Size, class Vector>
-	vectors<Size, Vector>&
-	vectors<Size, Vector>::operator = (const type* from)
-	{
-		std::copy(from, from + Size * elements, _data);
 
 		return *this;
 	}

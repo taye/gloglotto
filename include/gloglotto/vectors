@@ -106,6 +106,10 @@ namespace gloglotto
 			 */
 			vectors (type* pointer);
 
+			/* Create a vector array from a vector array slice.
+			 */
+			vectors (sub<Size> const& slice);
+
 			/* Create a vector array from another one.
 			 */
 			vectors (vectors<Size, Vector> const& from);
@@ -118,13 +122,17 @@ namespace gloglotto
 			 */
 			vectors (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument);
 
-			/* Create a vector array from a vector array slice.
-			 */
-			vectors (sub<Size> const& slice);
-
 			/* Destroy the data if it's not a wrapper.
 			 */
 			~vectors (void);
+
+			/* Copy the data present in the passed pointer.
+			 */
+			vectors<Size, Vector>& operator = (type const* data);
+
+			/* Copy the data wrapped by the slice.
+			 */
+			vectors<Size, Vector>& operator = (sub<Size> const& slice);
 
 			/* Copy the contents of the passed vector array.
 			 */
@@ -133,14 +141,6 @@ namespace gloglotto
 			/* Swap with the passed temporary vector array.
 			 */
 			vectors<Size, Vector>& operator = (vectors<Size, Vector>&& from);
-
-			/* Copy the data wrapped by the slice.
-			 */
-			vectors<Size, Vector>& operator = (sub<Size> const& slice);
-
-			/* Copy the data present in the passed pointer.
-			 */
-			vectors<Size, Vector>& operator = (const type* data);
 
 			/* Copy the data passed from the initializer list.
 			 */
