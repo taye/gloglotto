@@ -41,22 +41,14 @@ namespace gloglotto
 	}
 
 	template <int Size, class Matrix>
-	matrices<Size, Matrix>::matrices (matrices<Size, Matrix> const& from)
+	matrices<Size, Matrix>::matrices (matrices<Size, Matrix> const& from) : matrices()
 	{
-		_data     = new type[Size * rows * columns];
-		_matrices = nullptr;
-
 		std::copy(&from, &from + Size * rows * columns, _data);
-
-		own();
 	}
 
 	template <int Size, class Matrix>
-	matrices<Size, Matrix>::matrices (std::initializer_list<std::initializer_list<std::initializer_list<type>>> list) throw (std::invalid_argument)
+	matrices<Size, Matrix>::matrices (std::initializer_list<std::initializer_list<std::initializer_list<type>>> list) throw (std::invalid_argument) : matrices()
 	{
-		_data     = new type[Size * rows * columns];
-		_matrices = nullptr;
-
 		try {
 			*this = list;
 		}
@@ -65,8 +57,6 @@ namespace gloglotto
 
 			throw e;
 		}
-
-		own();
 	}
 
 	template <int Size, class Matrix>
