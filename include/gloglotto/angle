@@ -58,7 +58,7 @@ namespace gloglotto
 			friend double angle_cast (angle value);
 
 		private:
-			double _degrees;
+			double _radians;
 	};
 
 	namespace angle_operators

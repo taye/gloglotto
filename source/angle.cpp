@@ -23,25 +23,25 @@ namespace gloglotto
 {
 	angle::angle (double value)
 	{
-		_degrees = value;
+		_radians = value;
 	}
 
 	angle
 	angle::degrees::make (double value)
 	{
-		return value;
+		return value * (M_PI / 180);
 	}
 
 	angle
 	angle::radians::make (double value)
 	{
-		return value * (180 / M_PI);
+		return value;
 	}
 
 	angle
 	angle::hours::make (double value)
 	{
-		return value * (1.0 / 15.0);
+		return value * (M_PI / 6);
 	}
 
 	namespace angle_operators

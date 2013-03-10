@@ -27,7 +27,7 @@ namespace gloglotto
 	double
 	angle_cast<angle::degrees> (angle value)
 	{
-		return value._degrees;
+		return value._radians * (180 / M_PI);
 	}
 
 	template <>
@@ -35,7 +35,7 @@ namespace gloglotto
 	double
 	angle_cast<angle::radians> (angle value)
 	{
-		return value._degrees * (M_PI / 180);
+		return value._radians;
 	}
 
 	template <>
@@ -43,6 +43,6 @@ namespace gloglotto
 	double
 	angle_cast<angle::hours> (angle value)
 	{
-		return value._degrees * 15.0;
+		return value._radians * (6 / M_PI);
 	}
 }
