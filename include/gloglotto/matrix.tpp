@@ -605,14 +605,14 @@ namespace gloglotto
 			Type min_x = min_y * aspect;
 			Type max_x = -min_x;
 
-			(&result)[0]  = (2.0 * z[0]) / (max_x - min_x);
-			(&result)[5]  = (2.0 * z[1]) / (max_y - min_y);
-			(&result)[2]  = (max_x + min_x) / (max_x - min_x);
-			(&result)[6]  = (max_y + min_y) / (max_y - min_y);
+			(&result)[0]  =  (2.0 * z[0]) / (max_x - min_x);
+			(&result)[5]  =  (2.0 * z[1]) / (max_y - min_y);
+			(&result)[2]  =  (max_x + min_x) / (max_x - min_x);
+			(&result)[6]  =  (max_y + min_y) / (max_y - min_y);
 			(&result)[10] = -((z[1] + z[0]) / (z[1] - z[0]));
 			(&result)[14] = -1.0;
 			(&result)[11] = -((2.0 * (z[1] * z[0])) / (z[1] - z[0]));
-			(&result)[15] = 0.0;
+			(&result)[15] =  0.0;
 
 			return result;
 		}
@@ -623,13 +623,13 @@ namespace gloglotto
 		{
 			matrix<4, 4> result(true);
 
-			(&result)[0]  = 2.0 / (x[1] - x[0]);
-			(&result)[5]  = 2.0 / (y[1] - y[0]);
+			(&result)[0]  =  2.0 / (x[1] - x[0]);
+			(&result)[5]  =  2.0 / (y[1] - y[0]);
 			(&result)[10] = -2.0 / (z[1] - z[0]);
 			(&result)[3]  = -((x[1] + x[0]) / (x[1] - x[0]));
 			(&result)[7]  = -((y[1] + y[0]) / (y[1] - y[0]));
 			(&result)[11] = -((z[1] + z[0]) / (z[1] - z[0]));
-			(&result)[15] = 1.0;
+			(&result)[15] =  1.0;
 
 			return result;
 		}
@@ -660,25 +660,25 @@ namespace gloglotto
 
 			matrix<Size, Size, Type> result(true);
 
-			Type sx  = sin(angle_cast<angle::radians>(x));
-			Type sy  = sin(angle_cast<angle::radians>(y));
-			Type sz  = sin(angle_cast<angle::radians>(z));
+			Type sx = sin(angle_cast<angle::radians>(x));
+			Type sy = sin(angle_cast<angle::radians>(y));
+			Type sz = sin(angle_cast<angle::radians>(z));
 
-			Type cx  = cos(angle_cast<angle::radians>(x));
-			Type cy  = cos(angle_cast<angle::radians>(y));
-			Type cz  = cos(angle_cast<angle::radians>(z));
+			Type cx = cos(angle_cast<angle::radians>(x));
+			Type cy = cos(angle_cast<angle::radians>(y));
+			Type cz = cos(angle_cast<angle::radians>(z));
 
-			result[0][0] =  cy * cz;
-			result[0][1] =  cx * sz + sx * sy * cz;
-			result[0][2] =  sx * sz - cx * sy * cz;
+			result[0][0] = (cy * cz);
+			result[0][1] = (cx * sz) + (sx * sy * cz);
+			result[0][2] = (sx * sz) - (cx * sy * cz);
 
-			result[1][0] = -cy * sz;
-			result[1][1] =  cx * cz - sx * sy * sz;
-			result[1][2] =  sx * cz + cx * sy * sz;
+			result[1][0] = -(cy * sz);
+			result[1][1] =  (cx * cz) - (sx * sy * sz);
+			result[1][2] =  (sx * cz) + (cx * sy * sz);
 
 			result[2][0] =  sy;
-			result[2][1] = -sx * cy;
-			result[2][2] =  cx * cy;
+			result[2][1] = -(sx * cy);
+			result[2][2] =  (cx * cy);
 
 			return result;
 		}
@@ -693,7 +693,7 @@ namespace gloglotto
 
 			Type s   = sin(angle_cast<angle::radians>(a));
 			Type c   = cos(angle_cast<angle::radians>(a));
-			Type mag = sqrt(x * x + y * y + z * z);
+			Type mag = sqrt((x * x) + (y * y) + (z * z));
 
 			// return identity matrix if magnitude is 0
 			if (mag == 0) {
@@ -705,29 +705,19 @@ namespace gloglotto
 			y /= mag;
 			z /= mag;
 
-			Type xx = x * x;
-			Type yy = y * y;
-			Type zz = z * z;
-			Type xy = x * y;
-			Type yz = y * z;
-			Type zx = z * x;
-			Type xs = x * s;
-			Type ys = y * s;
-			Type zs = z * s;
-
 			Type one = 1.0 - c;
 
-			result[0][0] = one * xx + c;
-			result[0][1] = one * xy - zs;
-			result[0][2] = one * zx + ys;
+			result[0][0] = (one * x * x) + c;
+			result[0][1] = (one * x * y) - (z * s);
+			result[0][2] = (one * z * x) + (y * s);
 
-			result[1][0] = one * xy + zs;
-			result[1][1] = one * yy + c;
-			result[1][2] = one * yz - xs;
+			result[1][0] = (one * x * y) + (z * s);
+			result[1][1] = (one * y * y) + c;
+			result[1][2] = (one * y * z) - (x * s);
 
-			result[2][0] = one * zx - ys;
-			result[2][1] = one * yz + xs;
-			result[2][2] = one * zz + c;
+			result[2][0] = (one * z * x) - (y * s);
+			result[2][1] = (one * y * z) + (x * s);
+			result[2][2] = (one * z * z) + c;
 
 			return result;
 		}
@@ -777,24 +767,24 @@ namespace gloglotto
 			matrix<4, 4, Type> result;
 
 			(&result)[0]  = (b * dy) + (c * dz);
-			(&result)[4]  = -a * dy;
-			(&result)[8]  = -a * dz;
-			(&result)[12] = 0.0;
+			(&result)[4]  = -(a * dy);
+			(&result)[8]  = -(a * dz);
+			(&result)[12] =  0.0;
 
-			(&result)[1]  = -b * dx;
-			(&result)[5]  = (a * dx) + (c * dz);
-			(&result)[9]  = -b * dz;
-			(&result)[13] = 0.0;
+			(&result)[1]  = -(b * dx);
+			(&result)[5]  =  (a * dx) + (c * dz);
+			(&result)[9]  = -(b * dz);
+			(&result)[13] =  0.0;
 
-			(&result)[2]  = -c * dx;
-			(&result)[6]  = -c * dy;
-			(&result)[10] = (a * dx) + (b * dy);
-			(&result)[14] = 0.0;
+			(&result)[2]  = -(c * dx);
+			(&result)[6]  = -(c * dy);
+			(&result)[10] =  (a * dx) + (b * dy);
+			(&result)[14] =  0.0;
 
-			(&result)[3]  = -d * dx;
-			(&result)[7]  = -d * dy;
-			(&result)[11] = -d * dz;
-			(&result)[15] = (a * dx) + (b * dy) + (c * dz);
+			(&result)[3]  = -(d * dx);
+			(&result)[7]  = -(d * dy);
+			(&result)[11] = -(d * dz);
+			(&result)[15] =  (a * dx) + (b * dy) + (c * dz);
 
 			return result;
 		}
