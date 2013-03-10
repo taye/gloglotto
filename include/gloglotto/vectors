@@ -28,8 +28,66 @@ namespace gloglotto
 	class vectors
 	{
 		public:
+			template <int SliceSize>
+			class sub
+			{
+				public:
+					static constexpr int accessible_size = SliceSize;
+					typedef Vector       accessible_type;
+
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, std::true_type> const_iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>>                 iterator;
+
+					typedef typename Vector::type type;
+					static constexpr int size = Vector::size * SliceSize;
+
+					static constexpr int elements = Vector::elements;
+
+				public:
+					sub (vectors<Size, Vector>* parent, int offset, int stride);
+
+					/* Access a constant vector in the array.
+					 */
+					Vector const& operator [] (int index) const throw (std::out_of_range);
+
+					/* Return an iterator to the beginning of the vector array.
+					 */
+					const_iterator begin (void) const;
+
+					/* Return an iterator to the end of the vector array.
+					 */
+					const_iterator end (void) const;
+
+					/* Access a vector in the array.
+					 */
+					Vector& operator [] (int index) throw (std::out_of_range);
+
+					/* Return an iterator to the beginning of the vector array.
+					 */
+					iterator begin (void);
+
+					/* Return an iterator to the end of the vector array.
+					 */
+					iterator end (void);
+
+					/* Return a new vector array multiplied by the matrix.
+					 */
+					vectors<SliceSize, Vector> operator * (matrix<elements, elements, type> const& other) const;
+
+					/* Multiply the slice of vector array in place by the matrix.
+					 */
+					sub<SliceSize>& operator *= (matrix<elements, elements, type> const& other);
+
+				private:
+					vectors<Size, Vector>* _parent;
+
+					int _offset = 0;
+					int _stride = 0;
+			};
+
+		public:
 			static constexpr int accessible_size = Size;
-			typedef Vector   accessible_type;
+			typedef Vector       accessible_type;
 
 			typedef iterator::accessible<vectors<Size, Vector>, std::true_type> const_iterator;
 			typedef iterator::accessible<vectors<Size, Vector>>                 iterator;
@@ -60,6 +118,10 @@ namespace gloglotto
 			 */
 			vectors (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument);
 
+			/* Create a vector array from a vector array slice.
+			 */
+			vectors (sub<Size> const& slice);
+
 			/* Destroy the data if it's not a wrapper.
 			 */
 			~vectors (void);
@@ -71,6 +133,10 @@ namespace gloglotto
 			/* Swap with the passed temporary vector array.
 			 */
 			vectors<Size, Vector>& operator = (vectors<Size, Vector>&& from);
+
+			/* Copy the data wrapped by the slice.
+			 */
+			vectors<Size, Vector>& operator = (sub<Size> const& slice);
 
 			/* Copy the data present in the passed pointer.
 			 */
@@ -96,7 +162,7 @@ namespace gloglotto
 			 */
 			vectors<Size, Vector>& swap (vectors<Size, Vector>& other);
 
-			/* Access a matrix in the array.
+			/* Access a constant vector in the array.
 			 */
 			Vector const& operator [] (int index) const throw (std::out_of_range);
 
@@ -108,7 +174,7 @@ namespace gloglotto
 			 */
 			const_iterator end (void) const;
 
-			/* Access a matrix in the array.
+			/* Access a vector in the array.
 			 */
 			Vector& operator [] (int index) throw (std::out_of_range);
 
@@ -121,7 +187,7 @@ namespace gloglotto
 			iterator end (void);
 
 			template <int SliceSize>
-			vectors<SliceSize, Vector> slice (int offset = 0) throw (std::out_of_range);
+			sub<SliceSize> slice (int offset = 0, int stride = 0) throw (std::out_of_range);
 
 			/* Return a new vector array multiplied by the matrix.
 			 */

@@ -41,14 +41,9 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
-	vectors<Size, Vector>::vectors (vectors<Size, Vector> const& from)
+	vectors<Size, Vector>::vectors (vectors<Size, Vector> const& from) : vectors()
 	{
-		_data    = new type[Size * elements];
-		_vectors = nullptr;
-
 		std::copy(&from, &from + Size * elements, _data);
-
-		own();
 	}
 
 	template <int Size, class Vector>
@@ -69,11 +64,8 @@ namespace gloglotto
 	}
 
 	template <int Size, class Vector>
-	vectors<Size, Vector>::vectors (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument)
+	vectors<Size, Vector>::vectors (std::initializer_list<std::initializer_list<type>> list) throw (std::invalid_argument) : vectors()
 	{
-		_data    = new type[Size * elements];
-		_vectors = nullptr;
-
 		try {
 			*this = list;
 		}
@@ -82,8 +74,12 @@ namespace gloglotto
 
 			throw e;
 		}
+	}
 
-		own();
+	template <int Size, class Vector>
+	vectors<Size, Vector>::vectors (sub<Size> const& slice) : vectors()
+	{
+		*this = slice;
 	}
 
 	template <int Size, class Vector>
@@ -268,14 +264,15 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	template <int SliceSize>
-	vectors<SliceSize, Vector>
-	vectors<Size, Vector>::slice (int offset) throw (std::out_of_range)
+	vectors<Size, Vector>::sub<SliceSize>
+	vectors<Size, Vector>::slice (int offset, int stride) throw (std::out_of_range)
 	{
-		if (offset + SliceSize > Size) {
+		if ((stride == 0 && offset + SliceSize > Size) ||
+		    (stride != 0 && offset + SliceSize * stride > Size)) {
 			throw std::out_of_range("slice out of range");
 		}
 
-		return vectors<SliceSize, Vector>(_data + (offset * elements));
+		return sub<SliceSize>(this, offset, stride);
 	}
 
 	template <int Size, class Vector>
@@ -308,5 +305,94 @@ namespace gloglotto
 	vectors<Size, Vector>::operator & (void) const
 	{
 		return _data;
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	vectors<Size, Vector>::sub<SliceSize>::sub (vectors<Size, Vector>* parent, int offset, int stride)
+	{
+		_parent = parent;
+		_offset = offset;
+		_stride = stride;
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	Vector const&
+	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) const throw (std::out_of_range)
+	{
+		index = _stride > 0 ? ((index * _stride) + _offset) : index + _offset;
+
+		if (index >= Size) {
+			throw std::out_of_range("index out of range");
+		}
+
+		return (*_parent)[index];
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	typename vectors<Size, Vector>::template sub<SliceSize>::const_iterator
+	vectors<Size, Vector>::sub<SliceSize>::begin (void) const
+	{
+		return const_iterator(this);
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	typename vectors<Size, Vector>::template sub<SliceSize>::const_iterator
+	vectors<Size, Vector>::sub<SliceSize>::end (void) const
+	{
+		return const_iterator(this, -1);
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	Vector&
+	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) throw (std::out_of_range)
+	{
+		index = _stride > 0 ? ((index * _stride) + _offset) : index + _offset;
+
+		if (index >= Size) {
+			throw std::out_of_range("index out of range");
+		}
+
+		return (*_parent)[index];
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	typename vectors<Size, Vector>::template sub<SliceSize>::iterator
+	vectors<Size, Vector>::sub<SliceSize>::begin (void)
+	{
+		return iterator(this);
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	typename vectors<Size, Vector>::template sub<SliceSize>::iterator
+	vectors<Size, Vector>::sub<SliceSize>::end (void)
+	{
+		return iterator(this, -1);
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	vectors<SliceSize, Vector>
+	vectors<Size, Vector>::sub<SliceSize>::operator * (matrix<elements, elements, type> const& other) const
+	{
+		return vectors<SliceSize, Vector>(*this) *= other;
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
+	vectors<Size, Vector>::sub<SliceSize>&
+	vectors<Size, Vector>::sub<SliceSize>::operator *= (matrix<elements, elements, type> const& other)
+	{
+		for (auto& vector : *this) {
+			vector *= other;
+		}
+
+		return *this;
 	}
 }
