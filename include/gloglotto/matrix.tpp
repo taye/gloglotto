@@ -33,7 +33,7 @@ namespace gloglotto
 		_data    = new Type[Columns * Rows];
 		_vectors = nullptr;
 
-		std::fill(_data, _data + Columns * Rows, 0);
+		std::fill_n(_data, Columns * Rows, 0);
 
 		if (identity) {
 			if (Columns == 2 && Rows == 2) {
@@ -225,7 +225,7 @@ namespace gloglotto
 
 		if (!_vectors) {
 			_vectors = new vector<Columns, Type>*[Rows];
-			std::fill(_vectors, _vectors + Rows, nullptr);
+			std::fill_n(_vectors, Rows, nullptr);
 		}
 
 		if (!_vectors[row]) {
@@ -259,7 +259,7 @@ namespace gloglotto
 
 		if (!_vectors) {
 			_vectors = new vector<Columns, Type>*[Rows];
-			std::fill(_vectors, _vectors + Rows, nullptr);
+			std::fill_n(_vectors, Rows, nullptr);
 		}
 
 		if (!_vectors[row]) {
