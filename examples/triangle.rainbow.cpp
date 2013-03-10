@@ -4,7 +4,7 @@
 int
 main (int argc, char* argv[])
 {
-	gl::window::create(&argc, argv, { 800, 600 }, "Triangle");
+	gl::window::create(&argc, argv, { 400, 400 }, "Triangle");
 
 	gl::shader_manager shaders;
 	shaders.add("arcobaleno", {
@@ -47,9 +47,9 @@ main (int argc, char* argv[])
 
 	gl::window::on<gl::window::event::render>([&] {
 		static gl::vectors<6, gl::vector<3>> triangle {
-			{  0.75,  0.75, 0.0 },
-			{  0.75, -0.75, 0.0 },
-			{ -0.75, -0.75, 0.0 },
+			{  0.00,  1.00, 0.0 },
+			{  0.87, -0.50, 0.0 },
+			{ -0.87, -0.50, 0.0 },
 			
 			{ 1.0, 0.0, 0.0 },
 			{ 0.0, 1.0, 0.0 },
@@ -65,7 +65,7 @@ main (int argc, char* argv[])
 
 		if (tick > last_tick) {
 			while (tick > last_tick) {
-				triangle.slice<3>() *= gl::make::rotation(gl::angle::radians::make(0.01), 1.0f, 1.0f, 1.0f);
+				triangle.slice<3>() *= gl::make::rotation(gl::angle::radians::make(0.1), 0.0f, 0.0f, 10.0f);
 
 				last_tick += 1000 / 60.0;
 			}
