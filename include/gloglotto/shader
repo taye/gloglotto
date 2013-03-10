@@ -71,7 +71,7 @@ namespace gloglotto
 			~shader (void);
 
 			template <typename ...Args>
-			void begin (Args... args) throw (std::bad_typeid, invalid_operation, invalid_value);
+			void begin (Args... args) throw (std::invalid_argument, invalid_operation, invalid_value);
 
 			shader& draw (unsigned primitive, size_t count, size_t offset = 0) throw (invalid_enum, invalid_value, invalid_operation);
 

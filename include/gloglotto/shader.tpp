@@ -71,7 +71,7 @@ namespace gloglotto
 
 	template <typename ...Args>
 	void
-	shader::begin (Args... args) throw (std::bad_typeid, invalid_operation, invalid_value)
+	shader::begin (Args... args) throw (std::invalid_argument, invalid_operation, invalid_value)
 	{
 		if (_function) {
 			auto function = static_cast<std::function<void(shader&, Args...)>*>(_function);
@@ -82,12 +82,12 @@ namespace gloglotto
 				(*function)(*this, args...);
 			}
 			else {
-				throw std::bad_typeid();
+				throw std::invalid_argument("expected " + demangle(_signature) + " but got " + demangle(&typeid(function)));
 			}
 		}
 		else {
 			if (typeid(void(Args...)) != typeid(void(void))) {
-				throw std::bad_typeid();
+				throw std::invalid_argument("no arguments expected");
 			}
 
 			glUseProgram(_id);
