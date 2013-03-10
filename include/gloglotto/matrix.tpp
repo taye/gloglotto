@@ -57,14 +57,9 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type> const& from)
+	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type> const& from) : matrix()
 	{
-		_data    = new Type[Columns * Rows];
-		_vectors = nullptr;
-
 		std::copy(&from, &from + Columns * Rows, _data);
-
-		own();
 	}
 
 	template <int Rows, int Columns, typename Type>
@@ -94,11 +89,8 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument)
+	matrix<Rows, Columns, Type>::matrix (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument) : matrix()
 	{
-		_data    = new Type[Columns * Rows];
-		_vectors = nullptr;
-
 		try {
 			*this = list;
 		}
@@ -107,8 +99,6 @@ namespace gloglotto
 
 			throw e;
 		}
-
-		own();
 	}
 
 	template <int Rows, int Columns, typename Type>
