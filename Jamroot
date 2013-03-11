@@ -1,0 +1,14 @@
+project gloglotto ;
+
+lib gloglotto : [ glob source/*.cpp ]
+	: <cxxflags>-std=c++11
+	: <include>include
+	: <linkflags>"-lGL -lGLEW -lglut"
+	;
+
+import testing ;
+
+unit-test test::matrix : tests/matrix.cpp tests/tinytest/tinytest.c : <library>gloglotto
+	: <cxxflags>-std=c++11
+	: <include>include
+	;
