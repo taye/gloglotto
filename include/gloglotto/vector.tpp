@@ -419,20 +419,13 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
-	template <int Columns>
-	vector<Columns, Type>
-	vector<Size, Type>::operator * (matrix<Size, Columns, Type> const& other) const
+	vector<Size, Type>
+	vector<Size, Type>::operator * (matrix<Size, Size, Type> const& other) const
 	{
-		vector<Columns, Type> result;
+		vector<Size, Type> result;
 
-		for (int column = 0; column < Columns; column++) {
-			Type element = 0;
-
-			for (int row = 0; row < Size; row++) {
-				element += _data[row] * (&other)[row * Columns + column];
-			}
-
-			result[column] = element;
+		for (int column = 0; column < Size; column++) {
+			result[column] = *this ^ other[column];
 		}
 
 		return result;
@@ -443,13 +436,7 @@ namespace gloglotto
 	vector<Size, Type>::operator *= (matrix<Size, Size, Type> const& other)
 	{
 		for (int column = 0; column < Size; column++) {
-			Type element = 0;
-
-			for (int row = 0; row < Size; row++) {
-				element += _data[row] * (&other)[row * Size + column];
-			}
-
-			_data[column] = element;
+			_data[column] = *this ^ other[column];
 		}
 
 		return *this;

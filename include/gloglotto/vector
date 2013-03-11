@@ -191,8 +191,7 @@ namespace gloglotto
 
 			/* Multiply the vector to a compatible matrix and return another vector.
 			 */
-			template <int Columns>
-			vector<Columns, Type> operator * (matrix<Size, Columns, Type> const& other) const;
+			vector<Size, Type> operator * (matrix<Size, Size, Type> const& other) const;
 
 			/* Multiply the vector to a compatible matrix in place.
 			 */
