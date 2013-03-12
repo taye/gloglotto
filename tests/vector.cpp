@@ -1,25 +1,14 @@
-#include <cstdio>
-#include <cstdlib>
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE matrix
+#include <boost/test/unit_test.hpp>
 
 #include <gl>
 
-extern "C" {
-	#include "tinytest/tinytest.h"
-	#include "tinytest/tinytest_macros.h"
-}
+BOOST_AUTO_TEST_SUITE(vector)
 
-struct testcase_t creation_tests[] = {
-	END_OF_TESTCASES
-};
-
-struct testgroup_t groups[] = {
-	{ "creation/", creation_tests },
-
-	END_OF_GROUPS
-};
-
-int
-main (int argc, char const* argv[])
+BOOST_AUTO_TEST_CASE(creation)
 {
-	return tinytest_main(argc, argv, groups);
+
 }
+
+BOOST_AUTO_TEST_SUITE_END()
