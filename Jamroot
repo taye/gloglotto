@@ -8,7 +8,8 @@ lib gloglotto : [ glob source/*.cpp ]
 
 import testing ;
 
-unit-test test::matrix : tests/matrix.cpp tests/tinytest/tinytest.c : <library>gloglotto
-	: <cxxflags>-std=c++11
-	: <include>include
-	;
+for name in matrix vector {
+	unit-test test::$(name) : tests/$(name).cpp tests/tinytest/tinytest.c : <library>gloglotto
+		: <cxxflags>"-std=c++11 -Iinclude"
+		;
+}
