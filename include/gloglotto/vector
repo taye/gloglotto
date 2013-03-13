@@ -44,10 +44,10 @@ namespace gloglotto
 
 		public:
 			static constexpr int accessible_size = Size;
-			typedef Type          accessible_type;
+			typedef Type         accessible_type;
 
-			typedef iterator::accessible<vector<Size, Type>, std::true_type> const_iterator;
-			typedef iterator::accessible<vector<Size, Type>>                 iterator;
+			typedef iterator::accessible<vector<Size, Type>, true> const_iterator;
+			typedef iterator::accessible<vector<Size, Type>>       iterator;
 
 			typedef Type type;
 			static constexpr int size = Size * sizeof(Type);

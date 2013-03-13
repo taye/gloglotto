@@ -34,22 +34,22 @@ namespace gloglotto
 			static const int size = Type::accessible_size;
 		};
 
-		template <class Type, typename Constant>
+		template <class Type, bool Constant>
 		struct accessible_type;
 
 		template <class Type>
-		struct accessible_type<Type, std::true_type>
+		struct accessible_type<Type, true>
 		{
 			typedef typename accessible_traits<Type>::const_type type;
 		};
 
 		template <class Type>
-		struct accessible_type<Type, std::false_type>
+		struct accessible_type<Type, false>
 		{
 			typedef typename accessible_traits<Type>::type type;
 		};
 
-		template <typename Class, typename Constant = std::false_type>
+		template <typename Class, bool Constant = false>
 		class accessible : public std::iterator<std::random_access_iterator_tag,
 		                                        typename accessible_type<Class, Constant>::type>
 		{

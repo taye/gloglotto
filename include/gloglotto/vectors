@@ -35,8 +35,8 @@ namespace gloglotto
 					static constexpr int accessible_size = SliceSize;
 					typedef Vector       accessible_type;
 
-					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, std::true_type> const_iterator;
-					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>>                 iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, true> const_iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>>       iterator;
 
 					typedef typename Vector::type type;
 					static constexpr int size = Vector::size * SliceSize;
@@ -89,8 +89,8 @@ namespace gloglotto
 			static constexpr int accessible_size = Size;
 			typedef Vector       accessible_type;
 
-			typedef iterator::accessible<vectors<Size, Vector>, std::true_type> const_iterator;
-			typedef iterator::accessible<vectors<Size, Vector>>                 iterator;
+			typedef iterator::accessible<vectors<Size, Vector>, true> const_iterator;
+			typedef iterator::accessible<vectors<Size, Vector>>       iterator;
 
 			typedef typename Vector::type type;
 			static constexpr int size = Vector::size * Size;

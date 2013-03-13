@@ -31,8 +31,8 @@ namespace gloglotto
 			static constexpr int accessible_size = Size;
 			typedef Matrix   accessible_type;
 
-			typedef iterator::accessible<matrices<Size, Matrix>, std::true_type> const_iterator;
-			typedef iterator::accessible<matrices<Size, Matrix>>                 iterator;
+			typedef iterator::accessible<matrices<Size, Matrix>, true> const_iterator;
+			typedef iterator::accessible<matrices<Size, Matrix>>       iterator;
 
 			typedef typename Matrix::type type;
 			static constexpr int size = Matrix::size * Size;
