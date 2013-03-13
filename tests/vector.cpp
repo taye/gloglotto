@@ -1,5 +1,5 @@
+#include <amirite>
 #include <gl>
-#include "core/amirite"
 
 int
 main (int argc, char* argv[])

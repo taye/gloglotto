@@ -12,7 +12,7 @@ import testing ;
 
 for name in matrix vector {
 	unit-test test::$(name) : tests/$(name).cpp
-		: <cxxflags>"-std=c++11 -Iinclude"
+		: <cxxflags>"-std=c++11 -Iinclude -Itests/amirite"
 		: <library>gloglotto
 		;
 }

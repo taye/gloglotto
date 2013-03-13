@@ -1,3 +1,6 @@
 [submodule "tests/core"]
 	path = tests/core
 	url = git://github.com/meh/amirite.git
+[submodule "tests/amirite"]
+	path = tests/amirite
+	url = git://github.com/meh/amirite.git
