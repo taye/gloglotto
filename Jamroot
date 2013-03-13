@@ -9,10 +9,9 @@ lib gloglotto : [ glob source/*.cpp ]
 	;
 
 import testing ;
-lib    boost_unit_test_framework ;
 
 for name in matrix vector {
-	unit-test test::$(name) : tests/$(name).cpp boost_unit_test_framework
+	unit-test test::$(name) : tests/$(name).cpp
 		: <cxxflags>"-std=c++11 -Iinclude"
 		: <library>gloglotto
 		;

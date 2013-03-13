@@ -1,14 +1,10 @@
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE matrix
-#include <boost/test/unit_test.hpp>
-
 #include <gl>
+#include "core/amirite"
 
-BOOST_AUTO_TEST_SUITE(vector)
-
-BOOST_AUTO_TEST_CASE(creation)
+int
+main (int argc, char* argv[])
 {
+	return amirite("vector", {
 
+	});
 }
-
-BOOST_AUTO_TEST_SUITE_END()
