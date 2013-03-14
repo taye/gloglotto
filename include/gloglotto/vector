@@ -57,7 +57,7 @@ namespace gloglotto
 		public:
 			/* Create a vector with every element set to 0.
 			 */
-			vector (void);
+			vector (Type value = 0);
 
 			/* Create a vector from the copy of the contents of the passed vector.
 			 */
@@ -78,6 +78,10 @@ namespace gloglotto
 			/* Destroy the data if it's not a wrapping vector.
 			 */
 			~vector (void);
+
+			/* Set all elements to the passed value.
+			 */
+			vector<Size, Type>& operator = (Type value);
 
 			/* Copy the contents of the passed vector.
 			 */

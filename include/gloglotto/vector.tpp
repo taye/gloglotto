@@ -24,10 +24,10 @@
 namespace gloglotto
 {
 	template <int Size, typename Type>
-	vector<Size, Type>::vector (void)
+	vector<Size, Type>::vector (Type value)
 	{
 		_data = new Type[Size];
-		std::fill_n(_data, Size, 0);
+		std::fill_n(_data, Size, value);
 
 		own();
 	}
@@ -79,6 +79,15 @@ namespace gloglotto
 		if (owner()) {
 			delete _data;
 		}
+	}
+
+	template <int Size, typename Type>
+	vector<Size, Type>&
+	vector<Size, Type>::operator = (Type value)
+	{
+		std::fill_n(_data, Size, value);
+
+		return *this;
 	}
 
 	template <int Size, typename Type>
