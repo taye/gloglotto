@@ -29,7 +29,10 @@ namespace gloglotto
 	template<int Rows, int Columns, typename Type>
 	class matrix;
 
-	/* Class to handle vectors.
+	/* Class to handle vectors like GLSL.
+	 *
+	 * This means a vector abstracts a GLSL vector type, including size and type and
+	 * the operations you can do on them act as close as possible to what GLSL would do.
 	 */
 	template <int Size = 3, typename Type = float>
 	class vector
