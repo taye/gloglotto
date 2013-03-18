@@ -117,7 +117,7 @@ namespace gloglotto
 
 			glDeleteProgram(program);
 
-			throw e;
+			throw;
 		}
 
 		for (auto shader : shaders) {

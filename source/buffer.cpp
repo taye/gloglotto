@@ -66,7 +66,7 @@ namespace gloglotto
 		catch (invalid_enum& e) {
 			glDeleteBuffers(1, &_id);
 
-			throw e;
+			throw;
 		}
 	}
 

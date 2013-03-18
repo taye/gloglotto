@@ -55,7 +55,7 @@ namespace gloglotto
 		catch (std::invalid_argument& e) {
 			delete[] _data;
 
-			throw e;
+			throw;
 		}
 	}
 
