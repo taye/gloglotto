@@ -19,6 +19,8 @@
 #ifndef _GLOGLOTTO_HEADERS_H
 #define _GLOGLOTTO_HEADERS_H
 
+#define GLEW_NO_GLU
+
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
