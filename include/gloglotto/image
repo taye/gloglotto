@@ -16,28 +16,54 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_H
-#define _GLOGLOTTO_H
+#ifndef _GLOGLOTTO_IMAGE_H
+#define _GLOGLOTTO_IMAGE_H
 
-#include <gloglotto/extension>
+#include <cstring>
 
-#include <gloglotto/clear>
-#include <gloglotto/viewport>
-#include <gloglotto/capabilities>
+namespace gloglotto
+{
+	namespace image
+	{
+		namespace format
+		{
+			class internal
+			{
+				public:
+					internal (size_t byte_size);
 
-#include <gloglotto/primitive>
+					internal (void* buffer, size_t byte_size);
 
-#include <gloglotto/object>
-#include <gloglotto/vertex_array>
-#include <gloglotto/sync>
+					virtual ~internal (void);
 
-#include <gloglotto/shader>
-#include <gloglotto/shader_manager>
+					bool owner (void) const;
 
-#include <gloglotto/image>
+					internal& own (void);
 
-#include <gloglotto/window>
+					internal& disown (void);
 
-namespace gl = gloglotto;
+					size_t byte_size (void) const;
+
+					virtual size_t size (void) const = 0;
+
+					void const* operator & (void) const;
+
+					void* operator & (void);
+
+				protected:
+					char*  _buffer;
+					size_t _byte_size;
+					bool   _owner;
+			};
+
+			class external
+			{
+				virtual ~external (void);
+			};
+		}
+	}
+}
+
+#include <gloglotto/formats/rgba>
 
 #endif

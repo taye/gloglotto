@@ -1,0 +1,109 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_IMAGE_RGBA_H
+#define _GLOGLOTTO_IMAGE_RGBA_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
+#include <gloglotto/image>
+
+namespace gloglotto
+{
+	namespace image
+	{
+		namespace format
+		{
+			namespace traits
+			{
+				template <int Depth, typename Type, bool Normalized>
+				struct rgba;
+
+				#define rgba(size, type, normalized, gl) \
+					template <> \
+					struct rgba<size, type, normalized> \
+					{ \
+						enum : unsigned { \
+							depth    = size, \
+							bytes    = (size * 4) / 8, \
+							constant = gl \
+						}; \
+					}
+
+					rgba(2,  unsigned, true, GL_RGBA2);
+					rgba(4,  unsigned, true, GL_RGBA4);
+					rgba(8,  unsigned, true, GL_RGBA8);
+					rgba(12, unsigned, true, GL_RGBA12);
+					rgba(16, unsigned, true, GL_RGBA16);
+
+					rgba(8,  int, true, GL_RGBA8_SNORM);
+					rgba(16, int, true, GL_RGBA16_SNORM);
+					rgba(32, int, true, GL_RGBA_SNORM);
+
+					rgba(16, float, false, GL_RGBA16F);
+					rgba(32, float, false, GL_RGBA32F);
+
+					rgba(8,  unsigned, false, GL_RGBA8UI);
+					rgba(16, unsigned, false, GL_RGBA16UI);
+					rgba(32, unsigned, false, GL_RGBA32UI);
+
+					rgba(8,  int, false, GL_RGBA8I);
+					rgba(16, int, false, GL_RGBA16I);
+					rgba(32, int, false, GL_RGBA32I);
+				#undef rgba
+			}
+
+			template <int Depth, typename Type = unsigned, bool Normalized = true>
+			class rgba : public internal
+			{
+				public:
+					enum : unsigned {
+						depth    = traits::rgba<Depth, Type, Normalized>::depth,
+						bytes    = traits::rgba<Depth, Type, Normalized>::bytes,
+						constant = traits::rgba<Depth, Type, Normalized>::constant
+					};
+
+					struct value
+					{
+						unsigned r : Depth;
+						unsigned g : Depth;
+						unsigned b : Depth;
+						unsigned a : Depth;
+					};
+
+				public:
+					rgba (size_t size);
+
+					rgba (void* buffer, size_t size);
+
+					value const* operator [] (size_t index) const throw (std::out_of_range);
+
+					value* operator [] (size_t index) throw (std::out_of_range);
+
+					size_t size (void) const;
+
+				private:
+					size_t _size;
+			};
+		}
+	}
+}
+
+#include <gloglotto/formats/rgba.tpp>
+
+#endif
