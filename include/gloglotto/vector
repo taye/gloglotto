@@ -120,7 +120,7 @@ namespace gloglotto
 
 			/* Access a constant element of the vector.
 			 */
-			Type const& operator [] (int index) const throw (std::out_of_range);
+			Type const& operator [] (size_t index) const throw (std::out_of_range);
 
 			/* Return a const iterator to the beginning of the vector.
 			 */
@@ -132,7 +132,7 @@ namespace gloglotto
 
 			/* Access an element of the vector.
 			 */
-			Type& operator [] (int index) throw (std::out_of_range);
+			Type& operator [] (size_t index) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the vector.
 			 */

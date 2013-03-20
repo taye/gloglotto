@@ -174,9 +174,9 @@ namespace gloglotto
 
 	template <int Size, typename Type>
 	Type const&
-	vector<Size, Type>::operator [] (int index) const throw (std::out_of_range)
+	vector<Size, Type>::operator [] (size_t index) const throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
@@ -199,9 +199,9 @@ namespace gloglotto
 
 	template <int Size, typename Type>
 	Type&
-	vector<Size, Type>::operator [] (int index) throw (std::out_of_range)
+	vector<Size, Type>::operator [] (size_t index) throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
