@@ -10,7 +10,7 @@ lib gloglotto : [ glob source/*.cpp ]
 
 import testing ;
 
-for name in matrix vector {
+for name in matrix vector angle {
 	unit-test test::$(name) : tests/$(name).cpp
 		: <cxxflags>"-std=c++11 -Iinclude -Itests/amirite"
 		: <library>gloglotto
