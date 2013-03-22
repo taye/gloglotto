@@ -114,12 +114,12 @@ namespace gloglotto
 			void uniform (std::string name, matrix<3, 3, float> data) throw (invalid_operation, invalid_value, invalid_enum);
 			void uniform (std::string name, matrix<4, 4, float> data) throw (invalid_operation, invalid_value, invalid_enum);
 
-			void uniform (std::string name, matrix<2, 3, float> data) throw (invalid_operation, invalid_value, invalid_enum);
 			void uniform (std::string name, matrix<3, 2, float> data) throw (invalid_operation, invalid_value, invalid_enum);
-			void uniform (std::string name, matrix<2, 4, float> data) throw (invalid_operation, invalid_value, invalid_enum);
+			void uniform (std::string name, matrix<2, 3, float> data) throw (invalid_operation, invalid_value, invalid_enum);
 			void uniform (std::string name, matrix<4, 2, float> data) throw (invalid_operation, invalid_value, invalid_enum);
-			void uniform (std::string name, matrix<3, 4, float> data) throw (invalid_operation, invalid_value, invalid_enum);
+			void uniform (std::string name, matrix<2, 4, float> data) throw (invalid_operation, invalid_value, invalid_enum);
 			void uniform (std::string name, matrix<4, 3, float> data) throw (invalid_operation, invalid_value, invalid_enum);
+			void uniform (std::string name, matrix<3, 4, float> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 			template <int Size>
 			void uniform (std::string name, std::array<float, Size>data) throw (invalid_operation, invalid_value, invalid_enum);
@@ -191,22 +191,22 @@ namespace gloglotto
 			void uniform (std::string name, matrices<Size, matrix<4, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 			template <int Size>
-			void uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
-
-			template <int Size>
 			void uniform (std::string name, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 			template <int Size>
-			void uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
+			void uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 			template <int Size>
 			void uniform (std::string name, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 			template <int Size>
-			void uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
+			void uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 			template <int Size>
 			void uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
+
+			template <int Size>
+			void uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum);
 
 		private:
 			unsigned make (std::multimap<std::string, std::string>& source) const throw (failed_compilation, failed_linking, invalid_enum);

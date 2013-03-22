@@ -110,7 +110,7 @@ namespace gloglotto
 			buffer (unsigned target, unsigned usage, vectors<Size, Vector> const& data) throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) throw (invalid_enum);
+			buffer (unsigned target, unsigned usage, matrix<Columns, Rows, Type> const& data) throw (invalid_enum);
 
 			template <int Size, typename Matrix>
 			buffer (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) throw (invalid_enum);
@@ -142,7 +142,7 @@ namespace gloglotto
 			buffer const& set (unsigned target, unsigned usage, vectors<Size, Vector> const& data) const throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer const& set (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) const throw (invalid_enum);
+			buffer const& set (unsigned target, unsigned usage, matrix<Columns, Rows, Type> const& data) const throw (invalid_enum);
 
 			template <int Size, typename Matrix>
 			buffer const& set (unsigned target, unsigned usage, matrices<Size, Matrix> const& data) const throw (invalid_enum);
@@ -164,7 +164,7 @@ namespace gloglotto
 			buffer const& replace (unsigned target, vectors<Size, Vector> const& data, size_t offset = 0) const throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer const& replace (unsigned target, matrix<Rows, Columns, Type> const& data, size_t offset = 0) const throw (invalid_enum);
+			buffer const& replace (unsigned target, matrix<Columns, Rows, Type> const& data, size_t offset = 0) const throw (invalid_enum);
 
 			template <int Size, typename Matrix>
 			buffer const& replace (unsigned target, matrices<Size, Matrix> const& data, size_t offset = 0) const throw (invalid_enum);
@@ -192,7 +192,7 @@ namespace gloglotto
 			buffer& set (unsigned usage, vectors<Size, Vector> const& data) throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer& set (unsigned usage, matrix<Rows, Columns, Type> const& data) throw (invalid_enum);
+			buffer& set (unsigned usage, matrix<Columns, Rows, Type> const& data) throw (invalid_enum);
 
 			template <int Size, typename Matrix>
 			buffer& set (unsigned usage, matrices<Size, Matrix> const& data) throw (invalid_enum);
@@ -214,7 +214,7 @@ namespace gloglotto
 			buffer& replace (vectors<Size, Vector> const& data, size_t offset = 0) throw (invalid_enum);
 
 			template <int Rows, int Columns, typename Type>
-			buffer& replace (matrix<Rows, Columns, Type> const& data, size_t offset = 0) throw (invalid_enum);
+			buffer& replace (matrix<Columns, Rows, Type> const& data, size_t offset = 0) throw (invalid_enum);
 
 			template <int Size, typename Matrix>
 			buffer& replace (matrices<Size, Matrix> const& data, size_t offset = 0) throw (invalid_enum);

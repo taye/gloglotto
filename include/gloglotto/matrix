@@ -32,44 +32,44 @@ namespace gloglotto
 
 	/* Class to handle matrices.
 	 */
-	template <int Rows = 4, int Columns = Rows, typename Type = float>
+	template <int Columns = 4, int Rows = Columns, typename Type = float>
 	class matrix
 	{
-		static_assert(Rows >= 2 && Rows <= 4, "rows can only be 2, 3 and 4");
-
 		static_assert(Columns >= 2 && Columns <= 4, "columns can only be 2, 3 and 4");
+
+		static_assert(Rows >= 2 && Rows <= 4, "rows can only be 2, 3 and 4");
 
 		static_assert(std::is_same<float, Type>::value ||
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			static constexpr int          accessible_size = Rows;
+			static constexpr int          accessible_size = Columns;
 			typedef vector<Columns, Type> accessible_type;
 
 			typedef iterator::accessible<matrix<Columns, Rows, Type>, true> const_iterator;
 			typedef iterator::accessible<matrix<Columns, Rows, Type>>       iterator;
 
 			typedef Type type;
-			static constexpr int size = Rows * Columns * sizeof(Type);
+			static constexpr int size = Columns * Rows * sizeof(Type);
 
-			static constexpr int rows     = Rows;
 			static constexpr int columns  = Columns;
-			static constexpr int elements = Rows * Columns;
+			static constexpr int rows     = Rows;
+			static constexpr int elements = Columns * Rows;
 
 		public:
 			/* Create a matrix, if identity is true and the matrix is square it will be filled
 			 * with the identity matrix values.
 			 */
-			matrix (bool identity = false) throw (std::logic_error);
+			matrix (Type value = 0) throw (std::logic_error);
 
 			/* Create a matrix from another matrix, copying the data.
 			 */
-			matrix (matrix<Rows, Columns, Type> const& from);
+			matrix (matrix<Columns, Rows, Type> const& from);
 
 			/* Create a matrix from the pointer of the rvalue matrix and take
 			 * ownership of it if it was allocated by it.
 			 */
-			matrix (matrix<Rows, Columns, Type>&& from);
+			matrix (matrix<Columns, Rows, Type>&& from);
 
 			/* Create a wrapping matrix around a pointer.
 			 */
@@ -85,19 +85,19 @@ namespace gloglotto
 
 			/* Copy the contents of the passed matrix.
 			 */
-			matrix<Rows, Columns, Type>& operator = (matrix<Rows, Columns, Type> const& from);
+			matrix<Columns, Rows, Type>& operator = (matrix<Columns, Rows, Type> const& from);
 
 			/* Swap with the passed temporary matrix.
 			 */
-			matrix<Rows, Columns, Type>& operator = (matrix<Rows, Columns, Type>&& from);
+			matrix<Columns, Rows, Type>& operator = (matrix<Columns, Rows, Type>&& from);
 
 			/* Copy the data present in the passed pointer.
 			 */
-			matrix<Rows, Columns, Type>& operator = (const Type* data);
+			matrix<Columns, Rows, Type>& operator = (const Type* data);
 
 			/* Copy the data passed from the initializer list.
 			 */
-			matrix<Rows, Columns, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
+			matrix<Columns, Rows, Type>& operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument);
 
 			/* Check if the matrix owns the pointer.
 			 */
@@ -105,19 +105,21 @@ namespace gloglotto
 
 			/* Tell the matrix to own the pointer.
 			 */
-			matrix<Rows, Columns, Type>& own (void);
+			matrix<Columns, Rows, Type>& own (void);
 
 			/* Tell the matrix to disown the pointer.
 			 */
-			matrix<Rows, Columns, Type>& disown (void);
+			matrix<Columns, Rows, Type>& disown (void);
 
 			/* Swap the state with another matrix.
 			 */
-			matrix<Rows, Columns, Type>& swap (matrix<Rows, Columns, Type>& other);
+			matrix<Columns, Rows, Type>& swap (matrix<Columns, Rows, Type>& other);
 
 			/* Access a constant row of the matrix.
 			 */
-			vector<Columns, Type> const& operator [] (int index) const throw (std::out_of_range);
+			vector<Rows, Type> const& operator [] (int index) const throw (std::out_of_range);
+
+			Type const& operator () (int row, int column) const throw (std::out_of_range);
 
 			/* Return a const iterator to the beginning of the matrix.
 			 */
@@ -129,7 +131,9 @@ namespace gloglotto
 
 			/* Access a row of the matrix.
 			 */
-			vector<Columns, Type>& operator [] (int index) throw (std::out_of_range);
+			vector<Rows, Type>& operator [] (int index) throw (std::out_of_range);
+
+			Type& operator () (int row, int column) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the matrix.
 			 */
@@ -141,48 +145,48 @@ namespace gloglotto
 
 			/* Return the addition of the two matrices.
 			 */
-			matrix<Rows, Columns, Type> operator + (matrix<Rows, Columns, Type> const& other) const;
+			matrix<Columns, Rows, Type> operator + (matrix<Columns, Rows, Type> const& other) const;
 
 			/* Return the addition of the two matrices reusing the temporary matrix.
 			 */
-			matrix<Rows, Columns, Type>&& operator + (matrix<Rows, Columns, Type>&& other) const;
+			matrix<Columns, Rows, Type>&& operator + (matrix<Columns, Rows, Type>&& other) const;
 
 			/* Add the other matrix in place.
 			 */
-			matrix<Rows, Columns, Type>& operator += (matrix<Rows, Columns, Type> const& other);
+			matrix<Columns, Rows, Type>& operator += (matrix<Columns, Rows, Type> const& other);
 
 			/* Return the substraction of the two matrices.
 			 */
-			matrix<Rows, Columns, Type> operator - (matrix<Rows, Columns, Type> const& other) const;
+			matrix<Columns, Rows, Type> operator - (matrix<Columns, Rows, Type> const& other) const;
 
 			/* Return the substraction of the two matrices reusing the temporary matrix.
 			 */
-			matrix<Rows, Columns, Type>&& operator - (matrix<Rows, Columns, Type>&& other) const;
+			matrix<Columns, Rows, Type>&& operator - (matrix<Columns, Rows, Type>&& other) const;
 
 			/* Subtract the other matrix in place.
 			 */
-			matrix<Rows, Columns, Type>& operator -= (matrix<Rows, Columns, Type> const& other);
+			matrix<Columns, Rows, Type>& operator -= (matrix<Columns, Rows, Type> const& other);
 
 			/* Return the scalar multiplication.
 			 */
-			matrix<Rows, Columns, Type> operator * (Type other) const;
+			matrix<Columns, Rows, Type> operator * (Type other) const;
 
 			/* Scalar multiplication in place.
 			 */
-			matrix<Rows, Columns, Type>& operator *= (Type other);
+			matrix<Columns, Rows, Type>& operator *= (Type other);
 
 			/* Return the multiplication of the two matrices.
 			 */
-			template <int OtherRows, int OtherColumns>
-			matrix<Rows, OtherColumns, Type> operator * (matrix<OtherRows, OtherColumns, Type> const& other) const;
+			template <int OtherColumns, int OtherRows>
+			matrix<OtherColumns, Rows, Type> operator * (matrix<OtherColumns, OtherRows, Type> const& other) const;
 
 			/* Return the multiplication of the two matrices reusing the temporary matrix.
 			 */
-			matrix<Rows, Columns, Type>&& operator * (matrix<Rows, Columns, Type>&& other) const;
+			matrix<Columns, Rows, Type>&& operator * (matrix<Columns, Rows, Type>&& other) const;
 
 			/* Multiply the other matrix in place, when possible.
 			 */
-			matrix<Rows, Columns, Type>& operator *= (matrix<Rows, Columns, Type> const& other);
+			matrix<Columns, Rows, Type>& operator *= (matrix<Columns, Rows, Type> const& other);
 
 			/* Return the multiplication with a vector.
 			 */
@@ -194,11 +198,11 @@ namespace gloglotto
 
 			/* Return the inverted matrix when possible.
 			 */
-			matrix<Rows, Columns, Type> operator ! (void) const throw (std::logic_error);
+			matrix<Columns, Rows, Type> operator ! (void) const throw (std::logic_error);
 
 			/* Return the transposed matrix.
 			 */
-			matrix<Columns, Rows, Type> operator ~ (void) const;
+			matrix<Rows, Columns, Type> operator ~ (void) const;
 
 			/* Return the wrapped raw pointer (row major).
 			 */
@@ -212,7 +216,7 @@ namespace gloglotto
 			Type* _data;
 			bool  _owner;
 
-			vector<Columns, Type>** _vectors;
+			vector<Rows, Type>** _vectors;
 	};
 
 	namespace make
