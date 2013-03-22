@@ -23,47 +23,30 @@
 
 namespace gloglotto
 {
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (bool identity) throw (std::logic_error)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>::matrix (Type value) throw (std::logic_error)
 	{
-		if (identity && Rows != Columns) {
-			throw std::logic_error("identity matrices must be square");
-		}
-
-		_data    = new Type[Columns * Rows];
-		_vectors = nullptr;
-
+		_data = new Type[Columns * Rows];
 		std::fill_n(_data, Columns * Rows, 0);
 
-		if (identity) {
-			if (Columns == 2 && Rows == 2) {
-				_data[0] = 1.0; _data[1] = 0.0;
-				_data[2] = 0.0; _data[3] = 1.0;
-			}
-			else if (Columns == 3 && Rows == 3) {
-				_data[0] = 1.0; _data[1] = 0.0; _data[2] = 0.0;
-				_data[3] = 0.0; _data[4] = 1.0; _data[5] = 0.0;
-				_data[6] = 0.0; _data[7] = 0.0; _data[8] = 1.0;
-			}
-			else if (Columns == 4 && Rows == 4) {
-				_data[0]  = 1.0; _data[1]  = 0.0; _data[2]  = 0.0; _data[3]  = 0.0;
-				_data[4]  = 0.0; _data[5]  = 1.0; _data[6]  = 0.0; _data[7]  = 0.0;
-				_data[8]  = 0.0; _data[9]  = 0.0; _data[10] = 1.0; _data[11] = 0.0;
-				_data[12] = 0.0; _data[13] = 0.0; _data[14] = 0.0; _data[15] = 1.0;
-			}
+		_vectors = new vector<Rows, Type>*[Columns];
+		std::fill_n(_vectors, Columns, nullptr);
+
+		for (int i = 0; i < Rows && i < Columns; i++) {
+			_data[i * Rows + i] = value;
 		}
 
 		own();
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type> const& from) : matrix()
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>::matrix (matrix<Columns, Rows, Type> const& from) : matrix()
 	{
 		std::copy(&from, &from + Columns * Rows, _data);
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (matrix<Rows, Columns, Type>&& from)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>::matrix (matrix<Columns, Rows, Type>&& from)
 	{
 		_data    = from._data;
 		_vectors = from._vectors;
@@ -79,17 +62,19 @@ namespace gloglotto
 		}
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (Type* data)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>::matrix (Type* data)
 	{
-		_data    = data;
-		_vectors = nullptr;
+		_data = data;
+
+		_vectors = new vector<Rows, Type>*[Columns];
+		std::fill_n(_vectors, Columns, nullptr);
 
 		disown();
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::matrix (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument) : matrix()
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>::matrix (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument) : matrix()
 	{
 		try {
 			*this = list;
@@ -101,17 +86,17 @@ namespace gloglotto
 		}
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>::~matrix (void)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>::~matrix (void)
 	{
 		if (owner()) {
 			delete[] _data;
 		}
 
 		if (_vectors) {
-			for (int row = 0; row < Rows; row++) {
-				if (_vectors[row]) {
-					delete _vectors[row];
+			for (int column = 0; column < Columns; column++) {
+				if (_vectors[column]) {
+					delete _vectors[column];
 				}
 			}
 
@@ -119,86 +104,86 @@ namespace gloglotto
 		}
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator = (matrix<Rows, Columns, Type> const& from)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator = (matrix<Columns, Rows, Type> const& from)
 	{
 		std::copy(&from, &from + Columns * Rows, _data);
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator = (matrix<Rows, Columns, Type>&& from)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator = (matrix<Columns, Rows, Type>&& from)
 	{
 		return swap(from);
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator = (const Type* data)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator = (const Type* data)
 	{
 		std::copy(data, data + Columns * Rows, _data);
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator = (std::initializer_list<std::initializer_list<Type>> list) throw (std::invalid_argument)
 	{
-		if (list.size() != Rows) {
-			throw std::invalid_argument("number of arguments doesn't match matrix rows");
+		if (list.size() != Columns) {
+			throw std::invalid_argument("number of arguments doesn't match matrix columns");
 		}
 
-		int row = 0;
+		int column = 0;
 		for (auto list : list) {
-			if (list.size() != Columns) {
-				throw std::invalid_argument("number of arguments doesn't match matrix columns");
+			if (list.size() != Rows) {
+				throw std::invalid_argument("number of arguments doesn't match matrix rows");
 			}
 
-			int column = 0;
+			int row = 0;
 			for (auto value : list) {
-				_data[row * Columns + column] = value;
+				_data[column * Rows + row] = value;
 
-				column++;
+				row++;
 			}
 
-			row++;
+			column++;
 		}
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
+	template <int Columns, int Rows, typename Type>
 	bool
-	matrix<Rows, Columns, Type>::owner (void) const
+	matrix<Columns, Rows, Type>::owner (void) const
 	{
 		return _owner;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::own (void)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::own (void)
 	{
 		_owner = true;
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::disown (void)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::disown (void)
 	{
 		_owner = false;
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::swap (matrix<Rows, Columns, Type>& other)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::swap (matrix<Columns, Rows, Type>& other)
 	{
 		auto data    = _data;
 		auto owner   = _owner;
@@ -215,214 +200,198 @@ namespace gloglotto
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
+	template <int Columns, int Rows, typename Type>
 	size_t
-	matrix<Rows, Columns, Type>::size (void) const
+	matrix<Columns, Rows, Type>::size (void) const
 	{
-		return Rows;
+		return Columns;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	vector<Columns, Type> const&
-	matrix<Rows, Columns, Type>::operator [] (int row) const throw (std::out_of_range)
+	template <int Columns, int Rows, typename Type>
+	vector<Rows, Type> const&
+	matrix<Columns, Rows, Type>::operator [] (int index) const throw (std::out_of_range)
 	{
-		if (row < 0 || row >= Rows) {
-			throw std::out_of_range("row out of range");
+		if (index < 0 || index >= Columns) {
+			throw std::out_of_range("index out of range");
 		}
 
-		if (!_vectors) {
-			_vectors = new vector<Columns, Type>*[Rows];
-			std::fill_n(_vectors, Rows, nullptr);
+		if (!_vectors[index]) {
+			_vectors[index] = new vector<Rows, Type>(_data + (index * Rows));
 		}
 
-		if (!_vectors[row]) {
-			_vectors[row] = new vector<Columns, Type>(_data + (row * Columns));
-		}
-
-		return *_vectors[row];
+		return *_vectors[index];
 	}
 
-	template <int Rows, int Columns, typename Type>
-	typename matrix<Rows, Columns, Type>::const_iterator
-	matrix<Rows, Columns, Type>::begin (void) const
+	template <int Columns, int Rows, typename Type>
+	typename matrix<Columns, Rows, Type>::const_iterator
+	matrix<Columns, Rows, Type>::begin (void) const
 	{
 		return const_iterator(this);
 	}
 
-	template <int Rows, int Columns, typename Type>
-	typename matrix<Rows, Columns, Type>::const_iterator
-	matrix<Rows, Columns, Type>::end (void) const
+	template <int Columns, int Rows, typename Type>
+	typename matrix<Columns, Rows, Type>::const_iterator
+	matrix<Columns, Rows, Type>::end (void) const
 	{
 		return const_iterator(this, -1);
 	}
 
-	template <int Rows, int Columns, typename Type>
-	vector<Columns, Type>&
-	matrix<Rows, Columns, Type>::operator [] (int row) throw (std::out_of_range)
+	template <int Columns, int Rows, typename Type>
+	vector<Rows, Type>&
+	matrix<Columns, Rows, Type>::operator [] (int index) throw (std::out_of_range)
 	{
-		if (row < 0 || row >= Rows) {
-			throw std::out_of_range("row out of range");
+		if (index < 0 || index >= Columns) {
+			throw std::out_of_range("index out of range");
 		}
 
-		if (!_vectors) {
-			_vectors = new vector<Columns, Type>*[Rows];
-			std::fill_n(_vectors, Rows, nullptr);
+		if (!_vectors[index]) {
+			_vectors[index] = new vector<Rows, Type>(_data + (index * Rows));
 		}
 
-		if (!_vectors[row]) {
-			_vectors[row] = new vector<Columns, Type>(_data + (row * Columns));
-		}
-
-		return *_vectors[row];
+		return *_vectors[index];
 	}
 
-	template <int Rows, int Columns, typename Type>
-	typename matrix<Rows, Columns, Type>::iterator
-	matrix<Rows, Columns, Type>::begin (void)
+	template <int Columns, int Rows, typename Type>
+	typename matrix<Columns, Rows, Type>::iterator
+	matrix<Columns, Rows, Type>::begin (void)
 	{
 		return iterator(this);
 	}
 
-	template <int Rows, int Columns, typename Type>
-	typename matrix<Rows, Columns, Type>::iterator
-	matrix<Rows, Columns, Type>::end (void)
+	template <int Columns, int Rows, typename Type>
+	typename matrix<Columns, Rows, Type>::iterator
+	matrix<Columns, Rows, Type>::end (void)
 	{
 		return iterator(this, -1);
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>
-	matrix<Rows, Columns, Type>::operator + (matrix<Rows, Columns, Type> const& other) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>
+	matrix<Columns, Rows, Type>::operator + (matrix<Columns, Rows, Type> const& other) const
 	{
-		return matrix<Rows, Columns, Type>(*this) += other;
+		return matrix<Columns, Rows, Type>(*this) += other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&&
-	matrix<Rows, Columns, Type>::operator + (matrix<Rows, Columns, Type>&& other) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&&
+	matrix<Columns, Rows, Type>::operator + (matrix<Columns, Rows, Type>&& other) const
 	{
 		other += this;
 
 		return other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator += (matrix<Rows, Columns, Type> const& other)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator += (matrix<Columns, Rows, Type> const& other)
 	{
-		for (int row = 0; row < Rows; row++) {
-			for (int column = 0; column < Columns; column++) {
-				_data[row * Columns + column] += (&other)[row * Columns + column];
-			}
+		for (int i = 0, length = Columns * Rows; i < length; i++) {
+				_data[i] += (&other)[i];
 		}
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>
-	matrix<Rows, Columns, Type>::operator - (matrix<Rows, Columns, Type> const& other) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>
+	matrix<Columns, Rows, Type>::operator - (matrix<Columns, Rows, Type> const& other) const
 	{
-		return matrix<Rows, Columns, Type>(*this) -= other;
+		return matrix<Columns, Rows, Type>(*this) -= other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&&
-	matrix<Rows, Columns, Type>::operator - (matrix<Rows, Columns, Type>&& other) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&&
+	matrix<Columns, Rows, Type>::operator - (matrix<Columns, Rows, Type>&& other) const
 	{
 		other -= this;
 
 		return other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator -= (matrix<Rows, Columns, Type> const& other)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator -= (matrix<Columns, Rows, Type> const& other)
 	{
-		for (int row = 0; row < Rows; row++) {
-			for (int column = 0; column < Columns; column++) {
-				_data[row * Columns + column] -= (&other)[row * Columns + column];
-			}
+		for (int i = 0, length = Columns * Rows; i < length; i++) {
+			_data[i] -= (&other)[i];
 		}
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>
-	matrix<Rows, Columns, Type>::operator * (Type other) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>
+	matrix<Columns, Rows, Type>::operator * (Type other) const
 	{
-		return matrix<Rows, Columns, Type>(*this) *= other;
+		return matrix<Columns, Rows, Type>(*this) *= other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator *= (Type other)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator *= (Type other)
 	{
-		for (int row = 0; row < Rows; row++) {
-			for (int column = 0; column < Columns; column++) {
-				_data[row * Columns + column] *= other;
-			}
+		for (int i = 0, length = Columns * Rows; i < length; i++) {
+				_data[i] *= other;
 		}
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	template <int OtherRows, int OtherColumns>
-	matrix<Rows, OtherColumns, Type>
-	matrix<Rows, Columns, Type>::operator * (matrix<OtherRows, OtherColumns, Type> const& other) const
+	template <int Columns, int Rows, typename Type>
+	template <int OtherColumns, int OtherRows>
+	matrix<OtherColumns, Rows, Type>
+	matrix<Columns, Rows, Type>::operator * (matrix<OtherColumns, OtherRows, Type> const& other) const
 	{
 		static_assert(Columns == OtherRows, "left column length and right row length must be the same");
 
-		matrix<Rows, OtherColumns, Type> result;
+		matrix<OtherColumns, Rows, Type> result;
 
-		for (int row = 0; row < Rows; row++) {
-			for (int other_column = 0; other_column < OtherColumns; other_column++) {
+		for (int other_column = 0; other_column < OtherColumns; other_column++) {
+			for (int row = 0; row < Rows; row++) {
 				Type element = 0;
 
 				for (int column = 0; column < Columns; column++) {
-					element += _data[other_column * Columns + column] * (&other)[column * OtherColumns + row];
+					element += _data[column * Rows + row] * (&other)[other_column * Columns + column];
 				}
 
-				(&result)[other_column * OtherColumns + row] = element;
+				(&result)[other_column * Rows + row] = element;
 			}
 		}
 
 		return result;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&&
-	matrix<Rows, Columns, Type>::operator * (matrix<Rows, Columns, Type>&& other) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&&
+	matrix<Columns, Rows, Type>::operator * (matrix<Columns, Rows, Type>&& other) const
 	{
-		for (int row = 0; row < Rows; row++) {
-			for (int other_column = 0; other_column < Columns; other_column++) {
+		for (int other_column = 0; other_column < Columns; other_column++) {
+			for (int row = 0; row < Rows; row++) {
 				Type element = 0;
 
 				for (int column = 0; column < Columns; column++) {
-					element += _data[other_column * Columns + column] * (&other)[column * Columns + row];
+					element += _data[column * Rows + row] * (&other)[other_column * Columns + column];
 				}
 
-				(&other)[other_column * Columns + row] = element;
+				(&other)[other_column * Rows + row] = element;
 			}
 		}
 
 		return other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>&
-	matrix<Rows, Columns, Type>::operator *= (matrix<Rows, Columns, Type> const& other)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::operator *= (matrix<Columns, Rows, Type> const& other)
 	{
 		*this = this * other;
 
 		return *this;
 	}
 
-	template <int Rows, int Columns, typename Type>
+	template <int Columns, int Rows, typename Type>
 	vector<Rows, Type>
-	matrix<Rows, Columns, Type>::operator * (vector<Columns, Type> const& other) const
+	matrix<Columns, Rows, Type>::operator * (vector<Columns, Type> const& other) const
 	{
 		vector<Rows, Type> result;
 
@@ -430,7 +399,7 @@ namespace gloglotto
 			Type element = 0;
 
 			for (int column = 0; column < Columns; column++) {
-				element += _data[row * Columns + column] * other[column];
+				element += _data[column * Rows + row] * (&other)[column];
 			}
 
 			result[row] = element;
@@ -439,17 +408,17 @@ namespace gloglotto
 		return result;
 	}
 
-	template <int Rows, int Columns, typename Type>
+	template <int Columns, int Rows, typename Type>
 	vector<Rows, Type>&&
-	matrix<Rows, Columns, Type>::operator * (vector<Columns, Type>&& other) const
+	matrix<Columns, Rows, Type>::operator * (vector<Columns, Type>&& other) const
 	{
-		static_assert(Rows == Columns, "only square matrices allowed");
+		static_assert(Columns == Rows, "only square matrices allowed");
 
 		for (int row = 0; row < Rows; row++) {
 			Type element = 0;
 
 			for (int column = 0; column < Columns; column++) {
-				element += _data[row * Columns + column] * other[column];
+				element += _data[column * Rows + row] * (&other)[column];
 			}
 
 			other[row] = element;
@@ -458,18 +427,18 @@ namespace gloglotto
 		return other;
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Rows, Columns, Type>
-	matrix<Rows, Columns, Type>::operator ! (void) const throw (std::logic_error)
+	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>
+	matrix<Columns, Rows, Type>::operator ! (void) const throw (std::logic_error)
 	{
-		static_assert(Rows == Columns, "only square matrices are invertible");
+		static_assert(Columns == Rows, "only square matrices are invertible");
 
 		if (Rows == 2) {
 			// |a b|
 			// |c d|
 			Type a = this[0][0],
-					 b = this[0][1],
-					 c = this[1][0],
+					 b = this[1][0],
+					 c = this[0][1],
 					 d = this[1][1];
 
 			Type det = (a * d) - (b * c);
@@ -488,13 +457,13 @@ namespace gloglotto
 			// |d e f|
 			// |g h k|
 			Type a = this[0][0],
-					 b = this[0][1],
-					 c = this[0][2],
-					 d = this[1][0],
+					 b = this[1][0],
+					 c = this[2][0],
+					 d = this[0][1],
 					 e = this[1][1],
-					 f = this[1][2],
-					 g = this[2][0],
-					 h = this[2][1],
+					 f = this[2][1],
+					 g = this[0][2],
+					 h = this[1][2],
 					 k = this[2][2];
 
 			Type det =
@@ -507,31 +476,27 @@ namespace gloglotto
 			}
 
 			return matrix<3, 3, Type> {
-				{ (e * k) - (f * h), (c * h) - (b * k), (b * f) - (c * e) },
-				{ (f * g) - (d * k), (a * k) - (c * g), (c * d) - (a * f) },
-				{ (d * h) - (e * g), (g * b) - (a * h), (a * e) - (b * d) }
+				{ (e * k) - (f * h), (f * g) - (d * k), (d * h) - (e * g) },
+				{ (c * h) - (b * k), (a * k) - (c * g), (g * b) - (a * h) },
+				{ (b * f) - (c * e), (c * d) - (a * f), (a * e) - (b * d) }
 			} * (static_cast<Type>(1) / det);
 		}
 		else if (Rows == 4) {
-			// |a b c d|
-			// |e f g h|
-			// |k l m n|
-			// |o p q r|
 			Type a = this[0][0],
-					 b = this[0][1],
-					 c = this[0][2],
-					 d = this[0][3],
-					 e = this[1][0],
+					 b = this[1][0],
+					 c = this[2][0],
+					 d = this[3][0],
+					 e = this[0][1],
 					 f = this[1][1],
-					 g = this[1][2],
-					 h = this[1][3],
-					 k = this[2][0],
-					 l = this[2][1],
+					 g = this[2][1],
+					 h = this[3][1],
+					 k = this[0][2],
+					 l = this[1][2],
 					 m = this[2][2],
-					 n = this[2][3],
-					 o = this[3][0],
-					 p = this[3][1],
-					 q = this[3][2],
+					 n = this[3][2],
+					 o = this[0][3],
+					 p = this[1][3],
+					 q = this[2][3],
 					 r = this[3][3];
 
 			Type det =
@@ -550,30 +515,33 @@ namespace gloglotto
 
 			return matrix<4, 4, Type> {
 				{ (f * m * r) + (g * n * p) + (h * l * q) - (f * n * q) - (g * l * r) - (h * m * p),
-					(b * n * q) + (c * l * r) + (d * m * p) - (b * m * r) - (c * n * p) - (d * l * q),
-					(b * g * r) + (c * h * p) + (d * f * q) - (b * h * q) - (c * f * r) - (d * g * p),
-					(b * h * m) + (c * f * n) + (d * g * l) - (b * g * n) - (c * h * l) - (d * f * m) },
-				{ (e * n * q) + (g * k * r) + (h * m * o) - (e * m * r) - (g * n * o) - (h * k * q),
+					(e * n * q) + (g * k * r) + (h * m * o) - (e * m * r) - (g * n * o) - (h * k * q),
+					(e * l * r) + (f * n * o) + (h * k * p) - (e * n * p) - (f * k * r) - (h * l * o),
+					(e * m * p) + (f * k * q) + (g * l * o) - (e * l * q) - (f * m * o) - (g * k * p) },
+
+				{ (b * n * q) + (c * l * r) + (d * m * p) - (b * m * r) - (c * n * p) - (d * l * q),
 					(a * m * r) + (c * n * o) + (d * k * q) - (a * n * q) - (c * k * r) - (d * m * o),
-					(a * h * q) + (c * e * r) + (d * g * o) - (a * g * r) - (c * h * o) - (d * e * q),
-					(a * g * n) + (c * h * k) + (d * e * m) - (a * h * m) - (c * e * n) - (d * g * k) },
-				{ (e * l * r) + (f * n * o) + (h * k * p) - (e * n * p) - (f * k * r) - (h * l * o),
 					(a * n * p) + (b * k * r) + (d * l * o) - (a * l * r) - (b * n * o) - (d * k * p),
+					(a * l * q) + (b * m * o) + (c * k * p) - (a * m * p) - (b * k * q) - (c * l * o) },
+
+				{ (b * g * r) + (c * h * p) + (d * f * q) - (b * h * q) - (c * f * r) - (d * g * p),
+					(a * h * q) + (c * e * r) + (d * g * o) - (a * g * r) - (c * h * o) - (d * e * q),
 					(a * f * r) + (b * h * o) + (d * e * p) - (a * h * p) - (b * e * r) - (d * f * o),
-					(a * h * l) + (b * e * n) + (d * f * k) - (a * f * n) - (b * h * k) - (d * e * l) },
-				{ (e * m * p) + (f * k * q) + (g * l * o) - (e * l * q) - (f * m * o) - (g * k * p),
-					(a * l * q) + (b * m * o) + (c * k * p) - (a * m * p) - (b * k * q) - (c * l * o),
-					(a * g * p) + (b * e * q) + (c * f * o) - (a * f * q) - (b * g * o) - (c * e * p),
+					(a * g * p) + (b * e * q) + (c * f * o) - (a * f * q) - (b * g * o) - (c * e * p) },
+
+				{ (b * h * m) + (c * f * n) + (d * g * l) - (b * g * n) - (c * h * l) - (d * f * m),
+					(a * g * n) + (c * h * k) + (d * e * m) - (a * h * m) - (c * e * n) - (d * g * k),
+					(a * h * l) + (b * e * n) + (d * f * k) - (a * f * n) - (b * h * k) - (d * e * l),
 					(a * f * m) + (b * g * k) + (c * e * l) - (a * g * l) - (b * e * m) - (c * f * k) }
 			} * (static_cast<Type>(1) / det);
 		}
 	}
 
-	template <int Rows, int Columns, typename Type>
-	matrix<Columns, Rows, Type>
-	matrix<Rows, Columns, Type>::operator ~ (void) const
+	template <int Columns, int Rows, typename Type>
+	matrix<Rows, Columns, Type>
+	matrix<Columns, Rows, Type>::operator ~ (void) const
 	{
-		matrix<Columns, Rows, Type> result;
+		matrix<Rows, Columns, Type> result;
 
 		for (int row = 0; row < Rows; row++) {
 			for (int column = 0; column < Columns; column++) {
@@ -584,16 +552,16 @@ namespace gloglotto
 		return result;
 	}
 
-	template <int Rows, int Columns, typename Type>
+	template <int Columns, int Rows, typename Type>
 	Type*
-	matrix<Rows, Columns, Type>::operator & (void)
+	matrix<Columns, Rows, Type>::operator & (void)
 	{
 		return _data;
 	}
 
-	template <int Rows, int Columns, typename Type>
+	template <int Columns, int Rows, typename Type>
 	Type const*
-	matrix<Rows, Columns, Type>::operator & (void) const
+	matrix<Columns, Rows, Type>::operator & (void) const
 	{
 		return _data;
 	}
@@ -633,9 +601,9 @@ namespace gloglotto
 			(&result)[0]  =  2.0 / (x[1] - x[0]);
 			(&result)[5]  =  2.0 / (y[1] - y[0]);
 			(&result)[10] = -2.0 / (z[1] - z[0]);
-			(&result)[3]  = -((x[1] + x[0]) / (x[1] - x[0]));
-			(&result)[7]  = -((y[1] + y[0]) / (y[1] - y[0]));
-			(&result)[11] = -((z[1] + z[0]) / (z[1] - z[0]));
+			(&result)[12] = -((x[1] + x[0]) / (x[1] - x[0]));
+			(&result)[13] = -((y[1] + y[0]) / (y[1] - y[0]));
+			(&result)[14] = -((z[1] + z[0]) / (z[1] - z[0]));
 			(&result)[15] =  1.0;
 
 			return result;
@@ -646,9 +614,9 @@ namespace gloglotto
 		{
 			matrix<4, 4, Type> result(true);
 
-			result[0][3] = x;
-			result[1][3] = y;
-			result[2][3] = z;
+			result[3][0] = x;
+			result[3][1] = y;
+			result[3][2] = z;
 
 			return result;
 		}
@@ -676,15 +644,15 @@ namespace gloglotto
 			Type cz = cos(angle_cast<angle::radians>(z));
 
 			result[0][0] = (cy * cz);
-			result[0][1] = (cx * sz) + (sx * sy * cz);
-			result[0][2] = (sx * sz) - (cx * sy * cz);
+			result[1][0] = (cx * sz) + (sx * sy * cz);
+			result[2][0] = (sx * sz) - (cx * sy * cz);
 
-			result[1][0] = -(cy * sz);
+			result[0][1] = -(cy * sz);
 			result[1][1] =  (cx * cz) - (sx * sy * sz);
-			result[1][2] =  (sx * cz) + (cx * sy * sz);
+			result[2][1] =  (sx * cz) + (cx * sy * sz);
 
-			result[2][0] =  sy;
-			result[2][1] = -(sx * cy);
+			result[0][2] =  sy;
+			result[1][2] = -(sx * cy);
 			result[2][2] =  (cx * cy);
 
 			return result;
@@ -715,15 +683,15 @@ namespace gloglotto
 			Type one = 1.0 - c;
 
 			result[0][0] = (one * x * x) + c;
-			result[0][1] = (one * x * y) - (z * s);
-			result[0][2] = (one * z * x) + (y * s);
+			result[1][0] = (one * x * y) - (z * s);
+			result[2][0] = (one * z * x) + (y * s);
 
-			result[1][0] = (one * x * y) + (z * s);
+			result[0][1] = (one * x * y) + (z * s);
 			result[1][1] = (one * y * y) + c;
-			result[1][2] = (one * y * z) - (x * s);
+			result[2][1] = (one * y * z) - (x * s);
 
-			result[2][0] = (one * z * x) - (y * s);
-			result[2][1] = (one * y * z) + (x * s);
+			result[0][2] = (one * z * x) - (y * s);
+			result[1][2] = (one * y * z) + (x * s);
 			result[2][2] = (one * z * z) + c;
 
 			return result;
@@ -745,8 +713,8 @@ namespace gloglotto
 			matrix<Size, Size, Type> result(true);
 
 			result[0][0] = x;
-			result[1][0] = y;
-			result[2][0] = z;
+			result[0][1] = y;
+			result[0][2] = z;
 
 			return result;
 		}
@@ -774,23 +742,23 @@ namespace gloglotto
 			matrix<4, 4, Type> result;
 
 			(&result)[0]  = (b * dy) + (c * dz);
-			(&result)[4]  = -(a * dy);
-			(&result)[8]  = -(a * dz);
-			(&result)[12] =  0.0;
+			(&result)[1]  = -(a * dy);
+			(&result)[1]  = -(a * dz);
+			(&result)[3]  =  0.0;
 
-			(&result)[1]  = -(b * dx);
+			(&result)[4]  = -(b * dx);
 			(&result)[5]  =  (a * dx) + (c * dz);
-			(&result)[9]  = -(b * dz);
-			(&result)[13] =  0.0;
+			(&result)[6]  = -(b * dz);
+			(&result)[7]  =  0.0;
 
-			(&result)[2]  = -(c * dx);
-			(&result)[6]  = -(c * dy);
+			(&result)[8]  = -(c * dx);
+			(&result)[9]  = -(c * dy);
 			(&result)[10] =  (a * dx) + (b * dy);
-			(&result)[14] =  0.0;
+			(&result)[11] =  0.0;
 
-			(&result)[3]  = -(d * dx);
-			(&result)[7]  = -(d * dy);
-			(&result)[11] = -(d * dz);
+			(&result)[12] = -(d * dx);
+			(&result)[13] = -(d * dy);
+			(&result)[14] = -(d * dz);
 			(&result)[15] =  (a * dx) + (b * dy) + (c * dz);
 
 			return result;

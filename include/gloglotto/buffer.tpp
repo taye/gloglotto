@@ -33,7 +33,7 @@ namespace gloglotto
 	}
 
 	template <int Rows, int Columns, typename Type>
-	buffer::buffer (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) throw (invalid_enum) : buffer(target)
+	buffer::buffer (unsigned target, unsigned usage, matrix<Columns, Rows, Type> const& data) throw (invalid_enum) : buffer(target)
 	{
 		set(target, usage, data);
 	}
@@ -60,9 +60,9 @@ namespace gloglotto
 
 	template <int Rows, int Columns, typename Type>
 	buffer const&
-	buffer::set (unsigned target, unsigned usage, matrix<Rows, Columns, Type> const& data) const throw (invalid_enum)
+	buffer::set (unsigned target, unsigned usage, matrix<Columns, Rows, Type> const& data) const throw (invalid_enum)
 	{
-		return set(target, usage, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Rows, Columns, Type>::elements);
+		return set(target, usage, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Columns, Rows, Type>::elements);
 	}
 
 	template <int Size, typename Matrix>
@@ -88,9 +88,9 @@ namespace gloglotto
 
 	template <int Rows, int Columns, typename Type>
 	buffer const&
-	buffer::replace (unsigned target, matrix<Rows, Columns, Type> const& data, size_t offset) const throw (invalid_enum)
+	buffer::replace (unsigned target, matrix<Columns, Rows, Type> const& data, size_t offset) const throw (invalid_enum)
 	{
-		return replace(target, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Rows, Columns, Type>::elements, offset);
+		return replace(target, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Columns, Rows, Type>::elements, offset);
 	}
 
 	template <int Size, typename Matrix>
@@ -116,9 +116,9 @@ namespace gloglotto
 
 	template <int Rows, int Columns, typename Type>
 	buffer&
-	buffer::set (unsigned usage, matrix<Rows, Columns, Type> const& data) throw (invalid_enum)
+	buffer::set (unsigned usage, matrix<Columns, Rows, Type> const& data) throw (invalid_enum)
 	{
-		return set(usage, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Rows, Columns, Type>::elements);
+		return set(usage, reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Columns, Rows, Type>::elements);
 	}
 
 	template <int Size, typename Matrix>
@@ -144,9 +144,9 @@ namespace gloglotto
 
 	template <int Rows, int Columns, typename Type>
 	buffer&
-	buffer::replace (matrix<Rows, Columns, Type> const& data, size_t offset) throw (invalid_enum)
+	buffer::replace (matrix<Columns, Rows, Type> const& data, size_t offset) throw (invalid_enum)
 	{
-		return replace(reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Rows, Columns, Type>::elements, offset);
+		return replace(reinterpret_cast<void const*>(&data), sizeof(Type) * matrix<Columns, Rows, Type>::elements, offset);
 	}
 
 	template <int Size, typename Matrix>

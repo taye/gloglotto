@@ -328,7 +328,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	shader::uniform (std::string name, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix3x2fv(uniform(name), Size, GL_TRUE, &data);
@@ -337,7 +337,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<3, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	shader::uniform (std::string name, matrices<Size, matrix<2, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix2x3fv(uniform(name), Size, GL_TRUE, &data);
@@ -346,7 +346,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	shader::uniform (std::string name, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix4x2fv(uniform(name), Size, GL_TRUE, &data);
@@ -355,7 +355,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<4, 2, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	shader::uniform (std::string name, matrices<Size, matrix<2, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix2x4fv(uniform(name), Size, GL_TRUE, &data);
@@ -364,7 +364,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	shader::uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix4x3fv(uniform(name), Size, GL_TRUE, &data);
@@ -373,7 +373,7 @@ namespace gloglotto
 
 	template <int Size>
 	void
-	shader::uniform (std::string name, matrices<Size, matrix<4, 3, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	shader::uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
 			glUniformMatrix3x4fv(uniform(name), Size, GL_TRUE, &data);
