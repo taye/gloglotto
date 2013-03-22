@@ -332,6 +332,14 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	template <int SliceSize>
+	size_t
+	vectors<Size, Vector>::sub<SliceSize>::size (void) const
+	{
+		return SliceSize;
+	}
+
+	template <int Size, class Vector>
+	template <int SliceSize>
 	Vector const&
 	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) const throw (std::out_of_range)
 	{

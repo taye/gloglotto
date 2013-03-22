@@ -22,79 +22,79 @@ namespace gloglotto
 {
 	namespace iterator
 	{
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>::accessible (Class* object, int current)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>::accessible (Class* object, int current)
 		{
 			_object  = object;
 			_current = current;
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>::accessible (accessible<Class, Constant> const& from)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>::accessible (accessible<Class, Type, Constant> const& from)
 		{
 			_object  = from._object;
 			_current = from._current;
 		}
 
-		template <typename Class, bool Constant>
-		typename accessible<Class, Constant>::reference
-		accessible<Class, Constant>::operator * (void) const
+		template <typename Class, typename Type, bool Constant>
+		typename accessible<Class, Type, Constant>::reference
+		accessible<Class, Type, Constant>::operator * (void) const
 		{
 			return (*_object)[_current];
 		}
 
-		template <typename Class, bool Constant>
-		typename accessible<Class, Constant>::reference
-		accessible<Class, Constant>::operator [] (int n) const
+		template <typename Class, typename Type, bool Constant>
+		typename accessible<Class, Type, Constant>::reference
+		accessible<Class, Type, Constant>::operator [] (int n) const
 		{
 			return (*_object)[n];
 		}
 
-		template <typename Class, bool Constant>
-		typename accessible<Class, Constant>::pointer
-		accessible<Class, Constant>::operator -> (void) const
+		template <typename Class, typename Type, bool Constant>
+		typename accessible<Class, Type, Constant>::pointer
+		accessible<Class, Type, Constant>::operator -> (void) const
 		{
 			return &(*_object)[_current];
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>&
-		accessible<Class, Constant>::operator ++ (void)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>&
+		accessible<Class, Type, Constant>::operator ++ (void)
 		{
 			if (_current == -1) {
 				return *this;
 			}
 
-			if (++_current >= size) {
+			if (++_current >= _object->size()) {
 				_current = -1;
 			}
 
 			return *this;
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>
-		accessible<Class, Constant>::operator ++ (int)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>
+		accessible<Class, Type, Constant>::operator ++ (int)
 		{
 			if (_current == -1) {
 				return *this;
 			}
 
-			accessible<Class, Constant> result(this);
+			accessible<Class, Type, Constant> result(this);
 			{
-				if (++_current >= size) {
+				if (++_current >= _object->size()) {
 					_current = -1;
 				}
 			}
 			return result;
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>&
-		accessible<Class, Constant>::operator -- (void)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>&
+		accessible<Class, Type, Constant>::operator -- (void)
 		{
 			if (_current == -1) {
-				_current = size - 1;
+				_current = _object->size() - 1;
 
 				return *this;
 			}
@@ -104,14 +104,14 @@ namespace gloglotto
 			return *this;
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>
-		accessible<Class, Constant>::operator -- (int)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>
+		accessible<Class, Type, Constant>::operator -- (int)
 		{
-			accessible<Class, Constant> result(this);
+			accessible<Class, Type, Constant> result(this);
 			{
 				if (_current == -1) {
-					_current = size - 1;
+					_current = _object->size() - 1;
 				}
 				else {
 					_current--;
@@ -120,27 +120,27 @@ namespace gloglotto
 			return result;
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>
-		accessible<Class, Constant>::operator + (int n) const
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>
+		accessible<Class, Type, Constant>::operator + (int n) const
 		{
 			int current = _current + n;
 
-			if (current >= size || current < 0) {
-				return accessible<Class, Constant>(_object, -1);
+			if (current >= _object->size() || current < 0) {
+				return accessible<Class, Type, Constant>(_object, -1);
 			}
 			else {
-				return accessible<Class, Constant>(_object, current);
+				return accessible<Class, Type, Constant>(_object, current);
 			}
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>&
-		accessible<Class, Constant>::operator += (int n)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>&
+		accessible<Class, Type, Constant>::operator += (int n)
 		{
 			int current = _current + n;
 
-			if (current >= size || current < 0) {
+			if (current >= _object->size() || current < 0) {
 				_current = -1;
 			}
 			else {
@@ -148,27 +148,27 @@ namespace gloglotto
 			}
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>
-		accessible<Class, Constant>::operator - (int n) const
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>
+		accessible<Class, Type, Constant>::operator - (int n) const
 		{
 			int current = _current - n;
 
-			if (current >= size || current < 0) {
-				return accessible<Class, Constant>(_object, -1);
+			if (current >= _object->size() || current < 0) {
+				return accessible<Class, Type, Constant>(_object, -1);
 			}
 			else {
-				return accessible<Class, Constant>(_object, current);
+				return accessible<Class, Type, Constant>(_object, current);
 			}
 		}
 
-		template <typename Class, bool Constant>
-		accessible<Class, Constant>&
-		accessible<Class, Constant>::operator -= (int n)
+		template <typename Class, typename Type, bool Constant>
+		accessible<Class, Type, Constant>&
+		accessible<Class, Type, Constant>::operator -= (int n)
 		{
 			int current = _current - n;
 
-			if (current >= size || current < 0) {
+			if (current >= _object->size() || current < 0) {
 				_current = -1;
 			}
 			else {
@@ -176,44 +176,44 @@ namespace gloglotto
 			}
 		}
 
-		template <typename Class, bool Constant>
+		template <typename Class, typename Type, bool Constant>
 		bool
-		accessible<Class, Constant>::operator == (accessible<Class, Constant> const& other) const
+		accessible<Class, Type, Constant>::operator == (accessible<Class, Type, Constant> const& other) const
 		{
 			return _object == other._object && _current == other._current;
 		}
 
-		template <typename Class, bool Constant>
+		template <typename Class, typename Type, bool Constant>
 		bool
-		accessible<Class, Constant>::operator != (accessible<Class, Constant> const& other) const
+		accessible<Class, Type, Constant>::operator != (accessible<Class, Type, Constant> const& other) const
 		{
 			return _object != other._object || _current != other._current;
 		}
 
-		template <typename Class, bool Constant>
+		template <typename Class, typename Type, bool Constant>
 		bool
-		accessible<Class, Constant>::operator > (accessible<Class, Constant> const& other) const
+		accessible<Class, Type, Constant>::operator > (accessible<Class, Type, Constant> const& other) const
 		{
 			return _object == other._object && _current > other._current;
 		}
 
-		template <typename Class, bool Constant>
+		template <typename Class, typename Type, bool Constant>
 		bool
-		accessible<Class, Constant>::operator >= (accessible<Class, Constant> const& other) const
+		accessible<Class, Type, Constant>::operator >= (accessible<Class, Type, Constant> const& other) const
 		{
 			return _object == other._object && _current >= other._current;
 		}
 
-		template <typename Class, bool Constant>
+		template <typename Class, typename Type, bool Constant>
 		bool
-		accessible<Class, Constant>::operator < (accessible<Class, Constant> const& other) const
+		accessible<Class, Type, Constant>::operator < (accessible<Class, Type, Constant> const& other) const
 		{
 			return _object == other._object && _current < other._current;
 		}
 
-		template <typename Class, bool Constant>
+		template <typename Class, typename Type, bool Constant>
 		bool
-		accessible<Class, Constant>::operator <= (accessible<Class, Constant> const& other) const
+		accessible<Class, Type, Constant>::operator <= (accessible<Class, Type, Constant> const& other) const
 		{
 			return _object == other._object && _current <= other._current;
 		}

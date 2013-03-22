@@ -46,14 +46,11 @@ namespace gloglotto
 		              std::is_same<bool, Type>::value, "only float, double, int, unsigned and bool");
 
 		public:
-			static constexpr int accessible_size = Size;
-			typedef Type         accessible_type;
-
-			typedef iterator::accessible<vector<Size, Type>, true> const_iterator;
-			typedef iterator::accessible<vector<Size, Type>>       iterator;
+			typedef iterator::accessible<vector<Size, Type>, Type, true> const_iterator;
+			typedef iterator::accessible<vector<Size, Type>, Type>       iterator;
 
 			typedef Type type;
-			static constexpr int size = Size * sizeof(Type);
+			static constexpr int bytes = Size * sizeof(Type);
 
 			static constexpr int elements = Size;
 
@@ -117,6 +114,10 @@ namespace gloglotto
 			/* Swap the state with another vector.
 			 */
 			vector<Size, Type>& swap (vector<Size, Type>& other);
+
+			/* Get the vector size.
+			 */
+			size_t size (void) const;
 
 			/* Access a constant element of the vector.
 			 */

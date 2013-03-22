@@ -172,6 +172,13 @@ namespace gloglotto
 		return *this;
 	}
 
+	template <int Size, typename Matrix>
+	size_t
+	matrices<Size, Matrix>::size (void) const
+	{
+		return Size;
+	}
+
 	template <int Size, class Matrix>
 	Matrix const&
 	matrices<Size, Matrix>::operator [] (int index) const throw (std::out_of_range)

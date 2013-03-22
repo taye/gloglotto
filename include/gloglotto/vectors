@@ -32,19 +32,20 @@ namespace gloglotto
 			class sub
 			{
 				public:
-					static constexpr int accessible_size = SliceSize;
-					typedef Vector       accessible_type;
-
-					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, true> const_iterator;
-					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>>       iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, Vector, true> const_iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, Vector>       iterator;
 
 					typedef typename Vector::type type;
-					static constexpr int size = Vector::size * SliceSize;
+					static constexpr int bytes = Vector::size * SliceSize;
 
 					static constexpr int elements = Vector::elements;
 
 				public:
 					sub (vectors<Size, Vector>* parent, int offset, int stride);
+
+					/* Get the slice size.
+					 */
+					size_t size (void) const;
 
 					/* Access a constant vector in the array.
 					 */
@@ -86,14 +87,11 @@ namespace gloglotto
 			};
 
 		public:
-			static constexpr int accessible_size = Size;
-			typedef Vector       accessible_type;
-
-			typedef iterator::accessible<vectors<Size, Vector>, true> const_iterator;
-			typedef iterator::accessible<vectors<Size, Vector>>       iterator;
+			typedef iterator::accessible<vectors<Size, Vector>, Vector, true> const_iterator;
+			typedef iterator::accessible<vectors<Size, Vector>, Vector>       iterator;
 
 			typedef typename Vector::type type;
-			static constexpr int size = Vector::size * Size;
+			static constexpr int bytes = Vector::size * Size;
 
 			static constexpr int elements = Vector::elements;
 
@@ -161,6 +159,10 @@ namespace gloglotto
 			/* Swap the state with another vector array.
 			 */
 			vectors<Size, Vector>& swap (vectors<Size, Vector>& other);
+
+			/* Get the vector array size.
+			 */
+			size_t size (void) const;
 
 			/* Access a constant vector in the array.
 			 */

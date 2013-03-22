@@ -43,14 +43,11 @@ namespace gloglotto
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			static constexpr int          accessible_size = Rows;
-			typedef vector<Columns, Type> accessible_type;
-
-			typedef iterator::accessible<matrix<Columns, Rows, Type>, true> const_iterator;
-			typedef iterator::accessible<matrix<Columns, Rows, Type>>       iterator;
+			typedef iterator::accessible<matrix<Rows, Columns, Type>, vector<Columns, Type>, true> const_iterator;
+			typedef iterator::accessible<matrix<Rows, Columns, Type>, vector<Columns, Type>>       iterator;
 
 			typedef Type type;
-			static constexpr int size = Rows * Columns * sizeof(Type);
+			static constexpr int bytes = Rows * Columns * sizeof(Type);
 
 			static constexpr int rows     = Rows;
 			static constexpr int columns  = Columns;
@@ -114,6 +111,10 @@ namespace gloglotto
 			/* Swap the state with another matrix.
 			 */
 			matrix<Rows, Columns, Type>& swap (matrix<Rows, Columns, Type>& other);
+
+			/* Get the matrix size.
+			 */
+			size_t size (void) const;
 
 			/* Access a constant row of the matrix.
 			 */

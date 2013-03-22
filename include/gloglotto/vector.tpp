@@ -173,6 +173,13 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Type>
+	size_t
+	vector<Size, Type>::size (void) const
+	{
+		return Size;
+	}
+
+	template <int Size, typename Type>
 	Type const&
 	vector<Size, Type>::operator [] (size_t index) const throw (std::out_of_range)
 	{
