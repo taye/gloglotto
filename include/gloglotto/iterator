@@ -25,35 +25,12 @@ namespace gloglotto
 {
 	namespace iterator
 	{
-		template <class Type>
-		struct accessible_traits
-		{
-			typedef typename Type::type                                type;
-			typedef typename std::add_const<typename Type::type>::type const_type;
-		};
-
-		template <typename Type, bool Constant>
-		struct accessible_type;
-
-		template <typename Type>
-		struct accessible_type<Type, true>
-		{
-			typedef typename std::add_const<Type>::type type;
-		};
-
-		template <class Type>
-		struct accessible_type<Type, false>
-		{
-			typedef Type type;
-		};
-
 		template <typename Class, typename Type, bool Constant = false>
 		class accessible : public std::iterator<std::random_access_iterator_tag,
-		                                        typename accessible_type<Type, Constant>::type>
+			typename std::conditional<Constant, const Type, Type>::type>
 		{
-			public:
-				typedef typename accessible_type<Type, Constant>::type& reference;
-				typedef typename accessible_type<Type, Constant>::type* pointer;
+			typedef typename std::conditional<Constant, const Type, Type>::type& reference;
+			typedef typename std::conditional<Constant, const Type, Type>::type* pointer;
 
 			public:
 				accessible (Class* object, int current = 0);
