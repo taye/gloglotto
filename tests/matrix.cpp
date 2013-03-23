@@ -114,8 +114,10 @@ main (int argc, char* argv[])
 			gl::matrix<2, 2> b = {{3, 4}, {4, 3}};
 			gl::matrix<2, 2> c = a + b;
 
-			ami::truthy(c[0][0] == 4 && c[1][0] == 6 &&
-			            c[0][1] == 6 && c[1][1] == 4);
+			amiequal(c[0][0], 4);
+			amiequal(c[0][1], 6);
+			amiequal(c[1][0], 6);
+			amiequal(c[1][1], 4);
 		}},
 
 		{ "-", []{
@@ -123,8 +125,10 @@ main (int argc, char* argv[])
 			gl::matrix<2, 2> b = {{3, 4}, {4, 3}};
 			gl::matrix<2, 2> c = a - b;
 
-			amitruthy(c[0][0] == -2 && c[1][0] == -2 &&
-			            c[0][1] == -2 && c[1][1] == -2);
+			amiequal(c[0][0], -2);
+			amiequal(c[1][0], -2);
+			amiequal(c[0][1], -2);
+			amiequal(c[1][1], -2);
 		}},
 
 		{ "* (scalar)", []{
