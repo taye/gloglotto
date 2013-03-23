@@ -257,6 +257,35 @@ main (int argc, char* argv[])
 				amiequal(c[2][0], 60);
 				amiequal(c[2][1], 50);
 			}
+		}},
+
+		{ "foreach", []{
+			gl::matrix<3, 3> a = {{1,2,3},{3,2,1},{2,1,3}};
+
+			int i = 0;
+			for (auto column : a) {
+				switch (i) {
+					case 0:
+						amiequal(column[0], 1);
+						amiequal(column[1], 2);
+						amiequal(column[2], 3);
+						break;
+
+					case 1:
+						amiequal(column[0], 3);
+						amiequal(column[1], 2);
+						amiequal(column[2], 1);
+						break;
+
+					case 2:
+						amiequal(column[0], 2);
+						amiequal(column[1], 1);
+						amiequal(column[2], 3);
+						break;
+				}
+
+				i++;
+			}
 		}}
 	});
 }
