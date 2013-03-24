@@ -572,7 +572,7 @@ namespace gloglotto
 		matrix<4, 4, Type>
 		perspective (angle fov, Type aspect, std::array<Type, 2> z)
 		{
-			matrix<4, 4> result(true);
+			matrix<4, 4> result(1);
 
 			Type max_y = z[0] * tan(angle_cast<angle::radians>(fov) * 0.5);
 			Type min_y = -max_y;
@@ -596,7 +596,7 @@ namespace gloglotto
 		matrix<4, 4, Type>
 		orthographic (std::array<Type, 2> x, std::array<Type, 2> y, std::array<Type, 2> z)
 		{
-			matrix<4, 4> result(true);
+			matrix<4, 4> result(1);
 
 			(&result)[0]  =  2.0 / (x[1] - x[0]);
 			(&result)[5]  =  2.0 / (y[1] - y[0]);
@@ -612,7 +612,7 @@ namespace gloglotto
 		template <typename Type>
 		matrix<4, 4, Type> translation (Type x, Type y, Type z)
 		{
-			matrix<4, 4, Type> result(true);
+			matrix<4, 4, Type> result(1);
 
 			result[3][0] = x;
 			result[3][1] = y;
@@ -633,7 +633,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result(true);
+			matrix<Size, Size, Type> result(1);
 
 			Type sx = sin(angle_cast<angle::radians>(x));
 			Type sy = sin(angle_cast<angle::radians>(y));
@@ -664,7 +664,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result(true);
+			matrix<Size, Size, Type> result(1);
 
 			Type s   = sin(angle_cast<angle::radians>(a));
 			Type c   = cos(angle_cast<angle::radians>(a));
@@ -710,7 +710,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result(true);
+			matrix<Size, Size, Type> result(1);
 
 			result[0][0] = x;
 			result[0][1] = y;
