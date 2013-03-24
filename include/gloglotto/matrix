@@ -43,8 +43,8 @@ namespace gloglotto
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>, true> const_iterator;
-			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>>       iterator;
+			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>&, true> const_iterator;
+			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>&>       iterator;
 
 			typedef Type type;
 			static constexpr int bytes = Columns * Rows * sizeof(Type);

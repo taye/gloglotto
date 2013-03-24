@@ -33,8 +33,8 @@ namespace gloglotto
 
 
 		public:
-			typedef iterator::accessible<matrices<Size, Matrix>, Matrix, true> const_iterator;
-			typedef iterator::accessible<matrices<Size, Matrix>, Matrix>       iterator;
+			typedef iterator::accessible<matrices<Size, Matrix>, Matrix&, true> const_iterator;
+			typedef iterator::accessible<matrices<Size, Matrix>, Matrix&>       iterator;
 
 			typedef typename Matrix::type type;
 			static constexpr int bytes = Matrix::size * Size;

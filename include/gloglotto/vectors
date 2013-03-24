@@ -32,8 +32,8 @@ namespace gloglotto
 			class sub
 			{
 				public:
-					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, Vector, true> const_iterator;
-					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, Vector>       iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, Vector&, true> const_iterator;
+					typedef iterator::accessible<vectors<Size, Vector>::sub<SliceSize>, Vector&>       iterator;
 
 					typedef typename Vector::type type;
 					static constexpr int bytes = Vector::size * SliceSize;
@@ -87,8 +87,8 @@ namespace gloglotto
 			};
 
 		public:
-			typedef iterator::accessible<vectors<Size, Vector>, Vector, true> const_iterator;
-			typedef iterator::accessible<vectors<Size, Vector>, Vector>       iterator;
+			typedef iterator::accessible<vectors<Size, Vector>, Vector&, true> const_iterator;
+			typedef iterator::accessible<vectors<Size, Vector>, Vector&>       iterator;
 
 			typedef typename Vector::type type;
 			static constexpr int bytes = Vector::size * Size;

@@ -46,8 +46,8 @@ namespace gloglotto
 		              std::is_same<bool, Type>::value, "only float, double, int, unsigned and bool");
 
 		public:
-			typedef iterator::accessible<vector<Size, Type>, Type, true> const_iterator;
-			typedef iterator::accessible<vector<Size, Type>, Type>       iterator;
+			typedef iterator::accessible<vector<Size, Type>, Type&, true> const_iterator;
+			typedef iterator::accessible<vector<Size, Type>, Type&>       iterator;
 
 			typedef Type type;
 			static constexpr int bytes = Size * sizeof(Type);
