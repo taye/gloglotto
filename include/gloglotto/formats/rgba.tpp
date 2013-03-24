@@ -35,6 +35,13 @@ namespace gloglotto
 			{}
 
 			template <int Depth, typename Type, bool Normalized>
+			size_t
+			rgba<Depth, Type, Normalized>::size (void) const
+			{
+				return _size;
+			}
+
+			template <int Depth, typename Type, bool Normalized>
 			typename rgba<Depth, Type, Normalized>::value const*
 			rgba<Depth, Type, Normalized>::operator [] (size_t index) const throw (std::out_of_range)
 			{
@@ -43,6 +50,20 @@ namespace gloglotto
 				}
 
 				return reinterpret_cast<value*>(_buffer + (index * bytes));
+			}
+
+			template <int Depth, typename Type, bool Normalized>
+			typename rgba<Depth, Type, Normalized>::const_iterator
+			rgba<Depth, Type, Normalized>::begin (void) const
+			{
+				return const_iterator(this);
+			}
+
+			template <int Depth, typename Type, bool Normalized>
+			typename rgba<Depth, Type, Normalized>::const_iterator
+			rgba<Depth, Type, Normalized>::end (void) const
+			{
+				return const_iterator(this, -1);
 			}
 
 			template <int Depth, typename Type, bool Normalized>
@@ -57,10 +78,17 @@ namespace gloglotto
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			size_t
-			rgba<Depth, Type, Normalized>::size (void) const
+			typename rgba<Depth, Type, Normalized>::iterator
+			rgba<Depth, Type, Normalized>::begin (void)
 			{
-				return _size;
+				return iterator(this);
+			}
+
+			template <int Depth, typename Type, bool Normalized>
+			typename rgba<Depth, Type, Normalized>::iterator
+			rgba<Depth, Type, Normalized>::end (void)
+			{
+				return iterator(this, -1);
 			}
 		}
 	}

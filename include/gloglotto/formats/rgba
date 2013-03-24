@@ -21,6 +21,7 @@
 
 #include <gloglotto/headers>
 #include <gloglotto/exception>
+#include <gloglotto/iterator>
 #include <gloglotto/image>
 
 namespace gloglotto
@@ -87,15 +88,35 @@ namespace gloglotto
 					};
 
 				public:
+					typedef iterator::accessible<rgba<Depth, Type, Normalized>, value*, true> const_iterator;
+					typedef iterator::accessible<rgba<Depth, Type, Normalized>, value*>       iterator;
+
+				public:
 					rgba (size_t size);
 
 					rgba (void* buffer, size_t size);
 
+					size_t size (void) const;
+
 					value const* operator [] (size_t index) const throw (std::out_of_range);
+
+					/* Return a const iterator to the beginning of the image.
+					 */
+					const_iterator begin (void) const;
+
+					/* Return a const iterator to the end of the image.
+					 */
+					const_iterator end (void) const;
 
 					value* operator [] (size_t index) throw (std::out_of_range);
 
-					size_t size (void) const;
+					/* Return an iterator to the beginning of the image.
+					 */
+					iterator begin (void);
+
+					/* Return an iterator to the end of the image.
+					 */
+					iterator end (void);
 
 				private:
 					size_t _size;
