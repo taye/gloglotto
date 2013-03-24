@@ -40,21 +40,21 @@ namespace gloglotto
 		typename accessible<Class, Type, Constant>::type
 		accessible<Class, Type, Constant>::operator * (void) const
 		{
-			return (*_object)[_current];
+			return std::move((*_object)[_current]);
 		}
 
 		template <typename Class, typename Type, bool Constant>
 		typename accessible<Class, Type, Constant>::type
 		accessible<Class, Type, Constant>::operator [] (int n) const
 		{
-			return (*_object)[n];
+			return std::move((*_object)[n]);
 		}
 
 		template <typename Class, typename Type, bool Constant>
 		typename accessible<Class, Type, Constant>::type
 		accessible<Class, Type, Constant>::operator -> (void) const
 		{
-			return (*_object)[_current];
+			return std::move((*_object)[_current]);
 		}
 
 		template <typename Class, typename Type, bool Constant>
