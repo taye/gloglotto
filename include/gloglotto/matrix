@@ -112,6 +112,10 @@ namespace gloglotto
 			 */
 			matrix<Columns, Rows, Type>& swap (matrix<Columns, Rows, Type>& other);
 
+			/* Preallocate all wrapping vectors.
+			 */
+			matrix<Columns, Rows, Type>& preallocate (void);
+
 			/* Get the matrix size.
 			 */
 			size_t size (void) const;
@@ -217,7 +221,7 @@ namespace gloglotto
 			Type* _data;
 			bool  _owner;
 
-			vector<Rows, Type>** _vectors;
+			mutable vector<Rows, Type>** _vectors;
 	};
 
 	namespace make

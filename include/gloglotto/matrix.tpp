@@ -29,12 +29,11 @@ namespace gloglotto
 		_data = new Type[Columns * Rows];
 		std::fill_n(_data, Columns * Rows, 0);
 
-		_vectors = new vector<Rows, Type>*[Columns];
-		std::fill_n(_vectors, Columns, nullptr);
-
 		for (int i = 0; i < Rows && i < Columns; i++) {
 			_data[i * Rows + i] = value;
 		}
+
+		_vectors = nullptr;
 
 		own();
 	}
@@ -65,10 +64,8 @@ namespace gloglotto
 	template <int Columns, int Rows, typename Type>
 	matrix<Columns, Rows, Type>::matrix (Type* data)
 	{
-		_data = data;
-
-		_vectors = new vector<Rows, Type>*[Columns];
-		std::fill_n(_vectors, Columns, nullptr);
+		_data    = data;
+		_vectors = nullptr;
 
 		disown();
 	}
@@ -201,6 +198,24 @@ namespace gloglotto
 	}
 
 	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::preallocate (void)
+	{
+		if (!_vectors) {
+			_vectors = new vector<Rows, Type>*[Columns];
+			std::fill_n(_vectors, Columns, nullptr);
+		}
+
+		for (size_t i = 0; i < Columns; i++) {
+			if (!_vectors[i]) {
+				_vectors[i] = new vector<Rows, Type>(_data + (i * Rows));
+			}
+		}
+
+		return *this;
+	}
+
+	template <int Columns, int Rows, typename Type>
 	size_t
 	matrix<Columns, Rows, Type>::size (void) const
 	{
@@ -213,6 +228,11 @@ namespace gloglotto
 	{
 		if (index < 0 || index >= Columns) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new vector<Rows, Type>*[Columns];
+			std::fill_n(_vectors, Columns, nullptr);
 		}
 
 		if (!_vectors[index]) {
@@ -242,6 +262,11 @@ namespace gloglotto
 	{
 		if (index < 0 || index >= Columns) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new vector<Rows, Type>*[Columns];
+			std::fill_n(_vectors, Columns, nullptr);
 		}
 
 		if (!_vectors[index]) {
