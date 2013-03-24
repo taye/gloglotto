@@ -436,10 +436,10 @@ namespace gloglotto
 		if (Rows == 2) {
 			// |a b|
 			// |c d|
-			Type a = this[0][0],
-					 b = this[1][0],
-					 c = this[0][1],
-					 d = this[1][1];
+			Type a = (*this)[0][0],
+			     b = (*this)[1][0],
+			     c = (*this)[0][1],
+			     d = (*this)[1][1];
 
 			Type det = (a * d) - (b * c);
 
@@ -447,7 +447,7 @@ namespace gloglotto
 				throw std::logic_error("determinant must be non zero");
 			}
 
-			return matrix<2, 2, Type> {
+			return matrix<Columns, Rows, Type> {
 				{  d, -b },
 				{ -c,  a }
 			} * (static_cast<Type>(1) / det);
@@ -456,15 +456,15 @@ namespace gloglotto
 			// |a b c|
 			// |d e f|
 			// |g h k|
-			Type a = this[0][0],
-					 b = this[1][0],
-					 c = this[2][0],
-					 d = this[0][1],
-					 e = this[1][1],
-					 f = this[2][1],
-					 g = this[0][2],
-					 h = this[1][2],
-					 k = this[2][2];
+			Type a = (*this)[0][0],
+			     b = (*this)[1][0],
+			     c = (*this)[2][0],
+			     d = (*this)[0][1],
+			     e = (*this)[1][1],
+			     f = (*this)[2][1],
+			     g = (*this)[0][2],
+			     h = (*this)[1][2],
+			     k = (*this)[2][2];
 
 			Type det =
 				(a * e * k) - (a * f * h) -
@@ -475,29 +475,29 @@ namespace gloglotto
 				throw std::logic_error("determinant must be non zero");
 			}
 
-			return matrix<3, 3, Type> {
+			return matrix<Columns, Rows, Type> {
 				{ (e * k) - (f * h), (f * g) - (d * k), (d * h) - (e * g) },
 				{ (c * h) - (b * k), (a * k) - (c * g), (g * b) - (a * h) },
 				{ (b * f) - (c * e), (c * d) - (a * f), (a * e) - (b * d) }
 			} * (static_cast<Type>(1) / det);
 		}
 		else if (Rows == 4) {
-			Type a = this[0][0],
-					 b = this[1][0],
-					 c = this[2][0],
-					 d = this[3][0],
-					 e = this[0][1],
-					 f = this[1][1],
-					 g = this[2][1],
-					 h = this[3][1],
-					 k = this[0][2],
-					 l = this[1][2],
-					 m = this[2][2],
-					 n = this[3][2],
-					 o = this[0][3],
-					 p = this[1][3],
-					 q = this[2][3],
-					 r = this[3][3];
+			Type a = (*this)[0][0],
+			     b = (*this)[1][0],
+			     c = (*this)[2][0],
+			     d = (*this)[3][0],
+			     e = (*this)[0][1],
+			     f = (*this)[1][1],
+			     g = (*this)[2][1],
+			     h = (*this)[3][1],
+			     k = (*this)[0][2],
+			     l = (*this)[1][2],
+			     m = (*this)[2][2],
+			     n = (*this)[3][2],
+			     o = (*this)[0][3],
+			     p = (*this)[1][3],
+			     q = (*this)[2][3],
+			     r = (*this)[3][3];
 
 			Type det =
 				(a * f * m * r) + (a * g * n * p) + (a * h * l * q) +
@@ -513,7 +513,7 @@ namespace gloglotto
 				throw std::logic_error("determinant must be non zero");
 			}
 
-			return matrix<4, 4, Type> {
+			return matrix<Columns, Rows, Type> {
 				{ (f * m * r) + (g * n * p) + (h * l * q) - (f * n * q) - (g * l * r) - (h * m * p),
 					(e * n * q) + (g * k * r) + (h * m * o) - (e * m * r) - (g * n * o) - (h * k * q),
 					(e * l * r) + (f * n * o) + (h * k * p) - (e * n * p) - (f * k * r) - (h * l * o),
