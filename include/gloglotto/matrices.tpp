@@ -173,6 +173,25 @@ namespace gloglotto
 	}
 
 	template <int Size, typename Matrix>
+	matrices<Size, Matrix>&
+	matrices<Size, Matrix>::preallocate (void)
+	{
+		if (!_matrices) {
+			_matrices = new Matrix*[Size];
+			std::fill_n(_matrices, Size, nullptr);
+		}
+
+		for (size_t i = 0; i < Size; i++) {
+			if (!_matrices[i]) {
+				_matrices[i] = new Matrix(_data + (rows * columns * i));
+				_matrices[i].preallocate();
+			}
+		}
+
+		return *this;
+	}
+
+	template <int Size, typename Matrix>
 	size_t
 	matrices<Size, Matrix>::size (void) const
 	{

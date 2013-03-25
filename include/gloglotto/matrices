@@ -100,6 +100,10 @@ namespace gloglotto
 			 */
 			matrices<Size, Matrix>& swap (matrices<Size, Matrix>& other);
 
+			/* Preallocate all wrapping matrices.
+			 */
+			matrices<Size, Matrix>& preallocate (void);
+
 			/* Get the matrix array size.
 			 */
 			size_t size (void) const;
@@ -143,7 +147,7 @@ namespace gloglotto
 			type* _data;
 			bool  _owner;
 
-			Matrix** _matrices;
+			mutable Matrix** _matrices;
 	};
 }
 
