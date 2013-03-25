@@ -228,9 +228,9 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	Vector const&
-	vectors<Size, Vector>::operator [] (int index) const throw (std::out_of_range)
+	vectors<Size, Vector>::operator [] (size_t index) const throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
@@ -262,9 +262,9 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	Vector&
-	vectors<Size, Vector>::operator [] (int index) throw (std::out_of_range)
+	vectors<Size, Vector>::operator [] (size_t index) throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
@@ -359,7 +359,7 @@ namespace gloglotto
 	template <int Size, class Vector>
 	template <int SliceSize>
 	Vector const&
-	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) const throw (std::out_of_range)
+	vectors<Size, Vector>::sub<SliceSize>::operator [] (size_t index) const throw (std::out_of_range)
 	{
 		index = _stride > 0 ? ((index * _stride) + _offset) : index + _offset;
 
@@ -389,7 +389,7 @@ namespace gloglotto
 	template <int Size, class Vector>
 	template <int SliceSize>
 	Vector&
-	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) throw (std::out_of_range)
+	vectors<Size, Vector>::sub<SliceSize>::operator [] (size_t index) throw (std::out_of_range)
 	{
 		index = _stride > 0 ? ((index * _stride) + _offset) : index + _offset;
 

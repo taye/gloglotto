@@ -49,7 +49,7 @@ namespace gloglotto
 
 					/* Access a constant vector in the array.
 					 */
-					Vector const& operator [] (int index) const throw (std::out_of_range);
+					Vector const& operator [] (size_t index) const throw (std::out_of_range);
 
 					/* Return an iterator to the beginning of the vector array.
 					 */
@@ -61,7 +61,7 @@ namespace gloglotto
 
 					/* Access a vector in the array.
 					 */
-					Vector& operator [] (int index) throw (std::out_of_range);
+					Vector& operator [] (size_t index) throw (std::out_of_range);
 
 					/* Return an iterator to the beginning of the vector array.
 					 */
@@ -170,7 +170,7 @@ namespace gloglotto
 
 			/* Access a constant vector in the array.
 			 */
-			Vector const& operator [] (int index) const throw (std::out_of_range);
+			Vector const& operator [] (size_t index) const throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the vector array.
 			 */
@@ -182,7 +182,7 @@ namespace gloglotto
 
 			/* Access a vector in the array.
 			 */
-			Vector& operator [] (int index) throw (std::out_of_range);
+			Vector& operator [] (size_t index) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the vector array.
 			 */
