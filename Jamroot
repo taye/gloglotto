@@ -10,8 +10,8 @@ lib gloglotto : [ glob source/*.cpp ]
 
 import testing ;
 
-for name in matrix vector angle rgba {
-	unit-test test::$(name) : tests/$(name).cpp
+for name in [ glob tests/*.cpp ] {
+	unit-test test::$(name:S=) : $(name)
 		: <cxxflags>"-std=c++11 -Iinclude -Itests/amirite"
 		: <library>gloglotto
 		;
