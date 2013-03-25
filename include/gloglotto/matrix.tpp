@@ -216,6 +216,20 @@ namespace gloglotto
 	}
 
 	template <int Columns, int Rows, typename Type>
+	Type const&
+	matrix<Columns, Rows, Type>::operator () (int row, int column) const throw (std::out_of_range)
+	{
+		return _data[column * Rows + row];
+	}
+
+	template <int Columns, int Rows, typename Type>
+	Type&
+	matrix<Columns, Rows, Type>::operator () (int row, int column) throw (std::out_of_range)
+	{
+		return _data[column * Rows + row];
+	}
+
+	template <int Columns, int Rows, typename Type>
 	size_t
 	matrix<Columns, Rows, Type>::size (void) const
 	{

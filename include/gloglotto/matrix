@@ -116,6 +116,14 @@ namespace gloglotto
 			 */
 			matrix<Columns, Rows, Type>& preallocate (void);
 
+			/* Access a costant element using row major order.
+			 */
+			Type const& operator () (int row, int column) const throw (std::out_of_range);
+
+			/* Access an element using row major order.
+			 */
+			Type& operator () (int row, int column) throw (std::out_of_range);
+
 			/* Get the matrix size.
 			 */
 			size_t size (void) const;
@@ -123,8 +131,6 @@ namespace gloglotto
 			/* Access a constant row of the matrix.
 			 */
 			vector<Rows, Type> const& operator [] (int index) const throw (std::out_of_range);
-
-			Type const& operator () (int row, int column) const throw (std::out_of_range);
 
 			/* Return a const iterator to the beginning of the matrix.
 			 */
@@ -137,8 +143,6 @@ namespace gloglotto
 			/* Access a row of the matrix.
 			 */
 			vector<Rows, Type>& operator [] (int index) throw (std::out_of_range);
-
-			Type& operator () (int row, int column) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the matrix.
 			 */
