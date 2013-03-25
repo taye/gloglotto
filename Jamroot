@@ -11,7 +11,7 @@ lib gloglotto : [ glob source/*.cpp ]
 import testing ;
 
 for name in [ glob tests/*.cpp ] {
-	unit-test test::$(name:S=) : $(name)
+	unit-test $(name:S=) : $(name)
 		: <cxxflags>"-std=c++11 -Iinclude -Itests/amirite"
 		: <library>gloglotto
 		;
