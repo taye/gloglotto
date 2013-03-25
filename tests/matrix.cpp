@@ -109,6 +109,15 @@ main (int argc, char* argv[])
 			}
 		}},
 
+		{ "access", []{
+			gl::matrix<4> m(1);
+
+			amiequal(m[0][0], m(0, 0));
+			amiequal(m[1][1], m(1, 1));
+			amiequal(m[2][2], m(2, 2));
+			amiequal(m[3][3], m(3, 3));
+		}},
+
 		{ "+", []{
 			gl::matrix<2, 2> a = {{1, 2}, {2, 1}};
 			gl::matrix<2, 2> b = {{3, 4}, {4, 3}};
