@@ -208,6 +208,24 @@ namespace gloglotto
 		return *this;
 	}
 
+	template <int Size, typename Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::preallocate (void)
+	{
+		if (!_vectors) {
+			_vectors = new Vector*[Size];
+			std::fill_n(_vectors, Size, nullptr);
+		}
+
+		for (size_t i = 0; i < Size; i++) {
+			if (!_vectors[i]) {
+				_vectors[i] = new Vector(_data + (i * elements));
+			}
+		}
+
+		return *this;
+	}
+
 	template <int Size, class Vector>
 	Vector const&
 	vectors<Size, Vector>::operator [] (int index) const throw (std::out_of_range)
@@ -222,7 +240,7 @@ namespace gloglotto
 		}
 
 		if (!_vectors[index]) {
-			_vectors[index] = new Vector(_data + (elements * index));
+			_vectors[index] = new Vector(_data + (index * elements));
 		}
 
 		return *_vectors[index];
@@ -256,7 +274,7 @@ namespace gloglotto
 		}
 
 		if (!_vectors[index]) {
-			_vectors[index] = new Vector(_data + (elements * index));
+			_vectors[index] = new Vector(_data + (index * elements));
 		}
 
 		return *_vectors[index];

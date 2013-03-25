@@ -160,6 +160,10 @@ namespace gloglotto
 			 */
 			vectors<Size, Vector>& swap (vectors<Size, Vector>& other);
 
+			/* Preallocate all wrapping vectors.
+			 */
+			vectors<Size, Vector>& preallocate (void);
+
 			/* Get the vector array size.
 			 */
 			size_t size (void) const;
@@ -211,7 +215,7 @@ namespace gloglotto
 			type* _data;
 			bool  _owner;
 
-			Vector** _vectors;
+			mutable Vector** _vectors;
 	};
 }
 
