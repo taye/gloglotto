@@ -38,6 +38,61 @@
 
 #include <gloglotto/window>
 
-namespace gl = gloglotto;
+namespace gl
+{
+	using namespace gloglotto;
+
+	using vec2 = vector<2, float>;
+	using vec3 = vector<3, float>;
+	using vec4 = vector<4, float>;
+
+	using dvec2 = vector<2, double>;
+	using dvec3 = vector<3, double>;
+	using dvec4 = vector<4, double>;
+
+	using ivec2 = vector<2, int>;
+	using ivec3 = vector<3, int>;
+	using ivec4 = vector<4, int>;
+
+	using uvec2 = vector<2, unsigned>;
+	using uvec3 = vector<3, unsigned>;
+	using uvec4 = vector<4, unsigned>;
+
+	using bvec2 = vector<2, bool>;
+	using bvec3 = vector<3, bool>;
+	using bvec4 = vector<4, bool>;
+
+	using mat2 = matrix<2, 2, float>;
+	using mat3 = matrix<3, 3, float>;
+	using mat4 = matrix<4, 4, float>;
+
+	using mat2x2 = matrix<2, 2, float>;
+	using mat2x3 = matrix<2, 3, float>;
+	using mat2x4 = matrix<2, 4, float>;
+
+	using mat3x2 = matrix<3, 2, float>;
+	using mat3x3 = matrix<3, 3, float>;
+	using mat3x4 = matrix<3, 4, float>;
+
+	using mat4x2 = matrix<4, 2, float>;
+	using mat4x3 = matrix<4, 3, float>;
+	using mat4x4 = matrix<4, 4, float>;
+
+	using dmat2 = matrix<2, 2, float>;
+	using dmat3 = matrix<3, 3, float>;
+	using dmat4 = matrix<4, 4, float>;
+
+	using dmat2x2 = matrix<2, 2, float>;
+	using dmat2x3 = matrix<2, 3, float>;
+	using dmat2x4 = matrix<2, 4, float>;
+
+	using dmat3x2 = matrix<3, 2, float>;
+	using dmat3x3 = matrix<3, 3, float>;
+	using dmat3x4 = matrix<3, 4, float>;
+
+	using dmat4x2 = matrix<4, 2, float>;
+	using dmat4x3 = matrix<4, 3, float>;
+	using dmat4x4 = matrix<4, 4, float>;
+}
 
 #endif
