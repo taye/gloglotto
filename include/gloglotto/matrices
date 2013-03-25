@@ -110,7 +110,7 @@ namespace gloglotto
 
 			/* Return a const matrix from the array.
 			 */
-			Matrix const& operator [] (int index) const throw (std::out_of_range);
+			Matrix const& operator [] (size_t index) const throw (std::out_of_range);
 
 			/* Return a const iterator to the beginning of the matrix array.
 			 */
@@ -122,7 +122,7 @@ namespace gloglotto
 
 			/* Access a matrix in the array.
 			 */
-			Matrix& operator [] (int index) throw (std::out_of_range);
+			Matrix& operator [] (size_t index) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the matrix array.
 			 */

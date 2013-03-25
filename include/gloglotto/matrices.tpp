@@ -200,9 +200,9 @@ namespace gloglotto
 
 	template <int Size, class Matrix>
 	Matrix const&
-	matrices<Size, Matrix>::operator [] (int index) const throw (std::out_of_range)
+	matrices<Size, Matrix>::operator [] (size_t index) const throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
@@ -234,9 +234,9 @@ namespace gloglotto
 
 	template <int Size, class Matrix>
 	Matrix&
-	matrices<Size, Matrix>::operator [] (int index) throw (std::out_of_range)
+	matrices<Size, Matrix>::operator [] (size_t index) throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
