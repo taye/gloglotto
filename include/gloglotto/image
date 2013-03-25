@@ -66,5 +66,6 @@ namespace gloglotto
 
 #include <gloglotto/formats/rgba>
 #include <gloglotto/formats/rgb>
+#include <gloglotto/formats/rg>
 
 #endif
