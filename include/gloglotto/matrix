@@ -130,7 +130,7 @@ namespace gloglotto
 
 			/* Access a constant row of the matrix.
 			 */
-			vector<Rows, Type> const& operator [] (int index) const throw (std::out_of_range);
+			vector<Rows, Type> const& operator [] (size_t index) const throw (std::out_of_range);
 
 			/* Return a const iterator to the beginning of the matrix.
 			 */
@@ -142,7 +142,7 @@ namespace gloglotto
 
 			/* Access a row of the matrix.
 			 */
-			vector<Rows, Type>& operator [] (int index) throw (std::out_of_range);
+			vector<Rows, Type>& operator [] (size_t index) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the matrix.
 			 */
