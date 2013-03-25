@@ -26,12 +26,12 @@ namespace gloglotto
 		{
 			template <int Depth, typename Type, bool Normalized>
 			rgba<Depth, Type, Normalized>::rgba (size_t size)
-				: internal(size * bytes), _size(size * bytes)
+				: internal(size * bytes), _size(size)
 			{}
 
 			template <int Depth, typename Type, bool Normalized>
 			rgba<Depth, Type, Normalized>::rgba (void* buffer, size_t size)
-				: internal(buffer, size * bytes), _size(size * bytes)
+				: internal(buffer, size * bytes), _size(size)
 			{}
 
 			template <int Depth, typename Type, bool Normalized>
