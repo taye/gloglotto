@@ -1,0 +1,129 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_IMAGE_RGB_H
+#define _GLOGLOTTO_IMAGE_RGB_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
+#include <gloglotto/iterator>
+#include <gloglotto/image>
+
+namespace gloglotto
+{
+	namespace image
+	{
+		namespace format
+		{
+			namespace traits
+			{
+				template <int Depth, typename Type, bool Normalized>
+				struct rgb;
+
+				#define rgb(size, type, normalized, gl) \
+					template <> \
+					struct rgb<size, type, normalized> \
+					{ \
+						enum : unsigned { \
+							depth    = size, \
+							bytes    = (size * 3) / 8, \
+							constant = gl \
+						}; \
+					}
+
+					rgb(4,  unsigned, true, GL_RGB4);
+					rgb(5,  unsigned, true, GL_RGB5);
+					rgb(8,  unsigned, true, GL_RGB8);
+					rgb(12, unsigned, true, GL_RGB12);
+					rgb(16, unsigned, true, GL_RGB16);
+
+					rgb(8,  int, true, GL_RGB8_SNORM);
+					rgb(16, int, true, GL_RGB16_SNORM);
+					rgb(32, int, true, GL_RGB_SNORM);
+
+					rgb(16, float, false, GL_RGB16F);
+					rgb(32, float, false, GL_RGB32F);
+
+					rgb(8,  unsigned, false, GL_RGB8UI);
+					rgb(16, unsigned, false, GL_RGB16UI);
+					rgb(32, unsigned, false, GL_RGB32UI);
+
+					rgb(8,  int, false, GL_RGB8I);
+					rgb(16, int, false, GL_RGB16I);
+					rgb(32, int, false, GL_RGB32I);
+				#undef rgb
+			}
+
+			template <int Depth, typename Type = unsigned, bool Normalized = true>
+			class rgb : public internal
+			{
+				public:
+					enum : unsigned {
+						depth    = traits::rgb<Depth, Type, Normalized>::depth,
+						bytes    = traits::rgb<Depth, Type, Normalized>::bytes,
+						constant = traits::rgb<Depth, Type, Normalized>::constant
+					};
+
+					struct value
+					{
+						unsigned r : Depth;
+						unsigned g : Depth;
+						unsigned b : Depth;
+					};
+
+				public:
+					typedef iterator::accessible<rgb<Depth, Type, Normalized>, value*, true> const_iterator;
+					typedef iterator::accessible<rgb<Depth, Type, Normalized>, value*>       iterator;
+
+				public:
+					rgb (size_t size);
+
+					rgb (void* buffer, size_t size);
+
+					size_t size (void) const;
+
+					value const* operator [] (size_t index) const throw (std::out_of_range);
+
+					/* Return a const iterator to the beginning of the image.
+					 */
+					const_iterator begin (void) const;
+
+					/* Return a const iterator to the end of the image.
+					 */
+					const_iterator end (void) const;
+
+					value* operator [] (size_t index) throw (std::out_of_range);
+
+					/* Return an iterator to the beginning of the image.
+					 */
+					iterator begin (void);
+
+					/* Return an iterator to the end of the image.
+					 */
+					iterator end (void);
+
+				private:
+					size_t _size;
+			};
+		}
+	}
+}
+
+#include <gloglotto/formats/rgb.tpp>
+
+#endif
