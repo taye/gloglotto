@@ -105,6 +105,15 @@ namespace gloglotto
 
 	template <int Size>
 	void
+	shader::uniform (std::string name, std::array<double, Size> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniform1dv(uniform(name), Size, data.data());
+		}
+	}
+
+	template <int Size>
+	void
 	shader::uniform (std::string name, std::array<int, Size> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
@@ -168,6 +177,42 @@ namespace gloglotto
 	{
 		check_exception {
 			glUniform4fv(uniform(name), Size, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, vectors<Size, vector<1, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniform1dv(uniform(name), Size, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, vectors<Size, vector<2, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniform2dv(uniform(name), Size, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, vectors<Size, vector<3, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniform3dv(uniform(name), Size, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, vectors<Size, vector<4, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniform4dv(uniform(name), Size, &data);
 		}
 	}
 
@@ -376,7 +421,88 @@ namespace gloglotto
 	shader::uniform (std::string name, matrices<Size, matrix<3, 4, float>> data) throw (invalid_operation, invalid_value, invalid_enum)
 	{
 		check_exception {
-			glUniformMatrix3x4fv(uniform(name), Size, GL_TRUE, &data);
+			glUniformMatrix3x4fv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<2, 2, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix2dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<3, 3, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix3dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<4, 4, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix4dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<3, 2, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix3x2dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<2, 3, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix2x3dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<4, 2, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix4x2dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<2, 4, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix2x4dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<4, 3, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix4x3dv(uniform(name), Size, GL_FALSE, &data);
+		}
+	}
+
+	template <int Size>
+	void
+	shader::uniform (std::string name, matrices<Size, matrix<3, 4, double>> data) throw (invalid_operation, invalid_value, invalid_enum)
+	{
+		check_exception {
+			glUniformMatrix3x4dv(uniform(name), Size, GL_FALSE, &data);
 		}
 	}
 }
