@@ -1,0 +1,125 @@
+/** Copyleft (ɔ) meh. - http://meh.schizofreni.co
+ *
+ * This file is part of gloglotto - https://github.com/meh/gloglotto
+ *
+ * gloglotto is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gloglotto is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _GLOGLOTTO_IMAGE_R_H
+#define _GLOGLOTTO_IMAGE_R_H
+
+#include <gloglotto/headers>
+#include <gloglotto/exception>
+#include <gloglotto/iterator>
+#include <gloglotto/image>
+
+namespace gloglotto
+{
+	namespace image
+	{
+		namespace format
+		{
+			namespace traits
+			{
+				template <int Depth, typename Type, bool Normalized>
+				struct r;
+
+				#define r(size, type, normalized, gl) \
+					template <> \
+					struct r<size, type, normalized> \
+					{ \
+						enum : unsigned { \
+							depth    = size, \
+							bytes    = size / 8, \
+							constant = gl \
+						}; \
+					}
+
+					r(8,  unsigned, true, GL_R8);
+					r(16, unsigned, true, GL_R16);
+					r(32, unsigned, true, GL_RED);
+
+					r(8,  int, true, GL_R8_SNORM);
+					r(16, int, true, GL_R16_SNORM);
+					r(32, int, true, GL_RED_SNORM);
+
+					r(16, float, false, GL_R16F);
+					r(32, float, false, GL_R32F);
+
+					r(8,  unsigned, false, GL_R8UI);
+					r(16, unsigned, false, GL_R16UI);
+					r(32, unsigned, false, GL_R32UI);
+
+					r(8,  int, false, GL_R8I);
+					r(16, int, false, GL_R16I);
+					r(32, int, false, GL_R32I);
+				#undef r
+			}
+
+			template <int Depth, typename Type = unsigned, bool Normalized = true>
+			class r : public internal
+			{
+				public:
+					enum : unsigned {
+						depth    = traits::r<Depth, Type, Normalized>::depth,
+						bytes    = traits::r<Depth, Type, Normalized>::bytes,
+						constant = traits::r<Depth, Type, Normalized>::constant
+					};
+
+					struct value
+					{
+						unsigned r : Depth;
+					};
+
+				public:
+					typedef iterator::accessible<r<Depth, Type, Normalized>, value*, true> const_iterator;
+					typedef iterator::accessible<r<Depth, Type, Normalized>, value*>       iterator;
+
+				public:
+					r (size_t size);
+
+					r (void* buffer, size_t size);
+
+					size_t size (void) const;
+
+					value const* operator [] (size_t index) const throw (std::out_of_range);
+
+					/* Return a const iterator to the beginning of the image.
+					 */
+					const_iterator begin (void) const;
+
+					/* Return a const iterator to the end of the image.
+					 */
+					const_iterator end (void) const;
+
+					value* operator [] (size_t index) throw (std::out_of_range);
+
+					/* Return an iterator to the beginning of the image.
+					 */
+					iterator begin (void);
+
+					/* Return an iterator to the end of the image.
+					 */
+					iterator end (void);
+
+				private:
+					size_t _size;
+			};
+		}
+	}
+}
+
+#include <gloglotto/formats/r.tpp>
+
+#endif
