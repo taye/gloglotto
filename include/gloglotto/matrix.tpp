@@ -29,12 +29,11 @@ namespace gloglotto
 		_data = new Type[Columns * Rows];
 		std::fill_n(_data, Columns * Rows, 0);
 
-		_vectors = new vector<Rows, Type>*[Columns];
-		std::fill_n(_vectors, Columns, nullptr);
-
 		for (int i = 0; i < Rows && i < Columns; i++) {
 			_data[i * Rows + i] = value;
 		}
+
+		_vectors = nullptr;
 
 		own();
 	}
@@ -65,10 +64,8 @@ namespace gloglotto
 	template <int Columns, int Rows, typename Type>
 	matrix<Columns, Rows, Type>::matrix (Type* data)
 	{
-		_data = data;
-
-		_vectors = new vector<Rows, Type>*[Columns];
-		std::fill_n(_vectors, Columns, nullptr);
+		_data    = data;
+		_vectors = nullptr;
 
 		disown();
 	}
@@ -201,6 +198,38 @@ namespace gloglotto
 	}
 
 	template <int Columns, int Rows, typename Type>
+	matrix<Columns, Rows, Type>&
+	matrix<Columns, Rows, Type>::preallocate (void)
+	{
+		if (!_vectors) {
+			_vectors = new vector<Rows, Type>*[Columns];
+			std::fill_n(_vectors, Columns, nullptr);
+		}
+
+		for (size_t i = 0; i < Columns; i++) {
+			if (!_vectors[i]) {
+				_vectors[i] = new vector<Rows, Type>(_data + (i * Rows));
+			}
+		}
+
+		return *this;
+	}
+
+	template <int Columns, int Rows, typename Type>
+	Type const&
+	matrix<Columns, Rows, Type>::operator () (int row, int column) const throw (std::out_of_range)
+	{
+		return _data[column * Rows + row];
+	}
+
+	template <int Columns, int Rows, typename Type>
+	Type&
+	matrix<Columns, Rows, Type>::operator () (int row, int column) throw (std::out_of_range)
+	{
+		return _data[column * Rows + row];
+	}
+
+	template <int Columns, int Rows, typename Type>
 	size_t
 	matrix<Columns, Rows, Type>::size (void) const
 	{
@@ -209,10 +238,15 @@ namespace gloglotto
 
 	template <int Columns, int Rows, typename Type>
 	vector<Rows, Type> const&
-	matrix<Columns, Rows, Type>::operator [] (int index) const throw (std::out_of_range)
+	matrix<Columns, Rows, Type>::operator [] (size_t index) const throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Columns) {
+		if (index >= Columns) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new vector<Rows, Type>*[Columns];
+			std::fill_n(_vectors, Columns, nullptr);
 		}
 
 		if (!_vectors[index]) {
@@ -238,10 +272,15 @@ namespace gloglotto
 
 	template <int Columns, int Rows, typename Type>
 	vector<Rows, Type>&
-	matrix<Columns, Rows, Type>::operator [] (int index) throw (std::out_of_range)
+	matrix<Columns, Rows, Type>::operator [] (size_t index) throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Columns) {
+		if (index >= Columns) {
 			throw std::out_of_range("index out of range");
+		}
+
+		if (!_vectors) {
+			_vectors = new vector<Rows, Type>*[Columns];
+			std::fill_n(_vectors, Columns, nullptr);
 		}
 
 		if (!_vectors[index]) {
@@ -436,10 +475,10 @@ namespace gloglotto
 		if (Rows == 2) {
 			// |a b|
 			// |c d|
-			Type a = this[0][0],
-					 b = this[1][0],
-					 c = this[0][1],
-					 d = this[1][1];
+			Type a = (*this)[0][0],
+			     b = (*this)[1][0],
+			     c = (*this)[0][1],
+			     d = (*this)[1][1];
 
 			Type det = (a * d) - (b * c);
 
@@ -447,7 +486,7 @@ namespace gloglotto
 				throw std::logic_error("determinant must be non zero");
 			}
 
-			return matrix<2, 2, Type> {
+			return matrix<Columns, Rows, Type> {
 				{  d, -b },
 				{ -c,  a }
 			} * (static_cast<Type>(1) / det);
@@ -456,15 +495,15 @@ namespace gloglotto
 			// |a b c|
 			// |d e f|
 			// |g h k|
-			Type a = this[0][0],
-					 b = this[1][0],
-					 c = this[2][0],
-					 d = this[0][1],
-					 e = this[1][1],
-					 f = this[2][1],
-					 g = this[0][2],
-					 h = this[1][2],
-					 k = this[2][2];
+			Type a = (*this)[0][0],
+			     b = (*this)[1][0],
+			     c = (*this)[2][0],
+			     d = (*this)[0][1],
+			     e = (*this)[1][1],
+			     f = (*this)[2][1],
+			     g = (*this)[0][2],
+			     h = (*this)[1][2],
+			     k = (*this)[2][2];
 
 			Type det =
 				(a * e * k) - (a * f * h) -
@@ -475,29 +514,29 @@ namespace gloglotto
 				throw std::logic_error("determinant must be non zero");
 			}
 
-			return matrix<3, 3, Type> {
+			return matrix<Columns, Rows, Type> {
 				{ (e * k) - (f * h), (f * g) - (d * k), (d * h) - (e * g) },
 				{ (c * h) - (b * k), (a * k) - (c * g), (g * b) - (a * h) },
 				{ (b * f) - (c * e), (c * d) - (a * f), (a * e) - (b * d) }
 			} * (static_cast<Type>(1) / det);
 		}
 		else if (Rows == 4) {
-			Type a = this[0][0],
-					 b = this[1][0],
-					 c = this[2][0],
-					 d = this[3][0],
-					 e = this[0][1],
-					 f = this[1][1],
-					 g = this[2][1],
-					 h = this[3][1],
-					 k = this[0][2],
-					 l = this[1][2],
-					 m = this[2][2],
-					 n = this[3][2],
-					 o = this[0][3],
-					 p = this[1][3],
-					 q = this[2][3],
-					 r = this[3][3];
+			Type a = (*this)[0][0],
+			     b = (*this)[1][0],
+			     c = (*this)[2][0],
+			     d = (*this)[3][0],
+			     e = (*this)[0][1],
+			     f = (*this)[1][1],
+			     g = (*this)[2][1],
+			     h = (*this)[3][1],
+			     k = (*this)[0][2],
+			     l = (*this)[1][2],
+			     m = (*this)[2][2],
+			     n = (*this)[3][2],
+			     o = (*this)[0][3],
+			     p = (*this)[1][3],
+			     q = (*this)[2][3],
+			     r = (*this)[3][3];
 
 			Type det =
 				(a * f * m * r) + (a * g * n * p) + (a * h * l * q) +
@@ -513,7 +552,7 @@ namespace gloglotto
 				throw std::logic_error("determinant must be non zero");
 			}
 
-			return matrix<4, 4, Type> {
+			return matrix<Columns, Rows, Type> {
 				{ (f * m * r) + (g * n * p) + (h * l * q) - (f * n * q) - (g * l * r) - (h * m * p),
 					(e * n * q) + (g * k * r) + (h * m * o) - (e * m * r) - (g * n * o) - (h * k * q),
 					(e * l * r) + (f * n * o) + (h * k * p) - (e * n * p) - (f * k * r) - (h * l * o),
@@ -572,7 +611,7 @@ namespace gloglotto
 		matrix<4, 4, Type>
 		perspective (angle fov, Type aspect, std::array<Type, 2> z)
 		{
-			matrix<4, 4> result(true);
+			matrix<4, 4> result(1);
 
 			Type max_y = z[0] * tan(angle_cast<angle::radians>(fov) * 0.5);
 			Type min_y = -max_y;
@@ -596,7 +635,7 @@ namespace gloglotto
 		matrix<4, 4, Type>
 		orthographic (std::array<Type, 2> x, std::array<Type, 2> y, std::array<Type, 2> z)
 		{
-			matrix<4, 4> result(true);
+			matrix<4, 4> result(1);
 
 			(&result)[0]  =  2.0 / (x[1] - x[0]);
 			(&result)[5]  =  2.0 / (y[1] - y[0]);
@@ -612,7 +651,7 @@ namespace gloglotto
 		template <typename Type>
 		matrix<4, 4, Type> translation (Type x, Type y, Type z)
 		{
-			matrix<4, 4, Type> result(true);
+			matrix<4, 4, Type> result(1);
 
 			result[3][0] = x;
 			result[3][1] = y;
@@ -633,7 +672,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result(true);
+			matrix<Size, Size, Type> result(1);
 
 			Type sx = sin(angle_cast<angle::radians>(x));
 			Type sy = sin(angle_cast<angle::radians>(y));
@@ -664,7 +703,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result(true);
+			matrix<Size, Size, Type> result(1);
 
 			Type s   = sin(angle_cast<angle::radians>(a));
 			Type c   = cos(angle_cast<angle::radians>(a));
@@ -710,7 +749,7 @@ namespace gloglotto
 		{
 			static_assert(Size == 3 || Size == 4, "only 3x3 and 4x4 matrices");
 
-			matrix<Size, Size, Type> result(true);
+			matrix<Size, Size, Type> result(1);
 
 			result[0][0] = x;
 			result[0][1] = y;

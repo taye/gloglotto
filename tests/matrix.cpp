@@ -7,7 +7,7 @@ main (int argc, char* argv[])
 	return amirite("matrix", {
 		{ "creation", []{
 			{
-				gl::matrix<2> m;
+				gl::mat2 m;
 
 				amiequal(m[0][0], 0);
 				amiequal(m[1][0], 0);
@@ -17,7 +17,7 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<3> m;
+				gl::mat3 m;
 
 				amiequal(m[0][0], 0);
 				amiequal(m[1][0], 0);
@@ -33,7 +33,7 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<4> m;
+				gl::mat4 m;
 
 				amiequal(m[0][0], 0);
 				amiequal(m[1][0], 0);
@@ -59,7 +59,7 @@ main (int argc, char* argv[])
 
 		{ "identity", []{
 			{
-				gl::matrix<2> m(1);
+				gl::mat2 m(1);
 
 				amiequal(m[0][0], 1);
 				amiequal(m[1][0], 0);
@@ -69,7 +69,7 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<3> m(1);
+				gl::mat3 m(1);
 
 				amiequal(m[0][0], 1);
 				amiequal(m[1][0], 0);
@@ -85,7 +85,7 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<4> m(1);
+				gl::mat4 m(1);
 
 				amiequal(m[0][0], 1);
 				amiequal(m[1][0], 0);
@@ -109,10 +109,19 @@ main (int argc, char* argv[])
 			}
 		}},
 
+		{ "access", []{
+			gl::mat4 m(1);
+
+			amiequal(m[0][0], m(0, 0));
+			amiequal(m[1][1], m(1, 1));
+			amiequal(m[2][2], m(2, 2));
+			amiequal(m[3][3], m(3, 3));
+		}},
+
 		{ "+", []{
-			gl::matrix<2, 2> a = {{1, 2}, {2, 1}};
-			gl::matrix<2, 2> b = {{3, 4}, {4, 3}};
-			gl::matrix<2, 2> c = a + b;
+			gl::mat2 a = {{1, 2}, {2, 1}};
+			gl::mat2 b = {{3, 4}, {4, 3}};
+			gl::mat2 c = a + b;
 
 			amiequal(c[0][0], 4);
 			amiequal(c[0][1], 6);
@@ -121,9 +130,9 @@ main (int argc, char* argv[])
 		}},
 
 		{ "-", []{
-			gl::matrix<2, 2> a = {{1, 2}, {2, 1}};
-			gl::matrix<2, 2> b = {{3, 4}, {4, 3}};
-			gl::matrix<2, 2> c = a - b;
+			gl::mat2 a = {{1, 2}, {2, 1}};
+			gl::mat2 b = {{3, 4}, {4, 3}};
+			gl::mat2 c = a - b;
 
 			amiequal(c[0][0], -2);
 			amiequal(c[1][0], -2);
@@ -132,8 +141,8 @@ main (int argc, char* argv[])
 		}},
 
 		{ "* (scalar)", []{
-			gl::matrix<2, 2> a = {{1, 2}, {2, 1}};
-			gl::matrix<2, 2> b = a * 2;
+			gl::mat2 a = {{1, 2}, {2, 1}};
+			gl::mat2 b = a * 2;
 
 			amiequal(b[0][0], 2);
 			amiequal(b[1][0], 4);
@@ -144,18 +153,18 @@ main (int argc, char* argv[])
 
 		{ "* (vector)", []{
 			{
-				gl::matrix<2, 2> a = {{1, 2}, {2, 1}};
-				gl::vector<2>    b = {5, 5};
-				gl::vector<2>    c = a * b;
+				gl::mat2 a = {{1, 2}, {2, 1}};
+				gl::vec2    b = {5, 5};
+				gl::vec2    c = a * b;
 
 				amiequal(c[0], 15);
 				amiequal(c[1], 15);
 			}
 
 			{
-				gl::matrix<3, 4> a = {{1,2,3,4},{1,2,3,4},{1,2,3,4}};
-				gl::vector<3>    b = {1,2,3};
-				gl::vector<4>    c = a * b;
+				gl::mat3x4 a = {{1,2,3,4},{1,2,3,4},{1,2,3,4}};
+				gl::vec3    b = {1,2,3};
+				gl::vec4    c = a * b;
 
 				amiequal(c[0], 6);
 				amiequal(c[1], 12);
@@ -164,9 +173,9 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<4, 2> a = {{1,2},{1,2},{1,2},{1,2}};
-				gl::vector<4>    b = {3,2,2,3};
-				gl::vector<2>    c = a * b;
+				gl::mat4x2 a = {{1,2},{1,2},{1,2},{1,2}};
+				gl::vec4    b = {3,2,2,3};
+				gl::vec2    c = a * b;
 
 				amiequal(c[0], 10);
 				amiequal(c[1], 20);
@@ -175,10 +184,9 @@ main (int argc, char* argv[])
 
 		{ "* (matrix)", []{
 			{
-				gl::matrix<2, 2> a = {{1,2},{3,4}};
-				gl::matrix<2, 2> b = {{5,6},{7,8}};
-
-				gl::matrix<2, 2> c = a * b;
+				gl::mat2 a = {{1,2},{3,4}};
+				gl::mat2 b = {{5,6},{7,8}};
+				gl::mat2 c = a * b;
 
 				amiequal(c[0][0], 23);
 				amiequal(c[0][1], 34);
@@ -188,10 +196,10 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<3, 3> a = {{1,3,2},{2,2,1},{3,1,3}};
-				gl::matrix<3, 3> b = {{4,6,4},{5,5,6},{6,4,5}};
+				gl::mat3 a = {{1,3,2},{2,2,1},{3,1,3}};
+				gl::mat3 b = {{4,6,4},{5,5,6},{6,4,5}};
 
-				gl::matrix<3, 3> c = a * b;
+				gl::mat3 c = a * b;
 
 				amiequal(c[0][0], 28);
 				amiequal(c[1][0], 33);
@@ -207,10 +215,9 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<4, 4> a = {{1,2,3,4},{4,3,2,1},{1,3,2,4},{2,4,1,3}};
-				gl::matrix<4, 4> b = {{1,2,3,4},{1,2,3,4},{1,2,3,4},{1,2,3,4}};
-
-				gl::matrix<4, 4> c = a * b;
+				gl::mat4 a = {{1,2,3,4},{4,3,2,1},{1,3,2,4},{2,4,1,3}};
+				gl::mat4 b = {{1,2,3,4},{1,2,3,4},{1,2,3,4},{1,2,3,4}};
+				gl::mat4 c = a * b;
 
 				amiequal(c[0][0], 20);
 				amiequal(c[0][1], 33);
@@ -234,10 +241,9 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<3, 2> a = {{1,2},{3,4},{5,6}};
-				gl::matrix<2, 3> b = {{6,5,4},{3,2,1}};
-
-				gl::matrix<2, 2> c = a * b;
+				gl::mat3x2 a = {{1,2},{3,4},{5,6}};
+				gl::mat2x3 b = {{6,5,4},{3,2,1}};
+				gl::mat2   c = a * b;
 
 				amiequal(c[0][0], 41);
 				amiequal(c[0][1], 56);
@@ -247,10 +253,9 @@ main (int argc, char* argv[])
 			}
 
 			{
-				gl::matrix<4, 2> a = {{8,7},{6,5},{4,3},{2,1}};
-				gl::matrix<3, 4> b = {{1,2,3,4},{5,6,6,5},{4,3,2,1}};
-
-				gl::matrix<3, 2> c = a * b;
+				gl::mat4x2 a = {{8,7},{6,5},{4,3},{2,1}};
+				gl::mat3x4 b = {{1,2,3,4},{5,6,6,5},{4,3,2,1}};
+				gl::mat3x2 c = a * b;
 
 				amiequal(c[0][0], 40);
 				amiequal(c[0][1], 30);
@@ -260,6 +265,35 @@ main (int argc, char* argv[])
 
 				amiequal(c[2][0], 60);
 				amiequal(c[2][1], 50);
+			}
+		}},
+
+		{ "foreach", []{
+			gl::mat3 a = {{1,2,3},{3,2,1},{2,1,3}};
+
+			int i = 0;
+			for (auto column : a) {
+				switch (i) {
+					case 0:
+						amiequal(column[0], 1);
+						amiequal(column[1], 2);
+						amiequal(column[2], 3);
+						break;
+
+					case 1:
+						amiequal(column[0], 3);
+						amiequal(column[1], 2);
+						amiequal(column[2], 1);
+						break;
+
+					case 2:
+						amiequal(column[0], 2);
+						amiequal(column[1], 1);
+						amiequal(column[2], 3);
+						break;
+				}
+
+				i++;
 			}
 		}}
 	});

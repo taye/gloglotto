@@ -208,11 +208,29 @@ namespace gloglotto
 		return *this;
 	}
 
+	template <int Size, typename Vector>
+	vectors<Size, Vector>&
+	vectors<Size, Vector>::preallocate (void)
+	{
+		if (!_vectors) {
+			_vectors = new Vector*[Size];
+			std::fill_n(_vectors, Size, nullptr);
+		}
+
+		for (size_t i = 0; i < Size; i++) {
+			if (!_vectors[i]) {
+				_vectors[i] = new Vector(_data + (i * elements));
+			}
+		}
+
+		return *this;
+	}
+
 	template <int Size, class Vector>
 	Vector const&
-	vectors<Size, Vector>::operator [] (int index) const throw (std::out_of_range)
+	vectors<Size, Vector>::operator [] (size_t index) const throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
@@ -222,7 +240,7 @@ namespace gloglotto
 		}
 
 		if (!_vectors[index]) {
-			_vectors[index] = new Vector(_data + (elements * index));
+			_vectors[index] = new Vector(_data + (index * elements));
 		}
 
 		return *_vectors[index];
@@ -244,9 +262,9 @@ namespace gloglotto
 
 	template <int Size, class Vector>
 	Vector&
-	vectors<Size, Vector>::operator [] (int index) throw (std::out_of_range)
+	vectors<Size, Vector>::operator [] (size_t index) throw (std::out_of_range)
 	{
-		if (index < 0 || index >= Size) {
+		if (index >= Size) {
 			throw std::out_of_range("index out of range");
 		}
 
@@ -256,7 +274,7 @@ namespace gloglotto
 		}
 
 		if (!_vectors[index]) {
-			_vectors[index] = new Vector(_data + (elements * index));
+			_vectors[index] = new Vector(_data + (index * elements));
 		}
 
 		return *_vectors[index];
@@ -341,7 +359,7 @@ namespace gloglotto
 	template <int Size, class Vector>
 	template <int SliceSize>
 	Vector const&
-	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) const throw (std::out_of_range)
+	vectors<Size, Vector>::sub<SliceSize>::operator [] (size_t index) const throw (std::out_of_range)
 	{
 		index = _stride > 0 ? ((index * _stride) + _offset) : index + _offset;
 
@@ -371,7 +389,7 @@ namespace gloglotto
 	template <int Size, class Vector>
 	template <int SliceSize>
 	Vector&
-	vectors<Size, Vector>::sub<SliceSize>::operator [] (int index) throw (std::out_of_range)
+	vectors<Size, Vector>::sub<SliceSize>::operator [] (size_t index) throw (std::out_of_range)
 	{
 		index = _stride > 0 ? ((index * _stride) + _offset) : index + _offset;
 

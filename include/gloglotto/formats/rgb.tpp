@@ -16,7 +16,7 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gloglotto/formats/rgba>
+#include <gloglotto/formats/rgb>
 
 namespace gloglotto
 {
@@ -25,25 +25,25 @@ namespace gloglotto
 		namespace format
 		{
 			template <int Depth, typename Type, bool Normalized>
-			rgba<Depth, Type, Normalized>::rgba (size_t size)
+			rgb<Depth, Type, Normalized>::rgb (size_t size)
 				: internal(size * bytes), _size(size)
 			{}
 
 			template <int Depth, typename Type, bool Normalized>
-			rgba<Depth, Type, Normalized>::rgba (void* buffer, size_t size)
+			rgb<Depth, Type, Normalized>::rgb (void* buffer, size_t size)
 				: internal(buffer, size * bytes), _size(size)
 			{}
 
 			template <int Depth, typename Type, bool Normalized>
 			size_t
-			rgba<Depth, Type, Normalized>::size (void) const
+			rgb<Depth, Type, Normalized>::size (void) const
 			{
 				return _size;
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			typename rgba<Depth, Type, Normalized>::value const*
-			rgba<Depth, Type, Normalized>::operator [] (size_t index) const throw (std::out_of_range)
+			typename rgb<Depth, Type, Normalized>::value const*
+			rgb<Depth, Type, Normalized>::operator [] (size_t index) const throw (std::out_of_range)
 			{
 				if (index >= _size) {
 					throw std::out_of_range("index out of range");
@@ -53,22 +53,22 @@ namespace gloglotto
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			typename rgba<Depth, Type, Normalized>::const_iterator
-			rgba<Depth, Type, Normalized>::begin (void) const
+			typename rgb<Depth, Type, Normalized>::const_iterator
+			rgb<Depth, Type, Normalized>::begin (void) const
 			{
 				return const_iterator(this);
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			typename rgba<Depth, Type, Normalized>::const_iterator
-			rgba<Depth, Type, Normalized>::end (void) const
+			typename rgb<Depth, Type, Normalized>::const_iterator
+			rgb<Depth, Type, Normalized>::end (void) const
 			{
 				return const_iterator(this, -1);
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			typename rgba<Depth, Type, Normalized>::value*
-			rgba<Depth, Type, Normalized>::operator [] (size_t index) throw (std::out_of_range)
+			typename rgb<Depth, Type, Normalized>::value*
+			rgb<Depth, Type, Normalized>::operator [] (size_t index) throw (std::out_of_range)
 			{
 				if (index >= _size) {
 					throw std::out_of_range("index out of range");
@@ -78,15 +78,15 @@ namespace gloglotto
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			typename rgba<Depth, Type, Normalized>::iterator
-			rgba<Depth, Type, Normalized>::begin (void)
+			typename rgb<Depth, Type, Normalized>::iterator
+			rgb<Depth, Type, Normalized>::begin (void)
 			{
 				return iterator(this);
 			}
 
 			template <int Depth, typename Type, bool Normalized>
-			typename rgba<Depth, Type, Normalized>::iterator
-			rgba<Depth, Type, Normalized>::end (void)
+			typename rgb<Depth, Type, Normalized>::iterator
+			rgb<Depth, Type, Normalized>::end (void)
 			{
 				return iterator(this, -1);
 			}

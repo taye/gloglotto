@@ -16,8 +16,8 @@
  * along with gloglotto. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GLOGLOTTO_IMAGE_RGBA_H
-#define _GLOGLOTTO_IMAGE_RGBA_H
+#ifndef _GLOGLOTTO_IMAGE_R_H
+#define _GLOGLOTTO_IMAGE_R_H
 
 #include <gloglotto/headers>
 #include <gloglotto/exception>
@@ -33,68 +33,63 @@ namespace gloglotto
 			namespace traits
 			{
 				template <int Depth, typename Type, bool Normalized>
-				struct rgba;
+				struct r;
 
-				#define rgba(size, type, normalized, gl) \
+				#define r(size, type, normalized, gl) \
 					template <> \
-					struct rgba<size, type, normalized> \
+					struct r<size, type, normalized> \
 					{ \
 						enum : unsigned { \
 							depth    = size, \
-							bytes    = (size * 4) / 8, \
+							bytes    = size / 8, \
 							constant = gl \
 						}; \
 					}
 
-					rgba(2,  unsigned, true, GL_RGBA2);
-					rgba(4,  unsigned, true, GL_RGBA4);
-					rgba(8,  unsigned, true, GL_RGBA8);
-					rgba(12, unsigned, true, GL_RGBA12);
-					rgba(16, unsigned, true, GL_RGBA16);
+					r(8,  unsigned, true, GL_R8);
+					r(16, unsigned, true, GL_R16);
+					r(32, unsigned, true, GL_RED);
 
-					rgba(8,  int, true, GL_RGBA8_SNORM);
-					rgba(16, int, true, GL_RGBA16_SNORM);
-					rgba(32, int, true, GL_RGBA_SNORM);
+					r(8,  int, true, GL_R8_SNORM);
+					r(16, int, true, GL_R16_SNORM);
+					r(32, int, true, GL_RED_SNORM);
 
-					rgba(16, float, false, GL_RGBA16F);
-					rgba(32, float, false, GL_RGBA32F);
+					r(16, float, false, GL_R16F);
+					r(32, float, false, GL_R32F);
 
-					rgba(8,  unsigned, false, GL_RGBA8UI);
-					rgba(16, unsigned, false, GL_RGBA16UI);
-					rgba(32, unsigned, false, GL_RGBA32UI);
+					r(8,  unsigned, false, GL_R8UI);
+					r(16, unsigned, false, GL_R16UI);
+					r(32, unsigned, false, GL_R32UI);
 
-					rgba(8,  int, false, GL_RGBA8I);
-					rgba(16, int, false, GL_RGBA16I);
-					rgba(32, int, false, GL_RGBA32I);
-				#undef rgba
+					r(8,  int, false, GL_R8I);
+					r(16, int, false, GL_R16I);
+					r(32, int, false, GL_R32I);
+				#undef r
 			}
 
 			template <int Depth, typename Type = unsigned, bool Normalized = true>
-			class rgba : public internal
+			class r : public internal
 			{
 				public:
 					enum : unsigned {
-						depth    = traits::rgba<Depth, Type, Normalized>::depth,
-						bytes    = traits::rgba<Depth, Type, Normalized>::bytes,
-						constant = traits::rgba<Depth, Type, Normalized>::constant
+						depth    = traits::r<Depth, Type, Normalized>::depth,
+						bytes    = traits::r<Depth, Type, Normalized>::bytes,
+						constant = traits::r<Depth, Type, Normalized>::constant
 					};
 
 					struct value
 					{
 						unsigned r : Depth;
-						unsigned g : Depth;
-						unsigned b : Depth;
-						unsigned a : Depth;
 					};
 
 				public:
-					typedef iterator::accessible<rgba<Depth, Type, Normalized>, value*, true> const_iterator;
-					typedef iterator::accessible<rgba<Depth, Type, Normalized>, value*>       iterator;
+					typedef iterator::accessible<r<Depth, Type, Normalized>, value*, true> const_iterator;
+					typedef iterator::accessible<r<Depth, Type, Normalized>, value*>       iterator;
 
 				public:
-					rgba (size_t size);
+					r (size_t size);
 
-					rgba (void* buffer, size_t size);
+					r (void* buffer, size_t size);
 
 					size_t size (void) const;
 
@@ -125,6 +120,6 @@ namespace gloglotto
 	}
 }
 
-#include <gloglotto/formats/rgba.tpp>
+#include <gloglotto/formats/r.tpp>
 
 #endif

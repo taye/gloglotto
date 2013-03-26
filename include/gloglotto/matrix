@@ -43,8 +43,8 @@ namespace gloglotto
 		              std::is_same<double, Type>::value, "only float and double");
 
 		public:
-			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>, true> const_iterator;
-			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>>       iterator;
+			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>&, true> const_iterator;
+			typedef iterator::accessible<matrix<Columns, Rows, Type>, vector<Rows, Type>&>       iterator;
 
 			typedef Type type;
 			static constexpr int bytes = Columns * Rows * sizeof(Type);
@@ -112,15 +112,25 @@ namespace gloglotto
 			 */
 			matrix<Columns, Rows, Type>& swap (matrix<Columns, Rows, Type>& other);
 
+			/* Preallocate all wrapping vectors.
+			 */
+			matrix<Columns, Rows, Type>& preallocate (void);
+
+			/* Access a costant element using row major order.
+			 */
+			Type const& operator () (int row, int column) const throw (std::out_of_range);
+
+			/* Access an element using row major order.
+			 */
+			Type& operator () (int row, int column) throw (std::out_of_range);
+
 			/* Get the matrix size.
 			 */
 			size_t size (void) const;
 
 			/* Access a constant row of the matrix.
 			 */
-			vector<Rows, Type> const& operator [] (int index) const throw (std::out_of_range);
-
-			Type const& operator () (int row, int column) const throw (std::out_of_range);
+			vector<Rows, Type> const& operator [] (size_t index) const throw (std::out_of_range);
 
 			/* Return a const iterator to the beginning of the matrix.
 			 */
@@ -132,9 +142,7 @@ namespace gloglotto
 
 			/* Access a row of the matrix.
 			 */
-			vector<Rows, Type>& operator [] (int index) throw (std::out_of_range);
-
-			Type& operator () (int row, int column) throw (std::out_of_range);
+			vector<Rows, Type>& operator [] (size_t index) throw (std::out_of_range);
 
 			/* Return an iterator to the beginning of the matrix.
 			 */
@@ -217,7 +225,7 @@ namespace gloglotto
 			Type* _data;
 			bool  _owner;
 
-			vector<Rows, Type>** _vectors;
+			mutable vector<Rows, Type>** _vectors;
 	};
 
 	namespace make
