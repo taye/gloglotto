@@ -119,36 +119,172 @@ main (int argc, char* argv[])
 		}},
 
 		{ "+", []{
-			gl::mat2 a = {{1, 2}, {2, 1}};
-			gl::mat2 b = {{3, 4}, {4, 3}};
-			gl::mat2 c = a + b;
+			{
+				gl::mat2 a = {{1, 2}, {2, 1}};
+				gl::mat2 b = {{3, 4}, {4, 3}};
+				gl::mat2 c = a + b;
 
-			amiequal(c[0][0], 4);
-			amiequal(c[0][1], 6);
-			amiequal(c[1][0], 6);
-			amiequal(c[1][1], 4);
+				amiequal(c[0][0], 4);
+				amiequal(c[0][1], 6);
+				amiequal(c[1][0], 6);
+				amiequal(c[1][1], 4);
+			}
+
+			{
+				gl::mat3 a = {{1,2,3},{3,2,1},{1,2,3}};
+				gl::mat3 b = {{6,5,4},{4,5,6},{6,5,4}};
+				gl::mat3 c = a + b;
+
+				amiequal(c[0][0], 7);
+				amiequal(c[0][1], 7);
+				amiequal(c[0][2], 7);
+
+				amiequal(c[1][0], 7);
+				amiequal(c[1][1], 7);
+				amiequal(c[1][2], 7);
+
+				amiequal(c[2][0], 7);
+				amiequal(c[2][1], 7);
+				amiequal(c[2][2], 7);
+			}
+
+			{
+				gl::mat4 a = {{1,2,3,4},{4,3,2,1},{1,2,3,4},{1,2,3,4}};
+				gl::mat4 b = {{4,3,2,1},{1,2,3,4},{4,3,2,1},{4,3,2,1}};
+				gl::mat4 c = a + b;
+
+				amiequal(c[0][0], 5);
+				amiequal(c[0][1], 5);
+				amiequal(c[0][2], 5);
+				amiequal(c[0][3], 5);
+
+				amiequal(c[1][0], 5);
+				amiequal(c[1][1], 5);
+				amiequal(c[1][2], 5);
+				amiequal(c[1][3], 5);
+
+				amiequal(c[2][0], 5);
+				amiequal(c[2][1], 5);
+				amiequal(c[2][2], 5);
+				amiequal(c[2][3], 5);
+
+				amiequal(c[3][0], 5);
+				amiequal(c[3][1], 5);
+				amiequal(c[3][2], 5);
+				amiequal(c[3][3], 5);
+			}
 		}},
 
 		{ "-", []{
-			gl::mat2 a = {{1, 2}, {2, 1}};
-			gl::mat2 b = {{3, 4}, {4, 3}};
-			gl::mat2 c = a - b;
+			{
+				gl::mat2 a = {{1, 2}, {2, 1}};
+				gl::mat2 b = {{3, 4}, {4, 3}};
+				gl::mat2 c = a - b;
 
-			amiequal(c[0][0], -2);
-			amiequal(c[1][0], -2);
-			amiequal(c[0][1], -2);
-			amiequal(c[1][1], -2);
+				amiequal(c[0][0], -2);
+				amiequal(c[1][0], -2);
+				amiequal(c[0][1], -2);
+				amiequal(c[1][1], -2);
+			}
+
+			{
+				gl::mat3 a = {{6,5,4},{4,5,6},{6,5,4}};
+				gl::mat3 b = {{1,2,3},{3,2,1},{1,2,3}};
+				gl::mat3 c = a - b;
+
+				amiequal(c[0][0], 5);
+				amiequal(c[0][1], 3);
+				amiequal(c[0][2], 1);
+
+				amiequal(c[1][0], 1);
+				amiequal(c[1][1], 3);
+				amiequal(c[1][2], 5);
+
+				amiequal(c[2][0], 5);
+				amiequal(c[2][1], 3);
+				amiequal(c[2][2], 1);
+			}
+
+			{
+				gl::mat4 a = {{1,2,3,4},{4,3,2,1},{1,2,3,4},{1,2,3,4}};
+				gl::mat4 b = {{4,3,2,1},{1,2,3,4},{4,3,2,1},{4,3,2,1}};
+				gl::mat4 c = a - b;
+
+				amiequal(c[0][0], -3);
+				amiequal(c[0][1], -1);
+				amiequal(c[0][2],  1);
+				amiequal(c[0][3],  3);
+
+				amiequal(c[1][0],  3);
+				amiequal(c[1][1],  1);
+				amiequal(c[1][2], -1);
+				amiequal(c[1][3], -3);
+
+				amiequal(c[2][0], -3);
+				amiequal(c[2][1], -1);
+				amiequal(c[2][2],  1);
+				amiequal(c[2][3],  3);
+
+				amiequal(c[3][0], -3);
+				amiequal(c[3][1], -1);
+				amiequal(c[3][2],  1);
+				amiequal(c[3][3],  3);
+			}
 		}},
 
 		{ "* (scalar)", []{
-			gl::mat2 a = {{1, 2}, {2, 1}};
-			gl::mat2 b = a * 2;
+			{
+				gl::mat2 a = {{1, 2}, {2, 1}};
+				gl::mat2 b = a * 2;
 
-			amiequal(b[0][0], 2);
-			amiequal(b[1][0], 4);
+				amiequal(b[0][0], 2);
+				amiequal(b[1][0], 4);
 
-			amiequal(b[0][1], 4);
-			amiequal(b[1][1], 2);
+				amiequal(b[0][1], 4);
+				amiequal(b[1][1], 2);
+			}
+
+			{
+				gl::mat3 a = {{1,2,3},{4,3,4},{3,2,1}};
+				gl::mat3 b = a * 2;
+
+				amiequal(b[0][0], 2);
+				amiequal(b[0][1], 4);
+				amiequal(b[0][2], 6);
+
+				amiequal(b[1][0], 8);
+				amiequal(b[1][1], 6);
+				amiequal(b[1][2], 8);
+
+				amiequal(b[2][0], 6);
+				amiequal(b[2][1], 4);
+				amiequal(b[2][2], 2);
+			}
+
+			{
+				gl::mat4 a = {{1,2,3,4},{4,3,2,1},{1,2,3,4},{4,3,2,1}};
+				gl::mat4 b = a * 2;
+
+				amiequal(b[0][0], 2);
+				amiequal(b[0][1], 4);
+				amiequal(b[0][2], 6);
+				amiequal(b[0][3], 8);
+
+				amiequal(b[1][0], 8);
+				amiequal(b[1][1], 6);
+				amiequal(b[1][2], 4);
+				amiequal(b[1][3], 2);
+
+				amiequal(b[2][0], 2);
+				amiequal(b[2][1], 4);
+				amiequal(b[2][2], 6);
+				amiequal(b[2][3], 8);
+
+				amiequal(b[3][0], 8);
+				amiequal(b[3][1], 6);
+				amiequal(b[3][2], 4);
+				amiequal(b[3][3], 2);
+			}
 		}},
 
 		{ "* (vector)", []{
@@ -265,6 +401,158 @@ main (int argc, char* argv[])
 
 				amiequal(c[2][0], 60);
 				amiequal(c[2][1], 50);
+			}
+		}},
+
+		{ "!", []{
+			{
+				gl::mat2 a = {{1, 2}, {2, 2}};
+				gl::mat2 b = !a;
+
+				amiequal(b[0][0], -1.0);
+				amiequal(b[1][0],  1.0);
+
+				amiequal(b[0][1],  1.0);
+				amiequal(b[1][1], -0.5);
+			}
+
+			{
+				gl::mat3 a = {{1,2,2},{2,2,2},{4,2,1}};
+				gl::mat3 b = !a;
+
+				amiequal(b[0][0], -1.0);
+				amiequal(b[0][1],  1.0);
+				amiequal(b[0][2],  0.0);
+
+				amiequal(b[1][0],  3.0);
+				amiequal(b[1][1], -3.5);
+				amiequal(b[1][2],  1.0);
+
+				amiequal(b[2][0], -2.0);
+				amiequal(b[2][1],  3.0);
+				amiequal(b[2][2], -1.0);
+			}
+
+			{
+				gl::mat4 a = {{1,2,2,2},{2,2,1,2},{2,2,2,2},{2,2,2,1}};
+				gl::mat4 b = !a;
+
+				amiequal(b[0][0], -1.0);
+				amiequal(b[0][1],  0.0);
+				amiequal(b[0][2],  1.0);
+				amiequal(b[0][3],  0.0);
+
+				amiequal(b[1][0],  1.0);
+				amiequal(b[1][1],  1.0);
+				amiequal(b[1][2], -2.5);
+				amiequal(b[1][3],  1.0);
+
+				amiequal(b[2][0],  0.0);
+				amiequal(b[2][1], -1.0);
+				amiequal(b[2][2],  1.0);
+				amiequal(b[2][3],  0.0);
+
+				amiequal(b[3][0],  0.0);
+				amiequal(b[3][1],  0.0);
+				amiequal(b[3][2],  1.0);
+				amiequal(b[3][3], -1.0);
+			}
+		}},
+
+		{ "~", []{
+			{
+				gl::mat2 a = {{1, 2}, {3, 4}};
+				gl::mat2 b = ~a;
+
+				amiequal(b[0][0], 1);
+				amiequal(b[0][1], 3);
+
+				amiequal(b[1][0], 2);
+				amiequal(b[1][1], 4);
+			}
+
+			{
+				gl::mat3 a = {{1,2,3},{4,5,6},{7,8,9}};
+				gl::mat3 b = ~a;
+
+				amiequal(b[0][0], 1);
+				amiequal(b[0][1], 4);
+				amiequal(b[0][2], 7);
+
+				amiequal(b[1][0], 2);
+				amiequal(b[1][1], 5);
+				amiequal(b[1][2], 8);
+
+				amiequal(b[2][0], 3);
+				amiequal(b[2][1], 6);
+				amiequal(b[2][2], 9);
+			}
+
+			{
+				gl::mat4 a = {{1,2,3,4},{5,6,7,8},{8,7,6,5},{4,3,2,1}};
+				gl::mat4 b = ~a;
+
+				amiequal(b[0][0], 1);
+				amiequal(b[0][1], 5);
+				amiequal(b[0][2], 8);
+				amiequal(b[0][3], 4);
+
+				amiequal(b[1][0], 2);
+				amiequal(b[1][1], 6);
+				amiequal(b[1][2], 7);
+				amiequal(b[1][3], 3);
+
+				amiequal(b[2][0], 3);
+				amiequal(b[2][1], 7);
+				amiequal(b[2][2], 6);
+				amiequal(b[2][3], 2);
+
+				amiequal(b[3][0], 4);
+				amiequal(b[3][1], 8);
+				amiequal(b[3][2], 5);
+				amiequal(b[3][3], 1);
+			}
+
+			{
+				gl::mat2x3 a = {{1, 2, 3}, {4, 5, 6}};
+				gl::mat3x2 b = ~a;
+
+				amiequal(b[0][0], 1);
+				amiequal(b[0][1], 4);
+
+				amiequal(b[1][0], 2);
+				amiequal(b[1][1], 5);
+
+				amiequal(b[2][0], 3);
+				amiequal(b[2][1], 6);
+			}
+
+			{
+				gl::mat3x2 a = {{1, 2}, {3, 4}, {5, 6}};
+				gl::mat2x3 b = ~a;
+
+				amiequal(b[0][0], 1);
+				amiequal(b[0][1], 3);
+				amiequal(b[0][2], 5);
+
+				amiequal(b[1][0], 2);
+				amiequal(b[1][1], 4);
+				amiequal(b[1][2], 6);
+			}
+
+			{
+				gl::mat4x2 a = {{1, 2}, {3, 4}, {5, 6}, {7, 8}};
+				gl::mat2x4 b = ~a;
+
+				amiequal(b[0][0], 1);
+				amiequal(b[0][1], 3);
+				amiequal(b[0][2], 5);
+				amiequal(b[0][3], 7);
+
+				amiequal(b[1][0], 2);
+				amiequal(b[1][1], 4);
+				amiequal(b[1][2], 6);
+				amiequal(b[1][3], 8);
 			}
 		}},
 
